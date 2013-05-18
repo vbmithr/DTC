@@ -8,9 +8,9 @@ namespace GSP
 #pragma pack(8)
 
 	const int CURRENT_VERSION = 1;
-	const int 	SYMBOL_LENGTH = 64;
+	const int SYMBOL_LENGTH = 64;
 	const int EXCHANGE_LENGTH= 32;
-	const int  UNDERLYING_LENGTH= 32;
+	const int UNDERLYING_LENGTH= 32;
 	const int ORDER_ID_LENGTH = 32;
 	const int TRADE_ACCOUNT_LENGTH = 32;
 
