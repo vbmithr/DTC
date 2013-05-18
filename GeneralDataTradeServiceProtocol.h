@@ -1,7 +1,7 @@
 //General Data and Trading Service Protocol (GSP)
 
-//Client = Any application program supporting GSP. This can be a charting program, trading program, automated trading program.  A combination of these, or whatever.
-//Server = Any service/program that provides Market Data and Trading functionality that follows this GSP protocol.
+//Client = Any application program supporting GSP. This can be a manual trading, automated/algorithmic trading, charting, or market analysis program, a combination of these, or whatever.
+//Server = Any service/program that provides Market Data and/or Trading functionality that follows this GSP protocol.
 
 namespace GSP
 {
@@ -63,11 +63,20 @@ namespace GSP
 	const unsigned short MARKET_DEPTH_FULL_UPDATE_LARGE = 109;//Server >> Client
 
 	// This needs to be returned in response to a MARKET_DATA_REQUEST if the Server can provide data for at least one of the structure members.
-	// The server should send this response initially after the request and any time the fundamental data changes.
+	// The server should send this response initially after the MARKET_DATA_REQUEST  message is received and any time the fundamental data changes.
 	const unsigned short FUNDAMENTAL_DATA_RESPONSE = 110;//Server >> Client
 
 	//This is a combination of TRADE_INCREMENTAL_UPDATE and MARKET_DEPTH_FULL_UPDATE (Only 10 levels)
 	const unsigned short TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH = 111;//Server >> Client
+
+	//Send when a trade occurs.  This message is a more compact TRADE_INCREMENTAL_UPDATE. For the price it uses a 4 byte float.
+	//This message is intended to be used when also using DAILY_VOLUME_INCREMENTAL_UPDATE
+	const unsigned short TRADE_INCREMENTAL_UPDATE_COMPACT = 112;//Server >> Client
+
+	//Send when the daily volume needs to be updated.
+	//This message is intended to be used when also using TRADE_INCREMENTAL_UPDATE_COMPACT
+	//It does not need to be sent for every TRADE_INCREMENTAL_UPDATE_COMPACT message.  It can be sent less frequently.  However, it should be sent through at least every minute when trading is occurring.
+	const unsigned short DAILY_VOLUME_INCREMENTAL_UPDATE = 113;//Server >> Client
 
 	// This message is for submitting a new single order. All updates to the order are communicated through a ORDER_UPDATE_REPORT message.
 	// A rejected order is communicated through a ORDER_UPDATE_REPORT message with a ExecutionType of ET_NEW_ORDER_REJECT
@@ -365,7 +374,8 @@ namespace GSP
 		char  Username[32];//Optional if authentication is not needed
 		char Password[32];//Optional if authentication is not needed
 
-		char  GeneralTextData[64];//Optional.  General-purpose text string.
+		char  GeneralTextData[64];//Optional.  General-purpose text string. For example this could be used to pass a license key that the Server may require.
+
 		int Integer_1;//Optional.  General-purpose integer.
 		int Integer_2;//Optional.  General-purpose integer.
 
@@ -383,6 +393,8 @@ namespace GSP
 		// Computer hardware ID.  This will be implemented on a case-by-case basis with specific Data/Trading service providers.   It will be a reasonable implementation to uniquely identify a system and will not be publicly disclosed. It will never contain personally identifiable information. 
 		char HardwareIdentifier[64];
 
+		//The client program name
+		 char ClientName [32];
 
 		s_LogonRequest ()
 		{
@@ -714,36 +726,37 @@ namespace GSP
 
 		unsigned short MarketDataSymbolID;
 
-		double SettlementPrice;
+		double SettlementPrice;//This is the previous settlement price when this message is sent before the market closes for the trading day
 		double DailyOpen;
 		double DailyHigh;
 		double DailyLow;
-		double LastTradePrice;
-		unsigned int LastTradeSize;
 		double DailyVolume;
 		unsigned int DailyNumberOfTrades;
 
 		//Can be any of the following: Futures open interest.  Shares outstanding for stocks.  Bitcoins outstanding
-		unsigned int OpenInterest;
+		union
+		{
+			unsigned int SharesOutstanding;
+			unsigned int OpenInterest;
+			unsigned int UnitsOutstanding;
+		};
 
 		double Bid;
 		double Ask;
 		unsigned int AskSize;
 		unsigned int BidSize;
 
+		double LastTradePrice;
+		unsigned int LastTradeSize;
 		t_DateTime LastTradeDateTimeUnix;
 		short LastTradeMilliseconds;
 
-
 		s_MarketDataSnapshot()
 		{
-
 			memset(this, 0,sizeof(s_MarketDataSnapshot));
 			Type=MARKET_DATA_SNAPSHOT;
 			Size=sizeof(s_MarketDataSnapshot);
-
 		}
-
 
 	};
 	/*==========================================================================*/
@@ -923,8 +936,6 @@ namespace GSP
 		}
 		double GetPrice()
 		{
-			//if( (byte*)&Price - (byte*)this   > Size)// Check if member exists.
-			//	return   0.0;
 			return Price;
 		}
 	};
@@ -971,25 +982,51 @@ namespace GSP
 		}
 	};
 
+	
 	/*==========================================================================*/
 
-	//struct s_DailyVolumeIncrementalUpdate
-	//{
-	//	unsigned short Size;
-	//	unsigned short Type;
+	struct s_TradeIncrementalUpdateCompact
+	{
+		unsigned short Size;
+		unsigned short Type;
+	
+		float Price;
+		unsigned int TradeVolume;
+		t_DateTime4Byte TradeDateTimeUnix;
+		unsigned short MarketDataSymbolID;
+		//BidOrAskEnum TradeAtBidOrAsk;//Indicator whether the trade occurred at the bid or ask.
 
-	//	unsigned short MarketDataSymbolID;
-	//	double DailyVolume;//total daily volume
+		s_TradeIncrementalUpdateCompact()
+		{
+			memset(this, 0,sizeof(s_TradeIncrementalUpdateCompact));
+			Type=TRADE_INCREMENTAL_UPDATE_COMPACT;
+			Size=sizeof(s_TradeIncrementalUpdateCompact);
 
-	//	s_DailyVolumeIncrementalUpdate()
-	//	{
+		}
+		double GetPrice()
+		{
+			return Price;
+		}
+	};
 
-	//		memset(this, 0,sizeof(s_DailyVolumeIncrementalUpdate));
-	//		Type=DAILY_VOLUME_INCREMENTAL_UPDATE;
-	//		Size=sizeof(s_DailyVolumeIncrementalUpdate);
+	/*==========================================================================*/
+	struct s_DailyVolumeIncrementalUpdate
+	{
+		unsigned short Size;
+		unsigned short Type;
 
-	//	}
-	//};
+		unsigned short MarketDataSymbolID;
+		double DailyVolume;//total daily volume
+
+		s_DailyVolumeIncrementalUpdate()
+		{
+
+			memset(this, 0,sizeof(s_DailyVolumeIncrementalUpdate));
+			Type=DAILY_VOLUME_INCREMENTAL_UPDATE;
+			Size=sizeof(s_DailyVolumeIncrementalUpdate);
+
+		}
+	};
 
 	/*==========================================================================*/
 
@@ -1093,9 +1130,10 @@ namespace GSP
 
 	//A service provider must implement OCO orders on the server so that they can independently be modified (cancel/replace) and canceled independently using each orders distinct ServerOrderID.  If one of the orders is canceled though, the other order will be canceled unless they have a parent order ( bracket order), in which case the other order will remain working.
 
+	//If the OCO order pair is rejected, this must be communicated through 2 ORDER_UPDATE_REPORT messages, 1 for each order, with a ExecutionType of ET_NEW_ORDER_REJECT
+
 	// The ParentTriggerOrderID member allows the submission of a OCO order pair which has a parent.  (Bracket order).
 
-	// When an OCO order is rejected,  the server needs to send a separate order report message for each of the orders in the OCO pair that was not accepted
 	struct s_SubmitNewOCOOrder
 	{
 		unsigned short Size;
@@ -1148,7 +1186,6 @@ namespace GSP
 		unsigned short Size;
 		unsigned short Type;
 
-
 		int RequestID;
 
 		int RequestAllOpenOrders;//0 = request a specific order, 1 = for all orders (default).
@@ -1173,7 +1210,7 @@ namespace GSP
 
 		int RequestID;
 
-		char ServerOrderID[ORDER_ID_LENGTH];//Leave blank if want all order fills.  Otherwise, fills for given order ID
+		char ServerOrderID[ORDER_ID_LENGTH];//Leave blank if want all order fills.  Otherwise, fills for given Server order ID.
 
 		// If this is 0, return all historical order fills available.  Otherwise, counting from the current day, return the number of days requested. 
 		// This member can be ignored.
@@ -1188,6 +1225,7 @@ namespace GSP
 		}
 
 	};
+
 	/*==========================================================================*/
 	//Will request open positions for all accounts
 	struct s_CurrentPositionsRequest
@@ -1237,10 +1275,10 @@ namespace GSP
 		// If this order report is unsolicited, for example a real-time fill, then leave this at zero.
 		int RequestID;
 
-		//This should only be set when the report is in response to OPEN_ORDERS_REQUEST.   This indicates the total number of order reports when a batch of reports is being sent. If there is only one order being sent, this will be 1.
+		//This must only be set when the report is in response to OPEN_ORDERS_REQUEST.   This indicates the total number of order reports when a batch of reports is being sent. If there is only one order being sent, this will be 1. If the order report is unsolicited, leave this at the default of 0.
 		 int TotalNumberMessages;
 
-		 //This should only be set when the report is in response to OPEN_ORDERS_REQUEST.  This indicates the 1-based index of the order report when a batch of reports is being sent. If there is only one order being sent, this will be 1.
+		 //This must only be set when the report is in response to OPEN_ORDERS_REQUEST.  This indicates the 1-based index of the order report when a batch of reports is being sent. If there is only one order being sent, this will be 1. If the order report is unsolicited, leave this at the default of 0.
 		 int MessageNumber;
 
 		char Symbol[SYMBOL_LENGTH];//This can be any format. Needs to be null-terminated.
@@ -1408,6 +1446,9 @@ namespace GSP
 
 		char TradeAccount[TRADE_ACCOUNT_LENGTH];
 		char NonePositions;//Set to 1 to indicate there are no Positions when there is a request for Positions.  Otherwise, leave at the default of 0.
+
+		//Set to 1 to indicate this is an unsolicited position report.  In other words it is a real-time position report which is not in response to CURRENT_POSITIONS_REQUEST
+		char Unsolicited;
 
 		s_PositionReport()
 		{
