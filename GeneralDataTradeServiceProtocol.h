@@ -1,7 +1,6 @@
 //General Data and Trading Service Protocol (GSP)
 
-//Client = Any application program supporting GSP. This can be a manual trading, automated/algorithmic trading, charting, or market analysis program, a combination of these, or whatever.
-//Server = Any service/program that provides Market Data and/or Trading functionality that follows this GSP protocol.
+//Documentation: http://www.sierrachart.com/index.php?file=doc/doc_GSPMessageDocumentation.php
 
 namespace GSP
 {
@@ -9,10 +8,12 @@ namespace GSP
 
 	const int CURRENT_VERSION = 1;
 	const int SYMBOL_LENGTH = 64;
-	const int EXCHANGE_LENGTH= 32;
+	const int EXCHANGE_LENGTH= 32;//Consider reducing to 16 characters
 	const int UNDERLYING_LENGTH= 32;
+	const int SYMBOL_DESCRIPTION_LENGTH = 48;
 	const int ORDER_ID_LENGTH = 32;
 	const int TRADE_ACCOUNT_LENGTH = 32;
+	const int TEXT_DESCRIPTION_LENGTH = 128;
 
 	//----Message types----
 	const unsigned short LOGON_REQUEST=  1;//Client >> Server
@@ -66,7 +67,7 @@ namespace GSP
 	// The server should send this response initially after the MARKET_DATA_REQUEST  message is received and any time the fundamental data changes.
 	const unsigned short FUNDAMENTAL_DATA_RESPONSE = 110;//Server >> Client
 
-	//This is a combination of TRADE_INCREMENTAL_UPDATE and MARKET_DEPTH_FULL_UPDATE (Only 10 levels)
+	//This is a combination of TRADE_INCREMENTAL_UPDATE and MARKET_DEPTH_FULL_UPDATE (Only 10 levels).  Send only when a trade occurs and also want to update the full market depth book at the same time.
 	const unsigned short TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH = 111;//Server >> Client
 
 	//Send when a trade occurs.  This message is a more compact TRADE_INCREMENTAL_UPDATE. For the price it uses a 4 byte float.
@@ -129,16 +130,16 @@ namespace GSP
 	//For requesting all of the underlying symbols on a particular Exchange.  For example all of the underlying futures symbols on a particular exchange.
 	const unsigned short UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST   =503;//Client >> Server
 
-	//For requesting all of the symbols for a particular underlying.  For example all of the futures contracts for a particular underlying futures symbol or all of the option symbols for a particular futures or stock symbol.
+	//For requesting all of the symbols for a particular underlying.  For example all of the futures contracts for a particular underlying futures symbol or all of the option symbols for a specific futures or stock symbol.
 	const unsigned short SYMBOLS_FOR_UNDERLYING_REQUEST = 504;//Client >> Server
 
-	//The Server response message containing a single Symbol and Exchange in response to : SYMBOLS_FOR_EXCHANGE_REQUEST, UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST, SYMBOLS_FOR_UNDERLYING_REQUEST 
-	const unsigned short SYMBOL_RESPONSE =  505;//Server >> Client
+	//The Server response message containing a single Symbol and Exchange.  Currently not used.
+	//const unsigned short SYMBOL_RESPONSE =  505;//Server >> Client
 
 	//For requesting a security definition for a specific symbol
 	const unsigned short SECURITY_DEFINITION_FOR_SYMBOL_REQUEST = 506;//Client >> Server
 
-	//The response for a security definition request
+	//The response for a  SYMBOLS_FOR_EXCHANGE_REQUEST, UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST, SYMBOLS_FOR_UNDERLYING_REQUEST SECURITY_DEFINITION_FOR_SYMBOL_REQUEST message
 	const unsigned short SECURITY_DEFINITION_RESPONSE =  507;//Server >> Client
 
 
@@ -174,9 +175,10 @@ namespace GSP
 	enum LogonStatusEnum : int
 	{ LOGON_SUCCESS = 1
 	, LOGON_ERROR = 2
+	, LOGON_ERROR_NO_RECONNECT = 3
 
 	//You can use this logon status in the LOGON_RESPONSE message instruct the Client to reconnect to the Server at a different address.  This supports dynamic connections to a server farm.
-	, LOGON_RECONNECT_NEW_ADDRESS = 3
+	, LOGON_RECONNECT_NEW_ADDRESS = 4
 	};
 
 	/*==========================================================================*/
@@ -204,7 +206,7 @@ namespace GSP
 	, ORDER_STATUS_ORDERSENT = 1  //When a Client sends an order to the Server, then the Client internally will set the status to Order Sent.  The Server will not set this Status.
 	, ORDER_STATUS_PENDINGOPEN = 2//This means the Server has accepted the order but it is not yet considered in a fully working state for any reason.
 
-	// This is meant to be used only on the Client side and indicates a child order part of a bracket order, is waiting to be sent when the parent fills.
+	// This status applies to a Limit or Stop order attached to a parent order. It will have this status if the parent order has not yet filled.
 	, ORDER_STATUS_PENDINGCHILD = 3
 
 	, ORDER_STATUS_OPEN = 4//Order is open and working.
@@ -218,28 +220,28 @@ namespace GSP
 	/*==========================================================================*/
 	enum ExecutionTypeEnum : int
 
-	//Always set the execution type.  This is not considered a valid execution type.
+	// Always set the execution type.  This is not considered a valid execution type.
 	{ ET_UNSET = 0
 
-	//Set this when the order is sent based on a OPEN_ORDERS_REQUEST request
+	// Set this when the order is sent based on a OPEN_ORDERS_REQUEST request
 	, ET_OPEN_ORDERS_REQUEST = 1
 
-	//When a new order has been accepted, this is the execution type
+	// When a new order has been accepted, this is the execution type
 	, ET_NEW_ORDER_ACCEPTED = 2
 
-	//A general order update.  For example, when an order is in the process of being canceled,  you can set the order status to indicate that the order is pending a cancellation. It is not mandatory to indicate the order is pending a cancellation.
+	// A general order update.  For example, when an order is in the process of being canceled,  you can set the order status to indicate that the order is pending a cancellation. It is not mandatory to indicate the order is pending a cancellation.
 	, ET_ORDER_UPDATE = 3
 
-	//Upon a complete fill of the order, this is the execution type
+	// Upon a complete fill of the order, this is the execution type
 	, ET_FILLED = 4
 
-	//Upon a partial fill, this is the execution type
+	// Upon a partial fill, this is the execution type
 	, ET_PARTIAL_FILL = 5
 
-	//The order cancellation is complete
+	// The order cancellation is complete
 	, ET_CANCELED = 6
 
-	//The order cancel and replace operation is complete.
+	// The order cancel and replace operation is complete.
 	, ET_CANCEL_REPLACE_COMPLETE = 7
 
 	// After an order has been submitted and it has been rejected and is no longer working, send through an order report with this execution type
@@ -248,12 +250,12 @@ namespace GSP
 
 	// A request to cancel the order has been rejected.  Be sure to set the current status of the order in the OrderStatus member of the ORDER_UPDATE_REPORT message 
 
-	//In the event where the given ServerOrderID in a CANCEL_ORDER message from the Client is not found, then respond with a ORDER_UPDATE_REPORT message and set the execution type to ET_ORDER_CANCEL_REJECT.  In this case, ServerOrderID does not need to be set in the ORDER_UPDATE_REPORT message.  However, you must set the ClientOrderID in the ORDER_UPDATE_REPORT message to the given ClientOrderID in the CANCEL_ORDER message.
+	// In the event where the given ServerOrderID in a CANCEL_ORDER message from the Client is not found, then respond with a ORDER_UPDATE_REPORT message and set the execution type to ET_ORDER_CANCEL_REJECT.  In this case, ServerOrderID does not need to be set in the ORDER_UPDATE_REPORT message.  However, you must set the ClientOrderID in the ORDER_UPDATE_REPORT message to the given ClientOrderID in the CANCEL_ORDER message.
 	, ET_ORDER_CANCEL_REJECT = 9
 
-	//A request to cancel/replace the order has been rejected.  Be sure to set the current status of the order in the OrderStatus member of the ORDER_UPDATE_REPORT message 
+	// A request to cancel/replace the order has been rejected.  Be sure to set the current status of the order in the OrderStatus member of the ORDER_UPDATE_REPORT message 
 
-		//In the event where the given ServerOrderID in a CANCEL_REPLACE_ORDER message from the Client is not found, then respond with a ORDER_UPDATE_REPORT message and set the execution type to ET_ORDER_CANCEL_REPLACE_REJECT.  In this case, ServerOrderID does not need to be set in the ORDER_UPDATE_REPORT message.  However, you must set the ClientOrderID in the ORDER_UPDATE_REPORT message to the given ClientOrderID in the CANCEL_REPLACE_ORDER message.
+	// In the event where the given ServerOrderID in a CANCEL_REPLACE_ORDER message from the Client is not found, then respond with a ORDER_UPDATE_REPORT message and set the execution type to ET_ORDER_CANCEL_REPLACE_REJECT.  In this case, ServerOrderID does not need to be set in the ORDER_UPDATE_REPORT message.  However, you must set the ClientOrderID in the ORDER_UPDATE_REPORT message to the given ClientOrderID in the CANCEL_REPLACE_ORDER message.
 	, ET_ORDER_CANCEL_REPLACE_REJECT = 10
 	};
 
@@ -266,8 +268,8 @@ namespace GSP
 
 	enum MarketDepthIncrementalUpdateTypeEnum : unsigned char
 	{ DEPTH_UNSET = 0
-	, DEPTH_INSERT_UPDATE = 1  //Insert or update depth at the given price level
-	, DEPTH_DELETE = 2  //Delete depth at the given price level
+	, DEPTH_INSERT_UPDATE = 1 // Insert or update depth at the given price level
+	, DEPTH_DELETE = 2 // Delete depth at the given price level
 	};
 
 	enum OrderTypeEnum : int
@@ -307,7 +309,7 @@ namespace GSP
 	enum MarketDataFeedStatusEnum : int
 	{ MARKET_DATA_FEED_LOST = 1
 
-	//  Upon a connection to the server, this is assumed to be the status.  It is not until there has been expressly given MARKET_DATA_FEED_LOST, will the data feed be considered lost. The Client can optionally resubscribe to all symbols using MARKET_DATA_REQUEST messages, when this status is received.
+	// Upon a connection to the server, this is assumed to be the status.  It is not until there has been expressly given MARKET_DATA_FEED_LOST, will the data feed be considered lost. The Client can optionally resubscribe to all symbols using MARKET_DATA_REQUEST messages, when this status is received.
 	, MARKET_DATA_FEED_RESTORED = 2
 	};
 
@@ -340,7 +342,7 @@ namespace GSP
 	{ ST_UNSET = 0
 	, ST_FUTURE = 1
 	, ST_STOCK = 2
-	, ST_FOREX = 3  //Bitcoins also go into this category
+	, ST_FOREX = 3 // Bitcoins also go into this category
 	, ST_INDEX = 4
 	, ST_FUTURES_STRATEGY = 5
 	, ST_STOCK_OPTION = 6
@@ -361,7 +363,6 @@ namespace GSP
 	{
 		char Symbol[SYMBOL_LENGTH];
 		char Exchange[ EXCHANGE_LENGTH];
-
 	};
 
 	/*==========================================================================*/
@@ -371,32 +372,34 @@ namespace GSP
 		unsigned short Type;
 		int ProtocolVersion;
 
-		char  Username[32];//Optional if authentication is not needed
-		char Password[32];//Optional if authentication is not needed
+		char  Username[32]; // Optional if authentication is not needed
+		char Password[32]; // Optional if authentication is not needed
 
-		char  GeneralTextData[64];//Optional.  General-purpose text string. For example this could be used to pass a license key that the Server may require.
+		char  GeneralTextData[64]; // Optional. General-purpose text string. For example this could be used to pass a license key that the Server may require.
 
-		int Integer_1;//Optional.  General-purpose integer.
-		int Integer_2;//Optional.  General-purpose integer.
+		int Integer_1; // Optional. General-purpose integer.
+		int Integer_2; // Optional. General-purpose integer.
 
 		// The interval in seconds that each side needs to use to send heartbeat messages to the other side.
 		int  HeartbeatIntervalInSeconds; 
 
-		//Optional: To indicate Demo, Simulated, Live
+		// Optional: To indicate Demo, Simulated, Live
 		TradeModeEnum TradeMode;
 
-		//This should only be set to a trade account identifier if that is required to login.  
-		//Usually this would be the case if the log in is bound to a particular account and not changeable after the log in.
-		//Otherwise, this should be blank and Client will discover the accounts through an Account List Request.
+		// This should only be set to a trade account identifier if that is required to login.  
+		// Usually this would be the case if the log in is bound to a particular account and not changeable after the log in.
+		// Otherwise, this should be blank and Client will discover the accounts through an Account List Request.
 		char TradeAccount[TRADE_ACCOUNT_LENGTH];
 
-		// Computer hardware ID.  This will be implemented on a case-by-case basis with specific Data/Trading service providers.   It will be a reasonable implementation to uniquely identify a system and will not be publicly disclosed. It will never contain personally identifiable information. 
+		// Computer hardware ID.  This will be implemented on a case-by-case basis with specific Data/Trading service providers.
+		// It will be a reasonable implementation to uniquely identify a system and will not be publicly disclosed.
+		// It will never contain personally identifiable information. 
 		char HardwareIdentifier[64];
 
-		//The client program name
-		 char ClientName [32];
+		// The client program name
+		char ClientName [32];
 
-		s_LogonRequest ()
+		s_LogonRequest()
 		{
 			memset(this, 0,sizeof(s_LogonRequest));
 			Type=LOGON_REQUEST;
@@ -404,128 +407,59 @@ namespace GSP
 			ProtocolVersion = CURRENT_VERSION;
 		}
 
-		char * GetUsername()
-		{
-			// Example to check if member actually exists. This is not needed in this case because this member exists in the first version of this structure.
-			if( (byte*)&Username - (byte*)this   > Size)
-				return   "";
-
-			Username[sizeof(Username) - 1 ] = '\0';//Ensure that the null terminator exists
-
-			return Username;
-		}
-
-		void SetUsername(const char * NewValue)
-		{
-			strncpy(Username, NewValue, sizeof(Username) - 1);
-		}
-
-		char * GetPassword()
-		{
-			return Password;
-		}
-
-		void SetPassword(const char * NewValue)
-		{
-			strncpy(Password, NewValue, sizeof(Password) - 1);
-		}
-
-		char * GetGeneralTextData()
-		{
-			return GeneralTextData;
-		}
-
-		void SetGeneralTextData(const char * NewValue)
-		{
-			strncpy(GeneralTextData, NewValue, sizeof(GeneralTextData) - 1);
-		}
-
-		int GetInteger_1()
-		{
-			return Integer_1;
-		}
-
-		void SetInteger_1(int NewValue)
-		{
-			Integer_1 = NewValue;
-		}
-
-		int GetInteger_2()
-		{
-			return Integer_2;
-		}
-
-		void SetInteger_2(int NewValue)
-		{
-			Integer_2 = NewValue;
-		}
-
-		int GetInHeartbeatIntervalInSeconds()
-		{
-			return HeartbeatIntervalInSeconds;
-		}
-
-		void SetHeartbeatIntervalInSeconds(int NewValue)
-		{
-			HeartbeatIntervalInSeconds = NewValue;
-		}
-
-		TradeModeEnum GetTradeMode()
-		{
-			return TradeMode;
-		}
-
-		void SetTradeMode(TradeModeEnum NewValue)
-		{
-			TradeMode = NewValue;
-		}
-
-		char * GetTradeAccount()
-		{
-			return TradeAccount;
-		}
-
-		void SetTradeAccount(const char * NewValue)
-		{
-			strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
-		}
-		
-		char * GetHardwareIdentifier()
-		{
-			return HardwareIdentifier;
-		}
-
-		void SetHardwareIdentifier(const char * NewValue)
-		{
-			strncpy(HardwareIdentifier, NewValue, sizeof(HardwareIdentifier) - 1);
-		}
+		// The following functions are only for convenience.  They are not required to be used.  You can directly access the structure data members.
+		int GetProtocolVersion();
+		void SetProtocolVersion(int NewValue);
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		const char * GetUsername();
+		void SetUsername(const char * NewValue);
+		char * GetPassword();
+		void SetPassword(const char * NewValue);
+		char * GetGeneralTextData();
+		void SetGeneralTextData(const char * NewValue);
+		int GetInteger_1();
+		void SetInteger_1(int NewValue);
+		int GetInteger_2();
+		void SetInteger_2(int NewValue);
+		int GetInHeartbeatIntervalInSeconds();
+		void SetHeartbeatIntervalInSeconds(int NewValue);
+		TradeModeEnum GetTradeMode();
+		void SetTradeMode(TradeModeEnum NewValue);
+		char * GetTradeAccount();
+		void SetTradeAccount(const char * NewValue);
+		char * GetHardwareIdentifier();
+		void SetHardwareIdentifier(const char * NewValue);
 
 	};
 
 	/*==========================================================================*/
-
 	struct s_LogonResponse
 	{
 		unsigned short Size;
 		unsigned short Type;
+
 		int ProtocolVersion;
+
 		LogonStatusEnum Result;
-		char ErrorText[128];//Optional error text
-		char  LogonText[256];//Optional text to provide the client upon logon.
+
+		char ErrorText[TEXT_DESCRIPTION_LENGTH]; // Optional error text if Result = LOGON_ERROR
+
+		char LogonText[256]; // Optional text to provide the Client when the Result = LOGON_SUCCESS
 
 
-		//Set this to 1 to indicate that you will only be sending market depth updates and not best bid and ask updates. 
-		//The client will use depth at level 1 to update the best bid and ask prices.
-		//Some Clients will maintain separate best bid and ask prices from market depth data.
+		// Set this to 1 to indicate that you will only be sending market depth updates and not best bid and ask updates. 
+		// The client will use depth at level 1 to update the best bid and ask prices.
+		// Some Clients will maintain separate best bid and ask prices from market depth data.
 		unsigned char MarketDepthUpdatesBestBidAndAsk;
 
 		// Set this to 1 to indicate the server supports trading.  Otherwise, the Client will not send through any trading messages.
 		unsigned char TradingIsSupported;
 
-		//Set this to 1 to indicate the server supports OCO orders.
+		// Set this to 1 to indicate the server supports OCO orders.
 		unsigned char OCOOrdersSupported;
 
-		//Be sure to set this to 0 if you do not support CANCEL_REPLACE_ORDER
+		// Be sure to set this to 0 if you do not support CANCEL_REPLACE_ORDER
 		unsigned char OrderCancelReplaceSupported;
 
 
@@ -535,19 +469,23 @@ namespace GSP
 		// If this is left blank, the Exchange member in the structures in this header file, is not used.
 
 		// Even if the symbols supported by a Server have an Exchange text string, does not mean that you have to use the Exchange member in the structures. 
-		// You can simply combine the Symbol and the Exchange in security definition requests into the Symbol member or specify them as one text string in your documentation. Internally you can parse out the Exchange from the Symbol.
+		// You can simply combine the Symbol and the Exchange in security definition requests into the Symbol member or specify them as one text string in your documentation.
+		// Internally you can parse out the Exchange from the Symbol.
 		char SymbolExchangeDelimiter[4];
 
 		unsigned char SecurityDefinitionsSupported;
 
 		unsigned char HistoricalPriceDataSupported;
 
-		//Server address/IP number and optional port number to reconnect to. Format: [Server address: port number].  Only used if Result is set to LOGON_RECONNECT_NEW_ADDRESS
+		// Server address/IP number and optional port number to reconnect to. Format: [Server address: port number]. 
+		// Only used if Result is set to LOGON_RECONNECT_NEW_ADDRESS
 		char ReconnectAddress [64];
+
+		// When the client receives a MARKET_DATA_FEED_STATUS indicating the market data feed is restored, it needs to resubscribe to all of the symbols for market data and depth.
+		unsigned char ResubscribeWhenMarketDataFeedRestored;
 
 		s_LogonResponse()
 		{
-
 			memset(this, 0,sizeof(s_LogonResponse));
 			Type=LOGON_RESPONSE;
 			Size=sizeof(s_LogonResponse);
@@ -555,11 +493,35 @@ namespace GSP
 			OrderCancelReplaceSupported = 1;
 		}
 
+		int GetProtocolVersion();
+		void SetProtocolVersion(int NewValue);
+		unsigned short GetMessageSize();
+		LogonStatusEnum GetResult();
+		void SetResult(LogonStatusEnum NewValue);
+		char * GetErrorText();
+		void SetErrorText(const char * NewValue);
+		char * GetLogonText();
+		void SetLogonText(const char * NewValue);
+		unsigned char GetMarketDepthUpdatesBestBidAndAsk();
+		void SetMarketDepthUpdatesBestBidAndAsk(unsigned char NewValue);
+		unsigned char GetTradingIsSupported();
+		void SetTradingIsSupported(unsigned char NewValue);
+		unsigned char GetOCOOrdersSupported();
+		void SetOCOOrdersSupported(unsigned char NewValue);
+		unsigned char GetOrderCancelReplaceSupported();
+		void SetOrderCancelReplaceSupported(unsigned char NewValue);
+		char * GetSymbolExchangeDelimiter();
+		void SetSymbolExchangeDelimiter(const char * NewValue);
+		unsigned char GetSecurityDefinitionsSupported();
+		void SetSecurityDefinitionsSupported(unsigned char NewValue);
+		unsigned char GetHistoricalPriceDataSupported();
+		void SetHistoricalPriceDataSupported(unsigned char NewValue);
+		char * GetReconnectAddress();
+		void SetReconnectAddress(const char * NewValue);
+
 	};
 
-
 	/*==========================================================================*/
-
 	struct s_Heartbeat
 	{
 		unsigned short Size;
@@ -571,15 +533,17 @@ namespace GSP
 			Type=HEARTBEAT;
 			Size=sizeof(s_Heartbeat);
 		}
-
+		
+		unsigned short GetMessageSize();
 	};
 
 	/*==========================================================================*/
-
 	struct s_DisconnectFromServer
 	{
 		unsigned short Size;
 		unsigned short Type;
+
+		char DisconnectReason [TEXT_DESCRIPTION_LENGTH];
 
 		s_DisconnectFromServer()
 		{
@@ -587,29 +551,45 @@ namespace GSP
 			Type=DISCONNECT_FROM_SERVER_NO_RECONNECT;
 			Size=sizeof(s_DisconnectFromServer);
 		}
+		
+		unsigned short GetMessageSize();
+		char * GetDisconnectReason();
+		void SetDisconnectReason(const char * NewValue);
 
 	};
-	/*==========================================================================*/
 
+	/*==========================================================================*/
 	struct s_ServerReadyToReceive
 	{
 		unsigned short Size;
 		unsigned short Type;
-		char ServerName[25];//Optional free-form text for the Server to fill out if needed
-		char ServerVersion[25];//Optional free-form text for the server to fill out
-		char ServiceProviderName[25];//Optional free-form text for the server to fill out
+
+		char ServerName[25]; // Optional free-form text for the Server to fill out if needed
+		char ServerVersion[25]; // Optional free-form text for the server to fill out
+		char ServiceProviderName[25]; // Optional free-form text for the server to fill out
+
+		int ProtocolVersion;
 
 		s_ServerReadyToReceive()
 		{			
 			memset(this, 0,sizeof(s_ServerReadyToReceive));
 			Type=SERVER_READY_TO_RECEIVE;
 			Size=sizeof(s_ServerReadyToReceive);
-
+			ProtocolVersion=  CURRENT_VERSION;
 		}
+		
+		int GetProtocolVersion();
+		void SetProtocolVersion(int NewValue);
+		unsigned short GetMessageSize();
+		char * GetServerName();
+		void SetServerName(const char * NewValue);
+		char * GetServerVersion();
+		void SetServerVersion(const char * NewValue);
+		char * GetServiceProviderName();
+		void SetServiceProviderName(const char * NewValue);
 	};
 
 	/*==========================================================================*/
-
 	struct s_ConfigurationRequestFromClient
 	{
 		unsigned short Size;
@@ -621,10 +601,11 @@ namespace GSP
 			Type=CONFIGURATION_REQUEST_FROM_CLIENT;
 			Size=sizeof(s_ConfigurationRequestFromClient);
 		}
-
+		
+		unsigned short GetMessageSize();
 	};
-	/*==========================================================================*/
 
+	/*==========================================================================*/
 	struct s_MarketDataFeedStatus
 	{
 		unsigned short Size;
@@ -633,45 +614,54 @@ namespace GSP
 
 		s_MarketDataFeedStatus()
 		{
-
 			memset(this, 0,sizeof(s_MarketDataFeedStatus));
 			Type=MARKET_DATA_FEED_STATUS;
 			Size=sizeof(s_MarketDataFeedStatus);
 		}
+		
+		unsigned short GetMessageSize();
+		MarketDataFeedStatusEnum GetStatus();
+		void SetStatus(MarketDataFeedStatusEnum NewValue);
 
 	};
 
 	/*==========================================================================*/
-
 	struct s_MarketDataRequest
 	{
 		unsigned short Size;
 		unsigned short Type;
 		RequestActionEnum RequestActionValue;
 
-		//This is the ID which will be used in all of the market data response structures.  This is so that the Symbol does not have to be passed back.
-		//If you receive a market data request for a symbol to Subscribe to data that has already been subscribed to previously and this ID is different, then reject it (The Client should never do this).
+		// This is the ID which will be used in all of the market data response structures. This is so that the Symbol does not have to be passed back.
+		// If you receive a market data request for a symbol to Subscribe to data that has already been subscribed to previously and this ID is different, then reject it (The Client should never do this).
 		unsigned short MarketDataSymbolID;
 
-		//This can be any format. Needs to be null-terminated. Not specified when unsubscribing.
+		// This can be any format. Needs to be null-terminated. Not specified when unsubscribing.
 		char Symbol[SYMBOL_LENGTH];
 
-		//Optional.  Needs to be null-terminated.
+		// Optional. Needs to be null-terminated.
 		char Exchange[EXCHANGE_LENGTH];
 
 		s_MarketDataRequest()
 		{
-
 			memset(this, 0,sizeof(s_MarketDataRequest));
 			Type=MARKET_DATA_REQUEST;
 			Size=sizeof(s_MarketDataRequest);
 			RequestActionValue=SUBSCRIBE;
 		}
-
+		
+		unsigned short GetMessageSize();
+		RequestActionEnum GetRequestActionValue();
+		void SetRequestActionValue(RequestActionEnum NewValue);
+		unsigned short GetMarketDataSymbolID();
+		void SetMarketDataSymbolID(unsigned short NewValue);
+		char * GetSymbol();
+		void SetSymbol(const char * NewValue);
+		char * GetExchange();
+		void SetExchange(const char * NewValue);
 	};
 
 	/*==========================================================================*/
-
 	struct s_MarketDepthRequest
 	{
 		unsigned short Size;
@@ -679,16 +669,15 @@ namespace GSP
 
 		RequestActionEnum RequestActionValue;
 
-		//This is the ID which will be used in the market depth data response structure. This is so that the Symbol does not have to be passed back.
+		// This is the ID which will be used in the market depth data response structure. This is so that the Symbol does not have to be passed back.
 		unsigned short MarketDataSymbolID;
 
-		char Symbol[SYMBOL_LENGTH];//This can be any format. Needs to be null-terminated.
-		char Exchange[EXCHANGE_LENGTH];//Optional.  Needs to be null-terminated.
+		char Symbol[SYMBOL_LENGTH]; // This can be any format. Needs to be null-terminated.
+		char Exchange[EXCHANGE_LENGTH]; // Optional. Needs to be null-terminated.
 		int NumberOfLevels;  // Number of depth levels requested. Not set when unsubscribing.
 
 		s_MarketDepthRequest()
 		{
-
 			memset(this, 0,sizeof(s_MarketDepthRequest));
 			Type=MARKET_DEPTH_REQUEST;
 			Size=sizeof(s_MarketDepthRequest);
@@ -696,18 +685,28 @@ namespace GSP
 			RequestActionValue=SUBSCRIBE;
 			NumberOfLevels= 10;
 		}
-
+		
+		unsigned short GetMessageSize();
+		RequestActionEnum GetRequestActionValue();
+		void SetRequestActionValue(RequestActionEnum NewValue);
+		unsigned short GetMarketDataSymbolID();
+		void SetMarketDataSymbolID(unsigned short NewValue);
+		char * GetSymbol();
+		void SetSymbol(const char * NewValue);
+		char * GetExchange();
+		void SetExchange(const char * NewValue);
+		int GetNumberOfLevels();
+		void SetNumberOfLevels(int NewValue);
 	};
-	/*==========================================================================*/
 
+	/*==========================================================================*/
 	struct s_MarketDataReject
 	{
-
 		unsigned short Size;
 		unsigned short Type;
 
 		unsigned short MarketDataSymbolID;
-		char RejectText[128];//Explanation for reject
+		char RejectText[TEXT_DESCRIPTION_LENGTH]; // Explanation for reject
 
 		s_MarketDataReject()
 		{
@@ -715,10 +714,15 @@ namespace GSP
 			Type=MARKET_DATA_REJECT;
 			Size=sizeof(s_MarketDataReject);
 		}
-
+		
+		unsigned short GetMessageSize();
+		unsigned short GetMarketDataSymbolID();
+		void SetMarketDataSymbolID(unsigned short NewValue);
+		char * GetRejectText();
+		void SetRejectText(const char * NewValue);
 	};
-	/*==========================================================================*/
 
+	/*==========================================================================*/
 	struct s_MarketDataSnapshot
 	{
 		unsigned short Size;
@@ -726,14 +730,14 @@ namespace GSP
 
 		unsigned short MarketDataSymbolID;
 
-		double SettlementPrice;//This is the previous settlement price when this message is sent before the market closes for the trading day
+		double SettlementPrice;// This is the previous settlement price when this message is sent before the market closes for the trading day
 		double DailyOpen;
 		double DailyHigh;
 		double DailyLow;
 		double DailyVolume;
 		unsigned int DailyNumberOfTrades;
 
-		//Can be any of the following: Futures open interest.  Shares outstanding for stocks.  Bitcoins outstanding
+		// Can be any of the following: Futures open interest. Shares outstanding for stocks. Bitcoins outstanding
 		union
 		{
 			unsigned int SharesOutstanding;
@@ -757,10 +761,45 @@ namespace GSP
 			Type=MARKET_DATA_SNAPSHOT;
 			Size=sizeof(s_MarketDataSnapshot);
 		}
+		
+		unsigned short GetMessageSize();
+		unsigned short GetMarketDataSymbolID();
+		void SetMarketDataSymbolID(unsigned short NewValue);
+		double GetDailyOpen();
+		void SetDailyOpen(double NewValue);
+		double GetDailyHigh();
+		void SetDailyHigh(double NewValue);
+		double GetDailyLow();
+		void SetDailyLow(double NewValue);
+		double GetDailyVolume();
+		void SetDailyVolume(double NewValue);
+		unsigned int GetDailyNumberOfTrades();
+		void SetDailyNumberOfTrades(unsigned int NewValue);
+		unsigned int GetSharesOutstanding();
+		void SetSharesOutstanding(unsigned int NewValue);
+		unsigned int GetOpenInterest();
+		void SetOpenInterest(unsigned int NewValue);
+		unsigned int GetUnitsOutstanding();
+		void SetUnitsOutstanding(unsigned int NewValue);
+		double GetBid();
+		void SetBid(double NewValue);
+		double GetAsk();
+		void SetAsk(double NewValue);
+		unsigned int GetAskSize();
+		void SetAskSize(unsigned int NewValue);
+		unsigned int GetBidSize();
+		void SetBidSize(unsigned int NewValue);
+		double GetLastTradePrice();
+		void SetLastTradePrice(double NewValue);
+		unsigned int GetLastTradeSize();
+		void SetLastTradeSize(unsigned int NewValue);
+		t_DateTime GetLastTradeDateTimeUnix();
+		void SetLastTradeDateTimeUnix(t_DateTime NewValue);
+		short GetLastTradeMilliseconds();
+		void SetLastTradeMilliseconds(short NewValue);
 
 	};
 	/*==========================================================================*/
-
 	// Send after requesting market data for a symbol 
 	struct s_FundamentalDataResponse
 	{
@@ -768,16 +807,24 @@ namespace GSP
 		unsigned short Type;
 
 		unsigned short MarketDataSymbolID;
-		char SymbolDescription[64];
+
+		//The description for the symbol
+		char SymbolDescription[SYMBOL_DESCRIPTION_LENGTH];
+
+		//The minimum trade increment
 		float TickSize;
+
+		//The value of each trade increment as a currency value.
 		float TickCurrencyValue;
+
+		//The display format for prices
 		DisplayFormatEnum DisplayFormat;
 
 		//For Forex trading
 		float BuyRolloverInterest;
 		float SellRolloverInterest;
 
-		//Various stock fundamental data fields can be added here.  We will leave this to data providers which provide stock data.
+		//Various stock fundamental data fields can be added here.  We will leave this to Data Service providers which provide stock data.
 
 		s_FundamentalDataResponse()
 		{
@@ -792,7 +839,6 @@ namespace GSP
 	};
 
 	/*==========================================================================*/
-
 	struct s_TradeIncrementalUpdateWithFullDepth
 	{
 		static const int NUM_DEPTH_LEVELS =10;
@@ -831,7 +877,6 @@ namespace GSP
 	};
 
 	/*==========================================================================*/
-
 	struct s_MarketDepthFullUpdate
 	{
 		static const int NUM_DEPTH_LEVELS =20;
@@ -858,7 +903,6 @@ namespace GSP
 	};
 
 	/*==========================================================================*/
-
 	struct s_MarketDepthFullUpdateLarge
 	{
 		static const int NUM_DEPTH_LEVELS = 100;
@@ -886,7 +930,6 @@ namespace GSP
 	};
 
 	/*==========================================================================*/
-
 	struct s_MarketDepthIncrementalUpdate
 	{	 
 		unsigned short Size;
@@ -1251,7 +1294,7 @@ namespace GSP
 		unsigned short Type;
 
 		int RequestID;
-		char RejectText[128];//Reject reason
+		char RejectText[TEXT_DESCRIPTION_LENGTH];//Reject reason
 
 		s_CurrentPositionsRequestReject()
 		{
@@ -1272,13 +1315,13 @@ namespace GSP
 		unsigned short Type;
 
 		// 0 unless this is in response to a OPEN_ORDERS_REQUEST, in which case this must be set to the previously given RequestID
-		// If this order report is unsolicited, for example a real-time fill, then leave this at zero.
+		// If this order report is unsolicited, for example a real-time fill or other unsolicited event, then leave this at 0.
 		int RequestID;
 
-		//This must only be set when the report is in response to OPEN_ORDERS_REQUEST.   This indicates the total number of order reports when a batch of reports is being sent. If there is only one order being sent, this will be 1. If the order report is unsolicited, leave this at the default of 0.
+		// This indicates the total number of order reports when a batch of reports is being sent. If there is only one order being sent, this will be 1. Use a value of 1 for an unsolicited report. A client should not rely on this variable for an unsolicited report.
 		 int TotalNumberMessages;
 
-		 //This must only be set when the report is in response to OPEN_ORDERS_REQUEST.  This indicates the 1-based index of the order report when a batch of reports is being sent. If there is only one order being sent, this will be 1. If the order report is unsolicited, leave this at the default of 0.
+		 //This indicates the 1-based index of the order report when a batch of reports is being sent. If there is only one order being sent, this will be 1.  Use a value of 1 for an unsolicited report. A client should not rely on this variable for an unsolicited report.
 		 int MessageNumber;
 
 		char Symbol[SYMBOL_LENGTH];//This can be any format. Needs to be null-terminated.
@@ -1310,7 +1353,7 @@ namespace GSP
 		//For orders that require a price, this is the order price
 		double Price1;
 
-		//For Stop-Limit orders this is the Limit price.
+		//For Stop-Limit orders this is the Limit price. Otherwise, this is unset.
 		double Price2;
 
 		TimeInForceEnum TimeInForce;
@@ -1328,7 +1371,7 @@ namespace GSP
 		char TradeAccount[TRADE_ACCOUNT_LENGTH];
 
 		// Free-form text with information to communicate about the order. 
-		char InfoText[128];
+		char InfoText[TEXT_DESCRIPTION_LENGTH];
 
 		char NoneOrders;//Set to 1 to indicate there are no orders when Open orders have been requested.  Otherwise, leave at the default of 0.
 
@@ -1363,7 +1406,7 @@ namespace GSP
 		unsigned short Type;
 
 		int RequestID;
-		char RejectText[128];//Reject reason
+		char RejectText[TEXT_DESCRIPTION_LENGTH];//Reject reason
 
 		s_OpenOrdersRequestReject()
 		{
@@ -1641,7 +1684,7 @@ namespace GSP
 
 	};
 
-	/*==========================================================================*/
+	/*==========================================================================
 
 	struct s_SymbolResponse
 	{
@@ -1664,7 +1707,7 @@ namespace GSP
 		}
 
 	};
-	/*==========================================================================*/
+	==========================================================================*/
 
 	struct s_SecurityDefinitionResponse
 	{
@@ -1672,12 +1715,15 @@ namespace GSP
 		unsigned short Type;
 
 		int RequestID;
+
+		//This can also contain an underlying symbol
 		char Symbol[SYMBOL_LENGTH];
+
 		char Exchange[EXCHANGE_LENGTH];
 
 		SecurityTypeEnum SecurityType;
 		
-		char SymbolDescription [64];
+		char SymbolDescription [SYMBOL_DESCRIPTION_LENGTH];
 		float TickSize;
 		DisplayFormatEnum PriceDisplayFormat;
 		float TickCurrencyValue;
@@ -1726,14 +1772,18 @@ namespace GSP
 		unsigned short Size;
 		unsigned short Type;
 
-		//General message to present to user in the Client
+		// General message to present to user in the Client
 		char UserMessage[256];
+
+		// The default for this is 1 which signifies that the Server would like the Client to present the message to the user in a way which will get their attention.    Otherwise, set this to 0 to give the message lower priority (just add to a log).
+		char PopupMessage;
 
 		s_UserMessage()
 		{
 			memset(this, 0,sizeof(s_UserMessage));
 			Type=USER_MESSAGE;
 			Size=sizeof(s_UserMessage);
+			PopupMessage = 1;
 		}
 
 	};
@@ -1798,7 +1848,7 @@ namespace GSP
 		int RequestIdentifier;//Original historical price data request identifier
 
 		//Text reason for rejection
-		char RejectText [128];
+		char RejectText [TEXT_DESCRIPTION_LENGTH];
 
 		s_HistoricalPriceDataReject()
 		{
