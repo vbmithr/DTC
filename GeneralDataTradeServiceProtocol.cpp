@@ -21,11 +21,6 @@ int GSP::s_LogonRequest::GetProtocolVersion()
 	return ProtocolVersion;
 }
 
-/*==========================================================================*/
-void GSP::s_LogonRequest::SetProtocolVersion(int NewValue)
-{
-	ProtocolVersion = NewValue;
-}
 
 /*==========================================================================*/
 //Will get the size of the message received over the network
@@ -163,12 +158,6 @@ void GSP::s_LogonRequest::SetHardwareIdentifier(const char * NewValue)
 int GSP::s_LogonResponse::GetProtocolVersion()
 {
 	return ProtocolVersion;
-}
-
-/*==========================================================================*/
-void GSP::s_LogonResponse::SetProtocolVersion(int NewValue)
-{
-	ProtocolVersion = NewValue;
 }
 
 /*==========================================================================*/
@@ -345,12 +334,6 @@ void GSP::s_DisconnectFromServer::SetDisconnectReason(const char * NewValue)
 int GSP::s_ServerReadyToReceive::GetProtocolVersion()
 {
 	return ProtocolVersion;
-}
-
-/*==========================================================================*/
-void GSP::s_ServerReadyToReceive::SetProtocolVersion(int NewValue)
-{
-	ProtocolVersion = NewValue;
 }
 
 /*==========================================================================*/
@@ -571,4 +554,197 @@ void GSP::s_MarketDataReject::SetRejectText(const char * NewValue)
 	strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 }
 
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetToUnsetValues()
+{
+	SettlementPrice = DBL_MAX;
+	DailyOpen = DBL_MAX;
+	DailyHigh = DBL_MAX;
+	DailyLow = DBL_MAX;
+	DailyVolume = DBL_MAX;
+	DailyNumberOfTrades = UINT_MAX;
+
+	SharesOutstanding = UINT_MAX;
+
+	Bid = DBL_MAX;
+	Ask = DBL_MAX;
+	AskSize = UINT_MAX;
+	BidSize = UINT_MAX;
+
+	LastTradePrice = DBL_MAX;
+	LastTradeSize = UINT_MAX;
+}
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
+{
+	if (TickSize== 0.0)
+	{
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
+		return;
+	}
+
+
+	if (TickSize < 0.00001)
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_6;
+	else if (TickSize < 0.0001)
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_5;
+	else if (TickSize < 0.001)
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_4;
+	else if (TickSize > 0.00249  && TickSize < 0.00251)
+	{
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_4;
+	}
+	else if (TickSize < 0.00999)
+	{
+		if (TickSize > 0.00390620  && TickSize < 0.00390630)  //== 0.00390625)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_256;
+		else if (TickSize > 0.0078120 && TickSize < 0.0078130)  //.25/32 =0.0078125
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32_QUARTERS;
+		else
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
+	}
+	else if (TickSize < 0.1)
+	{
+		if (TickSize > .0249 &&  TickSize < .0251)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
+		else if (TickSize > 0.015620 && TickSize < 0.015630)  // .5/32 =0.015625
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32_HALVES;
+		else if (TickSize > 0.03120 && TickSize < 0.03130)  //1/32 = 0.03125 
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32;
+		else if (TickSize > 0.0620 && TickSize < 0.0630)  //== 0.0625)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_16;
+		else
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_2;
+	}
+	else if (TickSize < 1)
+	{
+		if (TickSize > 0.120 && TickSize < 0.130)  //== 0.125)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_8;
+		else
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_1;
+	}
+	else
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_0;
+}
+/*==========================================================================*/
+
+char * GSP::s_OrderUpdateReport::GetSymbol()
+{
+	Symbol[sizeof(Symbol) - 1 ] = '\0';
+	return Symbol;
+}
+/*==========================================================================*/
+void GSP::s_OrderUpdateReport::SetSymbol(const char * NewValue)
+{
+	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
+}
+/*==========================================================================*/
+
+char * GSP::s_OrderUpdateReport::GetExchange()
+{
+	Exchange[sizeof(Exchange) - 1 ] = '\0';
+	return Exchange;
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetExchange(const char * NewValue)
+{
+	strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+}
+/*==========================================================================*/
+
+char * GSP::s_OrderUpdateReport::GetPreviousServerOrderID()
+{
+	PreviousServerOrderID[sizeof(PreviousServerOrderID) - 1 ] = '\0';
+	return PreviousServerOrderID;
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetPreviousServerOrderID(const char * NewValue)
+{
+	strncpy(PreviousServerOrderID, NewValue, sizeof(PreviousServerOrderID) - 1);
+}
+/*==========================================================================*/
+
+char * GSP::s_OrderUpdateReport::GetServerOrderID()
+{
+	ServerOrderID[sizeof(ServerOrderID) - 1 ] = '\0';
+	return ServerOrderID;
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetServerOrderID(const char * NewValue)
+{
+	strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+}
+/*==========================================================================*/
+
+char * GSP::s_OrderUpdateReport::GetClientOrderID()
+{
+	ClientOrderID[sizeof(ClientOrderID) - 1 ] = '\0';
+	return ClientOrderID;
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetClientOrderID(const char * NewValue)
+{
+	strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+}
+/*==========================================================================*/
+
+char * GSP::s_OrderUpdateReport::GetExchangeOrderID()
+{
+	ExchangeOrderID[sizeof(ExchangeOrderID) - 1 ] = '\0';
+	return ExchangeOrderID;
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetExchangeOrderID(const char * NewValue)
+{
+	strncpy(ExchangeOrderID, NewValue, sizeof(ExchangeOrderID) - 1);
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetUniqueFillExecutionID(const char * NewValue)
+{
+	strncpy(UniqueFillExecutionID, NewValue, sizeof(UniqueFillExecutionID) - 1);
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetTradeAccount(const char * NewValue)
+{
+	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+}
+/*==========================================================================*/
+
+void GSP::s_OrderUpdateReport::SetInfoText(const char * NewValue)
+{
+	strncpy(InfoText, NewValue, sizeof(InfoText) - 1);
+}
+/*==========================================================================*/
+
+
+void GSP::s_PositionReport::SetSymbol(const char * NewValue)
+{
+	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
+}
+/*==========================================================================*/
+
+
+void GSP::s_PositionReport::SetTradeAccount(const char * NewValue)
+{
+	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+}
+/*==========================================================================*/
+
+void GSP::s_AccountBalanceUpdate::SetAccountCurrency(const char * NewValue)
+{
+	strncpy(AccountCurrency, NewValue, sizeof(AccountCurrency) - 1);
+}
+/*==========================================================================*/
+
+void GSP::s_AccountBalanceUpdate::SetTradeAccount(const char * NewValue)
+{
+	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+}
 /*==========================================================================*/
