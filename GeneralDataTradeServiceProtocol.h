@@ -2,130 +2,133 @@
 
 //Documentation: http://www.sierrachart.com/index.php?file=doc/doc_GSPMessageDocumentation.php
 
+#pragma once
+
 namespace GSP
 {
 #pragma pack(8)
 
-	const int CURRENT_VERSION = 1;
+	const int CURRENT_VERSION = 2;
 	const int SYMBOL_LENGTH = 64;
-	const int EXCHANGE_LENGTH= 32;//Consider reducing to 16 characters
+	const int EXCHANGE_LENGTH= 16;
 	const int UNDERLYING_LENGTH= 32;
 	const int SYMBOL_DESCRIPTION_LENGTH = 48;
 	const int ORDER_ID_LENGTH = 32;
 	const int TRADE_ACCOUNT_LENGTH = 32;
-	const int TEXT_DESCRIPTION_LENGTH = 128;
+	const int TEXT_DESCRIPTION_LENGTH = 96;
 
 	//----Message types----
-	const unsigned short LOGON_REQUEST=  1;//Client >> Server
+	const unsigned short LOGON_REQUEST = 1;
 
-	const unsigned short LOGON_RESPONSE =  2;//Server  >> Client
+	const unsigned short LOGON_RESPONSE = 2;
 
-	const unsigned short HEARTBEAT =  3;//Client >> Server and Server  >> Client
+	const unsigned short HEARTBEAT = 3;
 
-	const unsigned short DISCONNECT_FROM_SERVER_NO_RECONNECT =  4;//Server  >> Client
+	const unsigned short DISCONNECT_FROM_SERVER_NO_RECONNECT = 4;
 
-	const unsigned short SERVER_READY_TO_RECEIVE =  5;//Server  >> Client
+	const unsigned short MARKET_DATA_FEED_STATUS = 100;
 
-	const unsigned short MARKET_DATA_FEED_STATUS = 100;//Server  >> Client
+	const unsigned short MARKET_DATA_REQUEST = 101;
 
-	const unsigned short MARKET_DATA_REQUEST =  101;//Client >> Server
+	const unsigned short MARKET_DEPTH_REQUEST = 102;
 
-	const unsigned short MARKET_DEPTH_REQUEST = 102;//Client >> Server
+	const unsigned short MARKET_DATA_REJECT = 103;
 
-	const unsigned short MARKET_DATA_REJECT = 103;//Server >> Client
+	const unsigned short MARKET_DATA_SNAPSHOT = 104;
 
-	const unsigned short MARKET_DATA_SNAPSHOT = 104;//Server >> Client
+	const unsigned short MARKET_DEPTH_FULL_UPDATE = 105;
 
-	const unsigned short MARKET_DEPTH_FULL_UPDATE = 105;//Server >> Client
+	const unsigned short MARKET_DEPTH_INCREMENTAL_UPDATE = 106;
 
-	const unsigned short MARKET_DEPTH_INCREMENTAL_UPDATE = 106;//Server >> Client
+	const unsigned short TRADE_INCREMENTAL_UPDATE = 107;
 
-	const unsigned short TRADE_INCREMENTAL_UPDATE = 107;//Server >> Client
+	const unsigned short QUOTE_INCREMENTAL_UPDATE = 108;
 
-	const unsigned short QUOTE_INCREMENTAL_UPDATE = 108;//Server >> Client
+	const unsigned short MARKET_DEPTH_FULL_UPDATE_LARGE = 109;
 
-	const unsigned short MARKET_DEPTH_FULL_UPDATE_LARGE = 109;//Server >> Client
+	const unsigned short FUNDAMENTAL_DATA_RESPONSE = 110;
 
-	const unsigned short FUNDAMENTAL_DATA_RESPONSE = 110;//Server >> Client
+	const unsigned short TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH = 111;
 
-	const unsigned short TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH = 111;//Server >> Client
+	const unsigned short TRADE_INCREMENTAL_UPDATE_COMPACT = 112;
 
-	const unsigned short TRADE_INCREMENTAL_UPDATE_COMPACT = 112;//Server >> Client
+	const unsigned short DAILY_VOLUME_INCREMENTAL_UPDATE = 113;
 
-	const unsigned short DAILY_VOLUME_INCREMENTAL_UPDATE = 113;//Server >> Client
+	const unsigned short DAILY_HIGH_INCREMENTAL_UPDATE = 114;
 
-	const unsigned short DAILY_HIGH_INCREMENTAL_UPDATE = 114;//Server >> Client
+	const unsigned short DAILY_LOW_INCREMENTAL_UPDATE = 115;
 
-	const unsigned short DAILY_LOW_INCREMENTAL_UPDATE = 115;//Server >> Client
+	const unsigned short MARKET_DATA_FEED_SYMBOL_STATUS = 116;
 
-	const unsigned short SUBMIT_NEW_SINGLE_ORDER = 200;//Client >> Server
+	const unsigned short SUBMIT_NEW_SINGLE_ORDER = 200;
 
-	const unsigned short SUBMIT_NEW_OCO_ORDER = 201;//Client >> Server
+	const unsigned short SUBMIT_NEW_OCO_ORDER = 201;
 
-	const unsigned short CANCEL_REPLACE_ORDER =  202;//Client >> Server
+	const unsigned short CANCEL_REPLACE_ORDER = 202;
 
-	const unsigned short CANCEL_ORDER = 203;//Client >> Server
+	const unsigned short CANCEL_ORDER = 203;
 
-	const unsigned short CANCEL_REPLACE_ORDER_2 = 204;//Client >> Server
+	const unsigned short CANCEL_REPLACE_ORDER_2 = 204;
 
-	const unsigned short OPEN_ORDERS_REQUEST = 300;//Client >> Server
+	const unsigned short OPEN_ORDERS_REQUEST = 300;
 
-	const unsigned short ORDER_UPDATE_REPORT = 301;//Server >> Client
+	const unsigned short ORDER_UPDATE_REPORT = 301;
 
-	const unsigned short OPEN_ORDERS_REQUEST_REJECT = 302;//Server >> Client
+	const unsigned short OPEN_ORDERS_REQUEST_REJECT = 302;
 
-	const unsigned short REQUEST_HISTORICAL_ORDER_FILLS = 303;//Client >> Server
+	const unsigned short REQUEST_HISTORICAL_ORDER_FILLS = 303;
 
-	const unsigned short HISTORICAL_ORDER_FILL_REPORT = 304;//Server >> Client
+	const unsigned short HISTORICAL_ORDER_FILL_REPORT = 304;
 
-	const unsigned short CURRENT_POSITIONS_REQUEST = 305;//Client >> Server
+	const unsigned short CURRENT_POSITIONS_REQUEST = 305;
 
-	const unsigned short POSITION_REPORT = 306;//Server >> Client
+	const unsigned short POSITION_REPORT = 306;
 
-	const unsigned short CURRENT_POSITIONS_REQUEST_REJECT = 307;//Server >> Client
+	const unsigned short CURRENT_POSITIONS_REQUEST_REJECT = 307;
 
-	const unsigned short REQUEST_ACCOUNTS = 400;//Client >> Server
+	const unsigned short REQUEST_ACCOUNTS = 400;
 
-	const unsigned short ACCOUNTS_LIST_RESPONSE=401;//Server >> Client
+	const unsigned short ACCOUNTS_LIST_RESPONSE = 401;
 
-	const unsigned short EXCHANGE_LIST_REQUEST = 500;//Client >> Server
+	const unsigned short EXCHANGE_LIST_REQUEST = 500;
 
-	const unsigned short EXCHANGE_LIST_RESPONSE =  501;//Server >> Client
+	const unsigned short EXCHANGE_LIST_RESPONSE = 501;
 
-	const unsigned short SYMBOLS_FOR_EXCHANGE_REQUEST=502;//Client >> Server
+	const unsigned short SYMBOLS_FOR_EXCHANGE_REQUEST = 502;
 
-	const unsigned short UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST   =503;//Client >> Server
+	const unsigned short UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST = 503;
 
-	const unsigned short SYMBOLS_FOR_UNDERLYING_REQUEST = 504;//Client >> Server
+	const unsigned short SYMBOLS_FOR_UNDERLYING_REQUEST = 504;
 
-	//const unsigned short SYMBOL_RESPONSE =  505;//Server >> Client
+	//const unsigned short SYMBOL_RESPONSE = 505;
 
-	const unsigned short SECURITY_DEFINITION_FOR_SYMBOL_REQUEST = 506;//Client >> Server
+	const unsigned short SECURITY_DEFINITION_FOR_SYMBOL_REQUEST = 506;
 
-	const unsigned short SECURITY_DEFINITION_RESPONSE =  507;//Server >> Client
+	const unsigned short SECURITY_DEFINITION_RESPONSE = 507;
 
-	const unsigned short ACCOUNT_BALANCE_UPDATE = 600;//Server >> Client
+	const unsigned short ACCOUNT_BALANCE_UPDATE = 600;
 
-	const unsigned short USER_MESSAGE = 700;//Server >> Client
+	const unsigned short USER_MESSAGE = 700;
 
-	const unsigned short GENERAL_LOG_MESSAGE = 701;//Server >> Client
+	const unsigned short GENERAL_LOG_MESSAGE = 701;
 
-	const unsigned short HISTORICAL_PRICE_DATA_REQUEST= 800;//Client >> Server
+	const unsigned short HISTORICAL_PRICE_DATA_REQUEST= 800;
 
-	const unsigned short HISTORICAL_PRICE_DATA_HEADER_RESPONSE = 801;//Server >> Client
+	const unsigned short HISTORICAL_PRICE_DATA_HEADER_RESPONSE = 801;
 
-	const unsigned short HISTORICAL_PRICE_DATA_REJECT = 802; //Server >> Client
+	const unsigned short HISTORICAL_PRICE_DATA_REJECT = 802;
 
-	const unsigned short HISTORICAL_PRICE_DATA_RECORD_RESPONSE = 803;//Server >> Client
+	const unsigned short HISTORICAL_PRICE_DATA_RECORD_RESPONSE = 803;
 
-	const unsigned short HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE= 804; //Server >> Client
+	const unsigned short HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE = 804;
 
 	/*==========================================================================*/
-	//Nonstandard messages which are not considered part of the standard GSP but for specialized uses.  A standard GSP server and client do not need to implement these.
+	//Nonstandard messages which are not considered part of the standard specification.  A standard GSP server and client do not need to implement these.
 	//----------------------------------------------
 
 	const unsigned short CONFIGURATION_REQUEST_FROM_CLIENT = 10001; //Client >> Server
 
+	const unsigned short SERVER_READY_TO_RECEIVE =  10002;//Server  >> Client
 
 
 	/*==========================================================================*/
@@ -166,60 +169,31 @@ namespace GSP
 
 	/*==========================================================================*/
 	enum OrderStatusEnum : int
-	{ ORDER_STATUS_UNSPECIFIED = 0//The status of the order is unset
-	, ORDER_STATUS_ORDERSENT = 1  //When a Client sends an order to the Server, then the Client internally will set the status to Order Sent.  The Server will not set this Status.
-	, ORDER_STATUS_PENDINGOPEN = 2//This means the Server has accepted the order but it is not yet considered in a fully working state for any reason.
-
-	// This status applies to a Limit or Stop order attached to a parent order. It will have this status if the parent order has not yet filled.
+	{ ORDER_STATUS_UNSPECIFIED = 0
+	, ORDER_STATUS_ORDERSENT = 1
+	, ORDER_STATUS_PENDINGOPEN = 2
 	, ORDER_STATUS_PENDINGCHILD = 3
-
-	, ORDER_STATUS_OPEN = 4//Order is open and working.
-	, ORDER_STATUS_PENDING_CANCEL_REPLACE = 5//Order is pending a Cancel and Replace operation.
-	, ORDER_STATUS_PENDING_CANCEL = 6//Order is pending cancellation
-	, ORDER_STATUS_FILLED = 7//Order is filled and no longer working.
-	, ORDER_STATUS_CANCELED = 8//Order is canceled.  If the user tries to cancel an order that has already been canceled, then continue to return this Order Status for it.
-	, ORDER_STATUS_REJECTED = 9//Order has been rejected after the initial order submission. It is not working.
+	, ORDER_STATUS_OPEN = 4
+	, ORDER_STATUS_PENDING_CANCEL_REPLACE = 5
+	, ORDER_STATUS_PENDING_CANCEL = 6
+	, ORDER_STATUS_FILLED = 7
+	, ORDER_STATUS_CANCELED = 8
+	, ORDER_STATUS_REJECTED = 9
 	};
 
 	/*==========================================================================*/
 	enum ExecutionTypeEnum : int
 
-	// Always set the execution type.  This is not considered a valid execution type.
 	{ ET_UNSET = 0
-
-	// Set this when the order is sent based on a OPEN_ORDERS_REQUEST request
 	, ET_OPEN_ORDERS_REQUEST = 1
-
-	// When a new order has been accepted, this is the execution type
 	, ET_NEW_ORDER_ACCEPTED = 2
-
-	// A general order update.  For example, when an order is in the process of being canceled,  you can set the order status to indicate that the order is pending a cancellation. It is not mandatory to indicate the order is pending a cancellation.
 	, ET_ORDER_UPDATE = 3
-
-	// Upon a complete fill of the order, this is the execution type
 	, ET_FILLED = 4
-
-	// Upon a partial fill, this is the execution type
 	, ET_PARTIAL_FILL = 5
-
-	// The order cancellation is complete
 	, ET_CANCELED = 6
-
-	// The order cancel and replace operation is complete.
 	, ET_CANCEL_REPLACE_COMPLETE = 7
-
-	// After an order has been submitted and it has been rejected and is no longer working, send through an order report with this execution type
-	// In this case the Server needs to set the OrderStatus in the order report to ORDER_STATUS_REJECTED
 	, ET_NEW_ORDER_REJECT = 8
-
-	// A request to cancel the order has been rejected.  Be sure to set the current status of the order in the OrderStatus member of the ORDER_UPDATE_REPORT message 
-
-	// In the event where the given ServerOrderID in a CANCEL_ORDER message from the Client is not found, then respond with a ORDER_UPDATE_REPORT message and set the execution type to ET_ORDER_CANCEL_REJECT.  In this case, ServerOrderID does not need to be set in the ORDER_UPDATE_REPORT message.  However, you must set the ClientOrderID in the ORDER_UPDATE_REPORT message to the given ClientOrderID in the CANCEL_ORDER message.
 	, ET_ORDER_CANCEL_REJECT = 9
-
-	// A request to cancel/replace the order has been rejected.  Be sure to set the current status of the order in the OrderStatus member of the ORDER_UPDATE_REPORT message 
-
-	// In the event where the given ServerOrderID in a CANCEL_REPLACE_ORDER message from the Client is not found, then respond with a ORDER_UPDATE_REPORT message and set the execution type to ET_ORDER_CANCEL_REPLACE_REJECT.  In this case, ServerOrderID does not need to be set in the ORDER_UPDATE_REPORT message.  However, you must set the ClientOrderID in the ORDER_UPDATE_REPORT message to the given ClientOrderID in the CANCEL_REPLACE_ORDER message.
 	, ET_ORDER_CANCEL_REPLACE_REJECT = 10
 	};
 
@@ -403,9 +377,15 @@ namespace GSP
 
 		LogonStatusEnum Result;
 
-		char ErrorText[TEXT_DESCRIPTION_LENGTH];
+		char ResultText[TEXT_DESCRIPTION_LENGTH];
 
-		char LogonText[256];
+		char ReconnectAddress [64];
+
+		int Integer_1;
+
+		char ServerVersion[12]; 
+		char ServerName[24];
+		char ServiceProviderName[24];
 
 		unsigned char MarketDepthUpdatesBestBidAndAsk;
 
@@ -421,11 +401,9 @@ namespace GSP
 
 		unsigned char HistoricalPriceDataSupported;
 
-		char ReconnectAddress [64];
-
 		unsigned char ResubscribeWhenMarketDataFeedRestored;
 
-		int Integer_1;
+
 
 		s_LogonResponse()
 		{
@@ -441,10 +419,9 @@ namespace GSP
 		unsigned short GetMessageSize();
 		LogonStatusEnum GetResult();
 		void SetResult(LogonStatusEnum NewValue);
-		char * GetErrorText();
-		void SetErrorText(const char * NewValue);
-		char * GetLogonText();
-		void SetLogonText(const char * NewValue);
+		char * GetResultText();
+		void SetResultText(const char * NewValue);
+
 		unsigned char GetMarketDepthUpdatesBestBidAndAsk();
 		void SetMarketDepthUpdatesBestBidAndAsk(unsigned char NewValue);
 		unsigned char GetTradingIsSupported();
@@ -503,52 +480,6 @@ namespace GSP
 
 	};
 
-	/*==========================================================================*/
-	struct s_ServerReadyToReceive
-	{
-		unsigned short Size;
-		unsigned short Type;
-
-		char ServerName[25];
-		char ServerVersion[25]; 
-		char ServiceProviderName[25];
-
-		int ProtocolVersion;
-
-		s_ServerReadyToReceive()
-		{			
-			memset(this, 0,sizeof(s_ServerReadyToReceive));
-			Type=SERVER_READY_TO_RECEIVE;
-			Size=sizeof(s_ServerReadyToReceive);
-			ProtocolVersion=  CURRENT_VERSION;
-		}
-		
-		int GetProtocolVersion();
-
-		unsigned short GetMessageSize();
-		char * GetServerName();
-		void SetServerName(const char * NewValue);
-		char * GetServerVersion();
-		void SetServerVersion(const char * NewValue);
-		char * GetServiceProviderName();
-		void SetServiceProviderName(const char * NewValue);
-	};
-
-	/*==========================================================================*/
-	struct s_ConfigurationRequestFromClient
-	{
-		unsigned short Size;
-		unsigned short Type;
-
-		s_ConfigurationRequestFromClient()
-		{
-			memset(this, 0,sizeof(s_ConfigurationRequestFromClient));
-			Type=CONFIGURATION_REQUEST_FROM_CLIENT;
-			Size=sizeof(s_ConfigurationRequestFromClient);
-		}
-		
-		unsigned short GetMessageSize();
-	};
 
 	/*==========================================================================*/
 	struct s_MarketDataFeedStatus
@@ -570,6 +501,23 @@ namespace GSP
 
 	};
 
+	/*==========================================================================*/
+	struct s_MarketDataFeedSymbolStatus
+	{
+		unsigned short Size;
+		unsigned short Type;
+		unsigned short MarketDataSymbolID;
+		MarketDataFeedStatusEnum Status;
+
+		s_MarketDataFeedSymbolStatus()
+		{
+			memset(this, 0,sizeof(s_MarketDataFeedSymbolStatus));
+			Type=MARKET_DATA_FEED_SYMBOL_STATUS;
+			Size=sizeof(s_MarketDataFeedSymbolStatus);
+		}
+
+	};
+	
 	/*==========================================================================*/
 	struct s_MarketDataRequest
 	{
@@ -766,6 +714,23 @@ namespace GSP
 			DisplayFormat = DISPLAY_FORMAT_UNSET;
 		}
 
+
+		unsigned short GetMessageSize();
+		unsigned short GetMarketDataSymbolID();
+		void SetMarketDataSymbolID(unsigned short NewValue);
+		char * GetSymbolDescription();
+		void SetSymbolDescription(const char * NewValue);
+		float GetTickSize();
+		void SetTickSize(float NewValue);
+		float GetTickCurrencyValue();
+		void SetTickCurrencyValue(float NewValue);
+		DisplayFormatEnum GetDisplayFormat();
+		void SetDisplayFormat(DisplayFormatEnum NewValue);
+		float GetBuyRolloverInterest();
+		void SetBuyRolloverInterest(float NewValue);
+		float GetSellRolloverInterest();
+		void SetSellRolloverInterest(float NewValue);
+
 		void SetDisplayFormatFromTickSize();
 
 	};
@@ -799,12 +764,9 @@ namespace GSP
 			memset(this, 0,sizeof(s_TradeIncrementalUpdateWithFullDepth));
 			Type=TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH;
 			Size=sizeof(s_TradeIncrementalUpdateWithFullDepth);
+		}
 
-		}
-		double GetPrice()
-		{
-			return Price;
-		}
+
 	};
 
 	/*==========================================================================*/
@@ -831,6 +793,10 @@ namespace GSP
 			Size=sizeof(s_MarketDepthFullUpdate);
 
 		}
+	
+		unsigned short GetMessageSize();
+		unsigned short GetMarketDataSymbolID();
+		void SetMarketDataSymbolID(unsigned short NewValue);
 	};
 
 	/*==========================================================================*/
@@ -1879,6 +1845,55 @@ namespace GSP
 			Size=sizeof(s_HistoricalPriceDataTickRecordResponse);
 		}
 
+	};
+
+
+	/*==========================================================================*/
+	struct s_ConfigurationRequestFromClient
+	{
+		unsigned short Size;
+		unsigned short Type;
+
+		s_ConfigurationRequestFromClient()
+		{
+			memset(this, 0,sizeof(s_ConfigurationRequestFromClient));
+			Type=CONFIGURATION_REQUEST_FROM_CLIENT;
+			Size=sizeof(s_ConfigurationRequestFromClient);
+		}
+
+		unsigned short GetMessageSize();
+	};
+
+
+	/*==========================================================================*/
+	struct s_ServerReadyToReceive
+	{
+		unsigned short Size;
+		unsigned short Type;
+
+		char ServerName[25];
+		char ServerVersion[25]; 
+		char ServiceProviderName[25];
+
+		int ProtocolVersion;
+
+		s_ServerReadyToReceive()
+		{			
+			memset(this, 0,sizeof(s_ServerReadyToReceive));
+			Type=SERVER_READY_TO_RECEIVE;
+			Size=sizeof(s_ServerReadyToReceive);
+			ProtocolVersion=  CURRENT_VERSION;
+		}
+
+		int GetProtocolVersion();
+
+		unsigned short GetMessageSize();
+		char * GetServerName();
+		void SetServerName(const char * NewValue);
+		char * GetServerVersion();
+		void SetServerVersion(const char * NewValue);
+		char * GetServiceProviderName();
+		void SetServiceProviderName(const char * NewValue);
 	};
 
 #pragma pack()
