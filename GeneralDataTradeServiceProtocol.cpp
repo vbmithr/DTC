@@ -179,29 +179,16 @@ void GSP::s_LogonResponse::SetResult(LogonStatusEnum NewValue)
 }
 
 /*==========================================================================*/
-char * GSP::s_LogonResponse::GetErrorText()
+char * GSP::s_LogonResponse::GetResultText()
 {
-	ErrorText[sizeof(ErrorText) - 1 ] = '\0';
-	return ErrorText;
+	ResultText[sizeof(ResultText) - 1 ] = '\0';
+	return ResultText;
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetErrorText(const char * NewValue)
+void GSP::s_LogonResponse::SetResultText(const char * NewValue)
 {
-	strncpy(ErrorText, NewValue, sizeof(ErrorText) - 1);
-}
-
-/*==========================================================================*/
-char * GSP::s_LogonResponse::GetLogonText()
-{
-	LogonText[sizeof(LogonText) - 1 ] = '\0';
-	return LogonText;
-}
-
-/*==========================================================================*/
-void GSP::s_LogonResponse::SetLogonText(const char * NewValue)
-{
-	strncpy(LogonText, NewValue, sizeof(LogonText) - 1);
+	strncpy(ResultText, NewValue, sizeof(ResultText) - 1);
 }
 
 /*==========================================================================*/
@@ -574,6 +561,218 @@ void GSP::s_MarketDataSnapshot::SetToUnsetValues()
 	LastTradePrice = DBL_MAX;
 	LastTradeSize = UINT_MAX;
 }
+
+/*==========================================================================*/
+unsigned short GSP::s_MarketDataSnapshot::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_MarketDataSnapshot::GetMarketDataSymbolID()
+{
+	return MarketDataSymbolID;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetMarketDataSymbolID(unsigned short NewValue)
+{
+	MarketDataSymbolID = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetDailyOpen()
+{
+	return DailyOpen;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetDailyOpen(double NewValue)
+{
+	DailyOpen = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetDailyHigh()
+{
+	return DailyHigh;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetDailyHigh(double NewValue)
+{
+	DailyHigh = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetDailyLow()
+{
+	return DailyLow;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetDailyLow(double NewValue)
+{
+	DailyLow = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetDailyVolume()
+{
+	return DailyVolume;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetDailyVolume(double NewValue)
+{
+	DailyVolume = NewValue;
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_MarketDataSnapshot::GetDailyNumberOfTrades()
+{
+	return DailyNumberOfTrades;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetDailyNumberOfTrades(unsigned int NewValue)
+{
+	DailyNumberOfTrades = NewValue;
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_MarketDataSnapshot::GetSharesOutstanding()
+{
+	return SharesOutstanding;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetSharesOutstanding(unsigned int NewValue)
+{
+	SharesOutstanding = NewValue;
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_MarketDataSnapshot::GetOpenInterest()
+{
+	return OpenInterest;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetOpenInterest(unsigned int NewValue)
+{
+	OpenInterest = NewValue;
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_MarketDataSnapshot::GetUnitsOutstanding()
+{
+	return UnitsOutstanding;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetUnitsOutstanding(unsigned int NewValue)
+{
+	UnitsOutstanding = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetBid()
+{
+	return Bid;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetBid(double NewValue)
+{
+	Bid = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetAsk()
+{
+	return Ask;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetAsk(double NewValue)
+{
+	Ask = NewValue;
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_MarketDataSnapshot::GetAskSize()
+{
+	return AskSize;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetAskSize(unsigned int NewValue)
+{
+	AskSize = NewValue;
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_MarketDataSnapshot::GetBidSize()
+{
+	return BidSize;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetBidSize(unsigned int NewValue)
+{
+	BidSize = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetLastTradePrice()
+{
+	return LastTradePrice;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetLastTradePrice(double NewValue)
+{
+	LastTradePrice = NewValue;
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_MarketDataSnapshot::GetLastTradeSize()
+{
+	return LastTradeSize;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetLastTradeSize(unsigned int NewValue)
+{
+	LastTradeSize = NewValue;
+}
+
+/*==========================================================================*/
+GSP::t_DateTime GSP::s_MarketDataSnapshot::GetLastTradeDateTimeUnix()
+{
+	return LastTradeDateTimeUnix;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetLastTradeDateTimeUnix(GSP::t_DateTime NewValue)
+{
+	LastTradeDateTimeUnix = NewValue;
+}
+
+/*==========================================================================*/
+short GSP::s_MarketDataSnapshot::GetLastTradeMilliseconds()
+{
+	return LastTradeMilliseconds;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetLastTradeMilliseconds(short NewValue)
+{
+	LastTradeMilliseconds = NewValue;
+}
+
+
 /*==========================================================================*/
 void GSP::s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
 {
@@ -626,8 +825,117 @@ void GSP::s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
 	else
 		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_0;
 }
+
+/*==========================================================================*/
+unsigned short GSP::s_FundamentalDataResponse::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_FundamentalDataResponse::GetMarketDataSymbolID()
+{
+	return MarketDataSymbolID;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetMarketDataSymbolID(unsigned short NewValue)
+{
+	MarketDataSymbolID = NewValue;
+}
+
 /*==========================================================================*/
 
+char * GSP::s_FundamentalDataResponse::GetSymbolDescription()
+{
+	SymbolDescription[sizeof(SymbolDescription) - 1 ] = '\0';
+	return SymbolDescription;
+}
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetSymbolDescription(const char * NewValue)
+{
+	strncpy(SymbolDescription, NewValue, sizeof(SymbolDescription) - 1);
+}
+
+/*==========================================================================*/
+float GSP::s_FundamentalDataResponse::GetTickSize()
+{
+	return TickSize;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetTickSize(float NewValue)
+{
+	TickSize = NewValue;
+}
+
+/*==========================================================================*/
+float GSP::s_FundamentalDataResponse::GetTickCurrencyValue()
+{
+	return TickCurrencyValue;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetTickCurrencyValue(float NewValue)
+{
+	TickCurrencyValue = NewValue;
+}
+
+/*==========================================================================*/
+GSP::DisplayFormatEnum GSP::s_FundamentalDataResponse::GetDisplayFormat()
+{
+	return DisplayFormat;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetDisplayFormat(GSP::DisplayFormatEnum NewValue)
+{
+	DisplayFormat = NewValue;
+}
+
+/*==========================================================================*/
+float GSP::s_FundamentalDataResponse::GetBuyRolloverInterest()
+{
+	return BuyRolloverInterest;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetBuyRolloverInterest(float NewValue)
+{
+	BuyRolloverInterest = NewValue;
+}
+
+/*==========================================================================*/
+float GSP::s_FundamentalDataResponse::GetSellRolloverInterest()
+{
+	return SellRolloverInterest;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetSellRolloverInterest(float NewValue)
+{
+	SellRolloverInterest = NewValue;
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_MarketDepthFullUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_MarketDepthFullUpdate::GetMarketDataSymbolID()
+{
+	return MarketDataSymbolID;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDepthFullUpdate::SetMarketDataSymbolID(unsigned short NewValue)
+{
+	MarketDataSymbolID = NewValue;
+}
+
+/*==========================================================================*/
 char * GSP::s_OrderUpdateReport::GetSymbol()
 {
 	Symbol[sizeof(Symbol) - 1 ] = '\0';
