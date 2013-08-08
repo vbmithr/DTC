@@ -16,23 +16,23 @@
 #endif
 
 /*==========================================================================*/
-int GSP::s_LogonRequest::GetProtocolVersion()
-{
-	return ProtocolVersion;
-}
-
-
-/*==========================================================================*/
 //Will get the size of the message received over the network
 unsigned short GSP::s_LogonRequest::GetMessageSize()
 {
 	return Size;
 }
+
 /*==========================================================================*/
 //Performs a safe copy of data into this structure instance from the given data pointer
 void GSP::s_LogonRequest::CopyFrom(void * p_SourceData)
 {
-	memcpy( this, p_SourceData, min(sizeof(GSP::s_LogonResponse), Size) );
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_LogonRequest), Size) );
+}
+
+/*==========================================================================*/
+int GSP::s_LogonRequest::GetProtocolVersion()
+{
+	return ProtocolVersion;
 }
 
 /*==========================================================================*/
@@ -153,17 +153,35 @@ void GSP::s_LogonRequest::SetHardwareIdentifier(const char * NewValue)
 	strncpy(HardwareIdentifier, NewValue, sizeof(HardwareIdentifier) - 1);
 }
 
+/*==========================================================================*/
+char * GSP::s_LogonRequest::GetClientName()
+{
+	ClientName[sizeof(ClientName) - 1 ] = '\0';
+	return ClientName;
+}
 
 /*==========================================================================*/
-int GSP::s_LogonResponse::GetProtocolVersion()
+void GSP::s_LogonRequest::SetClientName(const char * NewValue)
 {
-	return ProtocolVersion;
+	strncpy(ClientName, NewValue, sizeof(ClientName) - 1);
 }
 
 /*==========================================================================*/
 unsigned short GSP::s_LogonResponse::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_LogonResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_LogonResponse), Size) );
+}
+
+/*==========================================================================*/
+int GSP::s_LogonResponse::GetProtocolVersion()
+{
+	return ProtocolVersion;
 }
 
 /*==========================================================================*/
@@ -189,6 +207,70 @@ char * GSP::s_LogonResponse::GetResultText()
 void GSP::s_LogonResponse::SetResultText(const char * NewValue)
 {
 	strncpy(ResultText, NewValue, sizeof(ResultText) - 1);
+}
+
+/*==========================================================================*/
+char * GSP::s_LogonResponse::GetReconnectAddress()
+{
+	ReconnectAddress[sizeof(ReconnectAddress) - 1 ] = '\0';
+	return ReconnectAddress;
+}
+
+/*==========================================================================*/
+void GSP::s_LogonResponse::SetReconnectAddress(const char * NewValue)
+{
+	strncpy(ReconnectAddress, NewValue, sizeof(ReconnectAddress) - 1);
+}
+
+/*==========================================================================*/
+int GSP::s_LogonResponse::GetInteger_1()
+{
+	return Integer_1;
+}
+
+/*==========================================================================*/
+void GSP::s_LogonResponse::SetInteger_1(int NewValue)
+{
+	Integer_1 = NewValue;
+}
+
+/*==========================================================================*/
+char * GSP::s_LogonResponse::GetServerVersion()
+{
+	ServerVersion[sizeof(ServerVersion) - 1 ] = '\0';
+	return ServerVersion;
+}
+
+/*==========================================================================*/
+void GSP::s_LogonResponse::SetServerVersion(const char * NewValue)
+{
+	strncpy(ServerVersion, NewValue, sizeof(ServerVersion) - 1);
+}
+
+/*==========================================================================*/
+char * GSP::s_LogonResponse::GetServerName()
+{
+	ServerName[sizeof(ServerName) - 1 ] = '\0';
+	return ServerName;
+}
+
+/*==========================================================================*/
+void GSP::s_LogonResponse::SetServerName(const char * NewValue)
+{
+	strncpy(ServerName, NewValue, sizeof(ServerName) - 1);
+}
+
+/*==========================================================================*/
+char * GSP::s_LogonResponse::GetServiceProviderName()
+{
+	ServiceProviderName[sizeof(ServiceProviderName) - 1 ] = '\0';
+	return ServiceProviderName;
+}
+
+/*==========================================================================*/
+void GSP::s_LogonResponse::SetServiceProviderName(const char * NewValue)
+{
+	strncpy(ServiceProviderName, NewValue, sizeof(ServiceProviderName) - 1);
 }
 
 /*==========================================================================*/
@@ -277,16 +359,15 @@ void GSP::s_LogonResponse::SetHistoricalPriceDataSupported(unsigned char NewValu
 }
 
 /*==========================================================================*/
-char * GSP::s_LogonResponse::GetReconnectAddress()
+unsigned char GSP::s_LogonResponse::GetResubscribeWhenMarketDataFeedRestored()
 {
-	ReconnectAddress[sizeof(ReconnectAddress) - 1 ] = '\0';
-	return ReconnectAddress;
+	return ResubscribeWhenMarketDataFeedRestored;
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetReconnectAddress(const char * NewValue)
+void GSP::s_LogonResponse::SetResubscribeWhenMarketDataFeedRestored(unsigned char NewValue)
 {
-	strncpy(ReconnectAddress, NewValue, sizeof(ReconnectAddress) - 1);
+	ResubscribeWhenMarketDataFeedRestored  = NewValue;
 }
 
 /*==========================================================================*/
@@ -296,9 +377,33 @@ unsigned short GSP::s_Heartbeat::GetMessageSize()
 }
 
 /*==========================================================================*/
+void GSP::s_Heartbeat::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_Heartbeat), Size) );
+}
+
+/*==========================================================================*/
+unsigned int GSP::s_Heartbeat::GetDroppedMessages()
+{
+	return DroppedMessages;
+}
+
+/*==========================================================================*/
+void GSP::s_Heartbeat::SetDroppedMessages(unsigned int NewValue)
+{
+	DroppedMessages = NewValue;
+}
+
+/*==========================================================================*/
 unsigned short GSP::s_DisconnectFromServer::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_DisconnectFromServer::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_DisconnectFromServer), Size) );
 }
 
 /*==========================================================================*/
@@ -318,66 +423,15 @@ void GSP::s_DisconnectFromServer::SetDisconnectReason(const char * NewValue)
 }
 
 /*==========================================================================*/
-int GSP::s_ServerReadyToReceive::GetProtocolVersion()
-{
-	return ProtocolVersion;
-}
-
-/*==========================================================================*/
-unsigned short GSP::s_ServerReadyToReceive::GetMessageSize()
-{
-	return Size;
-}
-
-/*==========================================================================*/
-char * GSP::s_ServerReadyToReceive::GetServerName()
-{
-	ServerName[sizeof(ServerName) - 1 ] = '\0';
-	return ServerName;
-}
-
-/*==========================================================================*/
-void GSP::s_ServerReadyToReceive::SetServerName(const char * NewValue)
-{
-	strncpy(ServerName, NewValue, sizeof(ServerName) - 1);
-}
-
-/*==========================================================================*/
-char * GSP::s_ServerReadyToReceive::GetServerVersion()
-{
-	ServerVersion[sizeof(ServerVersion) - 1 ] = '\0';
-	return ServerVersion;
-}
-
-/*==========================================================================*/
-void GSP::s_ServerReadyToReceive::SetServerVersion(const char * NewValue)
-{
-	strncpy(ServerVersion, NewValue, sizeof(ServerVersion) - 1);
-}
-
-/*==========================================================================*/
-char * GSP::s_ServerReadyToReceive::GetServiceProviderName()
-{
-	ServiceProviderName[sizeof(ServiceProviderName) - 1 ] = '\0';
-	return ServiceProviderName;
-}
-
-/*==========================================================================*/
-void GSP::s_ServerReadyToReceive::SetServiceProviderName(const char * NewValue)
-{
-	strncpy(ServiceProviderName, NewValue, sizeof(ServiceProviderName) - 1);
-}
-
-/*==========================================================================*/
-unsigned short GSP::s_ConfigurationRequestFromClient::GetMessageSize()
-{
-	return Size;
-}
-
-/*==========================================================================*/
 unsigned short GSP::s_MarketDataFeedStatus::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataFeedStatus::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDataFeedStatus), Size) );
 }
 
 /*==========================================================================*/
@@ -387,7 +441,43 @@ GSP::MarketDataFeedStatusEnum GSP::s_MarketDataFeedStatus::GetStatus()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataFeedStatus::SetStatus(GSP::MarketDataFeedStatusEnum NewValue)
+void GSP::s_MarketDataFeedStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
+{
+	Status = NewValue;
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_MarketDataFeedSymbolStatus::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataFeedSymbolStatus::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDataFeedSymbolStatus), Size) );	
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_MarketDataFeedSymbolStatus::GetMarketDataSymbolID()
+{
+	return MarketDataSymbolID;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataFeedSymbolStatus::SetMarketDataSymbolID(unsigned short NewValue)
+{
+	MarketDataSymbolID = NewValue;
+}
+
+/*==========================================================================*/
+GSP::MarketDataFeedStatusEnum GSP::s_MarketDataFeedSymbolStatus::GetStatus()
+{
+	return Status;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataFeedSymbolStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
 {
 	Status = NewValue;
 }
@@ -396,6 +486,12 @@ void GSP::s_MarketDataFeedStatus::SetStatus(GSP::MarketDataFeedStatusEnum NewVal
 unsigned short GSP::s_MarketDataRequest::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDataRequest), Size) );
 }
 
 /*==========================================================================*/
@@ -452,6 +548,12 @@ void GSP::s_MarketDataRequest::SetExchange(const char * NewValue)
 unsigned short GSP::s_MarketDepthRequest::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDepthRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDepthRequest), Size) );
 }
 
 /*==========================================================================*/
@@ -517,6 +619,18 @@ void GSP::s_MarketDepthRequest::SetNumberOfLevels(int NewValue)
 }
 
 /*==========================================================================*/
+unsigned short GSP::s_MarketDataReject::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataReject::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDataReject), Size) );
+}
+
+/*==========================================================================*/
 unsigned short GSP::s_MarketDataReject::GetMarketDataSymbolID()
 {
 	return MarketDataSymbolID;
@@ -542,30 +656,15 @@ void GSP::s_MarketDataReject::SetRejectText(const char * NewValue)
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetToUnsetValues()
-{
-	SettlementPrice = DBL_MAX;
-	DailyOpen = DBL_MAX;
-	DailyHigh = DBL_MAX;
-	DailyLow = DBL_MAX;
-	DailyVolume = DBL_MAX;
-	DailyNumberOfTrades = UINT_MAX;
-
-	SharesOutstanding = UINT_MAX;
-
-	Bid = DBL_MAX;
-	Ask = DBL_MAX;
-	AskSize = UINT_MAX;
-	BidSize = UINT_MAX;
-
-	LastTradePrice = DBL_MAX;
-	LastTradeSize = UINT_MAX;
-}
-
-/*==========================================================================*/
 unsigned short GSP::s_MarketDataSnapshot::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDataSnapshot), Size) );
 }
 
 /*==========================================================================*/
@@ -578,6 +677,18 @@ unsigned short GSP::s_MarketDataSnapshot::GetMarketDataSymbolID()
 void GSP::s_MarketDataSnapshot::SetMarketDataSymbolID(unsigned short NewValue)
 {
 	MarketDataSymbolID = NewValue;
+}
+
+/*==========================================================================*/
+double GSP::s_MarketDataSnapshot::GetSettlementPrice()
+{
+	return SettlementPrice;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDataSnapshot::SetSettlementPrice(double NewValue)
+{
+	SettlementPrice = NewValue;
 }
 
 /*==========================================================================*/
@@ -772,64 +883,37 @@ void GSP::s_MarketDataSnapshot::SetLastTradeMilliseconds(short NewValue)
 	LastTradeMilliseconds = NewValue;
 }
 
-
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
+void GSP::s_MarketDataSnapshot::SetToUnsetValues()
 {
-	if (TickSize== 0.0)
-	{
-		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
-		return;
-	}
+	SettlementPrice = DBL_MAX;
+	DailyOpen = DBL_MAX;
+	DailyHigh = DBL_MAX;
+	DailyLow = DBL_MAX;
+	DailyVolume = DBL_MAX;
+	DailyNumberOfTrades = UINT_MAX;
 
+	SharesOutstanding = UINT_MAX;
 
-	if (TickSize < 0.00001)
-		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_6;
-	else if (TickSize < 0.0001)
-		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_5;
-	else if (TickSize < 0.001)
-		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_4;
-	else if (TickSize > 0.00249  && TickSize < 0.00251)
-	{
-		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_4;
-	}
-	else if (TickSize < 0.00999)
-	{
-		if (TickSize > 0.00390620  && TickSize < 0.00390630)  //== 0.00390625)
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_256;
-		else if (TickSize > 0.0078120 && TickSize < 0.0078130)  //.25/32 =0.0078125
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32_QUARTERS;
-		else
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
-	}
-	else if (TickSize < 0.1)
-	{
-		if (TickSize > .0249 &&  TickSize < .0251)
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
-		else if (TickSize > 0.015620 && TickSize < 0.015630)  // .5/32 =0.015625
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32_HALVES;
-		else if (TickSize > 0.03120 && TickSize < 0.03130)  //1/32 = 0.03125 
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32;
-		else if (TickSize > 0.0620 && TickSize < 0.0630)  //== 0.0625)
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_16;
-		else
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_2;
-	}
-	else if (TickSize < 1)
-	{
-		if (TickSize > 0.120 && TickSize < 0.130)  //== 0.125)
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_8;
-		else
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_1;
-	}
-	else
-		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_0;
+	Bid = DBL_MAX;
+	Ask = DBL_MAX;
+	AskSize = UINT_MAX;
+	BidSize = UINT_MAX;
+
+	LastTradePrice = DBL_MAX;
+	LastTradeSize = UINT_MAX;
 }
 
 /*==========================================================================*/
 unsigned short GSP::s_FundamentalDataResponse::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_FundamentalDataResponse), Size) );
 }
 
 /*==========================================================================*/
@@ -845,12 +929,12 @@ void GSP::s_FundamentalDataResponse::SetMarketDataSymbolID(unsigned short NewVal
 }
 
 /*==========================================================================*/
-
 char * GSP::s_FundamentalDataResponse::GetSymbolDescription()
 {
 	SymbolDescription[sizeof(SymbolDescription) - 1 ] = '\0';
 	return SymbolDescription;
 }
+
 /*==========================================================================*/
 void GSP::s_FundamentalDataResponse::SetSymbolDescription(const char * NewValue)
 {
@@ -918,9 +1002,93 @@ void GSP::s_FundamentalDataResponse::SetSellRolloverInterest(float NewValue)
 }
 
 /*==========================================================================*/
+float GSP::s_FundamentalDataResponse::GetOrderPriceMultiplier()
+{
+	return OrderPriceMultiplier;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetOrderPriceMultiplier(float NewValue)
+{
+	OrderPriceMultiplier = NewValue;
+}
+
+/*==========================================================================*/
+void GSP::s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
+{
+	if (TickSize== 0.0 && DisplayFormat == GSP:: DISPLAY_FORMAT_UNSET)
+	{
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
+		return;
+	}
+
+
+	if (TickSize < 0.00000995)
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_6;
+	else if (TickSize < 0.0000995)
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_5;
+	else if (TickSize < 0.000995)
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_4;
+	else if (TickSize > 0.00249  && TickSize < 0.00251)
+	{
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_4;
+	}
+	else if (TickSize < 0.00995)
+	{
+		if (TickSize > 0.00390620  && TickSize < 0.00390630)  //== 0.00390625)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_256;
+		else if (TickSize > 0.0078120 && TickSize < 0.0078130)  //.25/32 =0.0078125
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32_QUARTERS;
+		else
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
+	}
+	else if (TickSize < 0.0995)
+	{
+		if (TickSize > .0249 &&  TickSize < .0251)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_3;
+		else if (TickSize > 0.015620 && TickSize < 0.015630)  // .5/32 =0.015625
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32_HALVES;
+		else if (TickSize > 0.03120 && TickSize < 0.03130)  //1/32 = 0.03125 
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_32;
+		else if (TickSize > 0.0620 && TickSize < 0.0630)  //== 0.0625)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_16;
+		else
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_2;
+	}
+	else if (TickSize < .995)
+	{
+		if (TickSize > 0.120 && TickSize < 0.130)  //== 0.125)
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DENOMINATOR_8;
+		else
+			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_1;
+	}
+	else
+		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_0;
+}
+
+
+/*==========================================================================*/
+unsigned short GSP::s_TradeIncrementalUpdateWithFullDepth::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_TradeIncrementalUpdateWithFullDepth::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_TradeIncrementalUpdateWithFullDepth), Size) );
+}
+
+/*==========================================================================*/
 unsigned short GSP::s_MarketDepthFullUpdate::GetMessageSize()
 {
 	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDepthFullUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDepthFullUpdate), Size) );
 }
 
 /*==========================================================================*/
@@ -936,123 +1104,658 @@ void GSP::s_MarketDepthFullUpdate::SetMarketDataSymbolID(unsigned short NewValue
 }
 
 /*==========================================================================*/
+unsigned short GSP::s_MarketDepthFullUpdateLarge::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDepthFullUpdateLarge::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDepthFullUpdateLarge), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_MarketDepthIncrementalUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_MarketDepthIncrementalUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_MarketDepthIncrementalUpdate), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_TradeIncrementalUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_TradeIncrementalUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_TradeIncrementalUpdate), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_QuoteIncrementalUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_QuoteIncrementalUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_QuoteIncrementalUpdate), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_TradeIncrementalUpdateCompact::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_TradeIncrementalUpdateCompact::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_TradeIncrementalUpdateCompact), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_DailyVolumeIncrementalUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_DailyVolumeIncrementalUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_DailyVolumeIncrementalUpdate), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_DailyHighIncrementalUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_DailyHighIncrementalUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_DailyHighIncrementalUpdate), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_DailyLowIncrementalUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_DailyLowIncrementalUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_DailyLowIncrementalUpdate), Size) );
+}
+
+/*==========================================================================*/
 char * GSP::s_OrderUpdateReport::GetSymbol()
 {
 	Symbol[sizeof(Symbol) - 1 ] = '\0';
 	return Symbol;
 }
+
+/*==========================================================================*/
+unsigned short GSP::s_SubmitNewSingleOrder::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_SubmitNewSingleOrder::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_SubmitNewSingleOrder), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_CancelReplaceOrder::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_CancelReplaceOrder::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_CancelReplaceOrder), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_CancelReplaceOrder2::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_CancelReplaceOrder2::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_CancelReplaceOrder2), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_CancelOrder::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_CancelOrder::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_CancelOrder), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_SubmitNewOCOOrder::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_SubmitNewOCOOrder::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_SubmitNewOCOOrder), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_OpenOrdersRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_OpenOrdersRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_OpenOrdersRequest), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_RequestHistoricalOrderFills::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_RequestHistoricalOrderFills::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_RequestHistoricalOrderFills), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_CurrentPositionsRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_CurrentPositionsRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_CurrentPositionsRequest), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_CurrentPositionsRequestReject::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_CurrentPositionsRequestReject::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_CurrentPositionsRequestReject), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_OrderUpdateReport::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_OrderUpdateReport::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_OrderUpdateReport), Size) );
+}
+
 /*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetSymbol(const char * NewValue)
 {
 	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 char * GSP::s_OrderUpdateReport::GetExchange()
 {
 	Exchange[sizeof(Exchange) - 1 ] = '\0';
 	return Exchange;
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetExchange(const char * NewValue)
 {
 	strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 }
 /*==========================================================================*/
-
 char * GSP::s_OrderUpdateReport::GetPreviousServerOrderID()
 {
 	PreviousServerOrderID[sizeof(PreviousServerOrderID) - 1 ] = '\0';
 	return PreviousServerOrderID;
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetPreviousServerOrderID(const char * NewValue)
 {
 	strncpy(PreviousServerOrderID, NewValue, sizeof(PreviousServerOrderID) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 char * GSP::s_OrderUpdateReport::GetServerOrderID()
 {
 	ServerOrderID[sizeof(ServerOrderID) - 1 ] = '\0';
 	return ServerOrderID;
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetServerOrderID(const char * NewValue)
 {
 	strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 char * GSP::s_OrderUpdateReport::GetClientOrderID()
 {
 	ClientOrderID[sizeof(ClientOrderID) - 1 ] = '\0';
 	return ClientOrderID;
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetClientOrderID(const char * NewValue)
 {
 	strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 char * GSP::s_OrderUpdateReport::GetExchangeOrderID()
 {
 	ExchangeOrderID[sizeof(ExchangeOrderID) - 1 ] = '\0';
 	return ExchangeOrderID;
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetExchangeOrderID(const char * NewValue)
 {
 	strncpy(ExchangeOrderID, NewValue, sizeof(ExchangeOrderID) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetUniqueFillExecutionID(const char * NewValue)
 {
 	strncpy(UniqueFillExecutionID, NewValue, sizeof(UniqueFillExecutionID) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetTradeAccount(const char * NewValue)
 {
 	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_OrderUpdateReport::SetInfoText(const char * NewValue)
 {
 	strncpy(InfoText, NewValue, sizeof(InfoText) - 1);
 }
+
 /*==========================================================================*/
+unsigned short GSP::s_OpenOrdersRequestReject::GetMessageSize()
+{
+	return Size;
+}
 
+/*==========================================================================*/
+void GSP::s_OpenOrdersRequestReject::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_OpenOrdersRequestReject), Size) );
+}
 
+/*==========================================================================*/
+unsigned short GSP::s_HistoricalOrderFillReport::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_HistoricalOrderFillReport::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_HistoricalOrderFillReport), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_PositionReport::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_PositionReport::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_PositionReport), Size) );
+}
+
+/*==========================================================================*/
 void GSP::s_PositionReport::SetSymbol(const char * NewValue)
 {
 	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 }
+
 /*==========================================================================*/
-
-
 void GSP::s_PositionReport::SetTradeAccount(const char * NewValue)
 {
 	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
+unsigned short GSP::s_RequestAccounts::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_RequestAccounts::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_RequestAccounts), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_AccountsListResponse::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_AccountsListResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_AccountsListResponse), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_ExchangeListRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_ExchangeListRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_ExchangeListRequest), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_ExchangeListResponse::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_ExchangeListResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_ExchangeListResponse), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_SymbolsForExchangeRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_SymbolsForExchangeRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_SymbolsForExchangeRequest), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_UnderlyingSymbolsForExchangeRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_UnderlyingSymbolsForExchangeRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_UnderlyingSymbolsForExchangeRequest), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_SymbolsForUnderlyingRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_SymbolsForUnderlyingRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_SymbolsForUnderlyingRequest), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_SecurityDefinitionForSymbolRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_SecurityDefinitionForSymbolRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_SecurityDefinitionForSymbolRequest), Size) );
+}
+
+/*==========================================================================
+unsigned short GSP::s_SymbolResponse::GetMessageSize()
+{
+	return Size;
+}
+
+void GSP::s_SymbolResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_SymbolResponse), Size) );
+}
+
+==========================================================================*/
+unsigned short GSP::s_SecurityDefinitionResponse::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_SecurityDefinitionResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_SecurityDefinitionResponse), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_AccountBalanceUpdate::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_AccountBalanceUpdate::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_AccountBalanceUpdate), Size) );
+}
+
+/*==========================================================================*/
 void GSP::s_AccountBalanceUpdate::SetAccountCurrency(const char * NewValue)
 {
 	strncpy(AccountCurrency, NewValue, sizeof(AccountCurrency) - 1);
 }
-/*==========================================================================*/
 
+/*==========================================================================*/
 void GSP::s_AccountBalanceUpdate::SetTradeAccount(const char * NewValue)
 {
 	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 }
+
+/*==========================================================================*/
+unsigned short GSP::s_UserMessage::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_UserMessage::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_UserMessage), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_GeneralLogMessage::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_GeneralLogMessage::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_GeneralLogMessage), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_HistoricalPriceDataRequest::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_HistoricalPriceDataRequest::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_HistoricalPriceDataRequest), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_HistoricalPriceDataHeaderResponse::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_HistoricalPriceDataHeaderResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_HistoricalPriceDataHeaderResponse), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_HistoricalPriceDataReject::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_HistoricalPriceDataReject::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_HistoricalPriceDataReject), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_HistoricalPriceDataRecordResponse::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_HistoricalPriceDataRecordResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_HistoricalPriceDataRecordResponse), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_HistoricalPriceDataTickRecordResponse::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_HistoricalPriceDataTickRecordResponse::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_HistoricalPriceDataTickRecordResponse), Size) );
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_ConfigurationRequestFromClient::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_ConfigurationRequestFromClient::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_ConfigurationRequestFromClient), Size) );
+}
+
+/*==========================================================================*/
+int GSP::s_ServerReadyToReceive::GetProtocolVersion()
+{
+	return ProtocolVersion;
+}
+
+/*==========================================================================*/
+unsigned short GSP::s_ServerReadyToReceive::GetMessageSize()
+{
+	return Size;
+}
+
+/*==========================================================================*/
+void GSP::s_ServerReadyToReceive::CopyFrom(void * p_SourceData)
+{
+	memcpy( this, p_SourceData, min(sizeof(GSP::s_ServerReadyToReceive), Size) );
+}
+
+/*==========================================================================*/
+char * GSP::s_ServerReadyToReceive::GetServerName()
+{
+	ServerName[sizeof(ServerName) - 1 ] = '\0';
+	return ServerName;
+}
+
+/*==========================================================================*/
+void GSP::s_ServerReadyToReceive::SetServerName(const char * NewValue)
+{
+	strncpy(ServerName, NewValue, sizeof(ServerName) - 1);
+}
+
+/*==========================================================================*/
+char * GSP::s_ServerReadyToReceive::GetServerVersion()
+{
+	ServerVersion[sizeof(ServerVersion) - 1 ] = '\0';
+	return ServerVersion;
+}
+
+/*==========================================================================*/
+void GSP::s_ServerReadyToReceive::SetServerVersion(const char * NewValue)
+{
+	strncpy(ServerVersion, NewValue, sizeof(ServerVersion) - 1);
+}
+
+/*==========================================================================*/
+char * GSP::s_ServerReadyToReceive::GetServiceProviderName()
+{
+	ServiceProviderName[sizeof(ServiceProviderName) - 1 ] = '\0';
+	return ServiceProviderName;
+}
+
+/*==========================================================================*/
+void GSP::s_ServerReadyToReceive::SetServiceProviderName(const char * NewValue)
+{
+	strncpy(ServiceProviderName, NewValue, sizeof(ServiceProviderName) - 1);
+}
+
 /*==========================================================================*/
