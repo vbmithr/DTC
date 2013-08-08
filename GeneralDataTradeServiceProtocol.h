@@ -8,7 +8,7 @@ namespace GSP
 {
 #pragma pack(8)
 
-	const int CURRENT_VERSION = 2;
+	const int CURRENT_VERSION = 3;
 	const int SYMBOL_LENGTH = 64;
 	const int EXCHANGE_LENGTH= 16;
 	const int UNDERLYING_LENGTH= 32;
@@ -19,107 +19,56 @@ namespace GSP
 
 	//----Message types----
 	const unsigned short LOGON_REQUEST = 1;
-
 	const unsigned short LOGON_RESPONSE = 2;
-
 	const unsigned short HEARTBEAT = 3;
-
 	const unsigned short DISCONNECT_FROM_SERVER_NO_RECONNECT = 4;
-
 	const unsigned short MARKET_DATA_FEED_STATUS = 100;
-
 	const unsigned short MARKET_DATA_REQUEST = 101;
-
 	const unsigned short MARKET_DEPTH_REQUEST = 102;
-
 	const unsigned short MARKET_DATA_REJECT = 103;
-
 	const unsigned short MARKET_DATA_SNAPSHOT = 104;
-
 	const unsigned short MARKET_DEPTH_FULL_UPDATE = 105;
-
 	const unsigned short MARKET_DEPTH_INCREMENTAL_UPDATE = 106;
-
 	const unsigned short TRADE_INCREMENTAL_UPDATE = 107;
-
 	const unsigned short QUOTE_INCREMENTAL_UPDATE = 108;
-
 	const unsigned short MARKET_DEPTH_FULL_UPDATE_LARGE = 109;
-
 	const unsigned short FUNDAMENTAL_DATA_RESPONSE = 110;
-
 	const unsigned short TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH = 111;
-
 	const unsigned short TRADE_INCREMENTAL_UPDATE_COMPACT = 112;
-
 	const unsigned short DAILY_VOLUME_INCREMENTAL_UPDATE = 113;
-
 	const unsigned short DAILY_HIGH_INCREMENTAL_UPDATE = 114;
-
 	const unsigned short DAILY_LOW_INCREMENTAL_UPDATE = 115;
-
 	const unsigned short MARKET_DATA_FEED_SYMBOL_STATUS = 116;
-
 	const unsigned short SUBMIT_NEW_SINGLE_ORDER = 200;
-
 	const unsigned short SUBMIT_NEW_OCO_ORDER = 201;
-
 	const unsigned short CANCEL_REPLACE_ORDER = 202;
-
 	const unsigned short CANCEL_ORDER = 203;
-
 	const unsigned short CANCEL_REPLACE_ORDER_2 = 204;
-
 	const unsigned short OPEN_ORDERS_REQUEST = 300;
-
 	const unsigned short ORDER_UPDATE_REPORT = 301;
-
 	const unsigned short OPEN_ORDERS_REQUEST_REJECT = 302;
-
 	const unsigned short REQUEST_HISTORICAL_ORDER_FILLS = 303;
-
 	const unsigned short HISTORICAL_ORDER_FILL_REPORT = 304;
-
 	const unsigned short CURRENT_POSITIONS_REQUEST = 305;
-
 	const unsigned short POSITION_REPORT = 306;
-
 	const unsigned short CURRENT_POSITIONS_REQUEST_REJECT = 307;
-
 	const unsigned short REQUEST_ACCOUNTS = 400;
-
 	const unsigned short ACCOUNTS_LIST_RESPONSE = 401;
-
 	const unsigned short EXCHANGE_LIST_REQUEST = 500;
-
 	const unsigned short EXCHANGE_LIST_RESPONSE = 501;
-
 	const unsigned short SYMBOLS_FOR_EXCHANGE_REQUEST = 502;
-
 	const unsigned short UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST = 503;
-
 	const unsigned short SYMBOLS_FOR_UNDERLYING_REQUEST = 504;
-
 	//const unsigned short SYMBOL_RESPONSE = 505;
-
 	const unsigned short SECURITY_DEFINITION_FOR_SYMBOL_REQUEST = 506;
-
 	const unsigned short SECURITY_DEFINITION_RESPONSE = 507;
-
 	const unsigned short ACCOUNT_BALANCE_UPDATE = 600;
-
 	const unsigned short USER_MESSAGE = 700;
-
 	const unsigned short GENERAL_LOG_MESSAGE = 701;
-
 	const unsigned short HISTORICAL_PRICE_DATA_REQUEST= 800;
-
 	const unsigned short HISTORICAL_PRICE_DATA_HEADER_RESPONSE = 801;
-
 	const unsigned short HISTORICAL_PRICE_DATA_REJECT = 802;
-
 	const unsigned short HISTORICAL_PRICE_DATA_RECORD_RESPONSE = 803;
-
 	const unsigned short HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE = 804;
 
 	/*==========================================================================*/
@@ -127,7 +76,6 @@ namespace GSP
 	//----------------------------------------------
 
 	const unsigned short CONFIGURATION_REQUEST_FROM_CLIENT = 10001; //Client >> Server
-
 	const unsigned short SERVER_READY_TO_RECEIVE =  10002;//Server  >> Client
 
 
@@ -143,7 +91,6 @@ namespace GSP
 	{ LOGON_SUCCESS = 1
 	, LOGON_ERROR = 2
 	, LOGON_ERROR_NO_RECONNECT = 3
-
 	//You can use this logon status in the LOGON_RESPONSE message instruct the Client to reconnect to the Server at a different address.  This supports dynamic connections to a server farm.
 	, LOGON_RECONNECT_NEW_ADDRESS = 4
 	};
@@ -183,7 +130,6 @@ namespace GSP
 
 	/*==========================================================================*/
 	enum ExecutionTypeEnum : int
-
 	{ ET_UNSET = 0
 	, ET_OPEN_ORDERS_REQUEST = 1
 	, ET_NEW_ORDER_ACCEPTED = 2
@@ -196,20 +142,22 @@ namespace GSP
 	, ET_ORDER_CANCEL_REJECT = 9
 	, ET_ORDER_CANCEL_REPLACE_REJECT = 10
 	};
-
-
+	
+	/*==========================================================================*/
 	enum BidOrAskEnum : unsigned short
 	{ BID_ASK_UNSET = 0
 	, AT_BID = 1
 	, AT_ASK = 2
 	};
-
+	
+	/*==========================================================================*/
 	enum MarketDepthIncrementalUpdateTypeEnum : unsigned char
 	{ DEPTH_UNSET = 0
 	, DEPTH_INSERT_UPDATE = 1 // Insert or update depth at the given price level
 	, DEPTH_DELETE = 2 // Delete depth at the given price level
 	};
-
+	
+	/*==========================================================================*/
 	enum OrderTypeEnum : int
 	{ ORDER_TYPE_UNSET = 0
 	, ORDER_TYPE_MARKET = 1
@@ -218,7 +166,8 @@ namespace GSP
 	, ORDER_TYPE_STOP_LIMIT = 4
 	, ORDER_TYPE_MARKET_IF_TOUCHED = 5
 	};
-
+	
+	/*==========================================================================*/
 	enum TimeInForceEnum : int
 	{ TIF_UNSET = 0
 	, TIF_DAY = 1
@@ -228,7 +177,8 @@ namespace GSP
 	, TIF_ALL_OR_NONE = 5
 	, TIF_FILL_OR_KILL = 6
 	};
-
+	
+	/*==========================================================================*/
 	enum BuySellEnum : int
 	{ BUY_SELL_UNSET = 0
 	, BUY = 1
@@ -246,7 +196,6 @@ namespace GSP
 	// These statuses apply to all  symbols that have been subscribed to.
 	enum MarketDataFeedStatusEnum : int
 	{ MARKET_DATA_FEED_LOST = 1
-
 	// Upon a connection to the server, this is assumed to be the status.  It is not until there has been expressly given MARKET_DATA_FEED_LOST, will the data feed be considered lost. The Client will resubscribe to all symbols using MARKET_DATA_REQUEST messages, when this status is received and.
 	, MARKET_DATA_FEED_RESTORED = 2
 	};
@@ -265,7 +214,6 @@ namespace GSP
 	, DISPLAY_FORMAT_DECIMAL_7 = 7
 	, DISPLAY_FORMAT_DECIMAL_8 = 8
 	, DISPLAY_FORMAT_DECIMAL_9 = 9
-
 	//The following formats are fractional formats
 	, DISPLAY_FORMAT_DENOMINATOR_256 = 356
 	, DISPLAY_FORMAT_DENOMINATOR_128 = 228
@@ -291,7 +239,8 @@ namespace GSP
 	, ST_FUTURES_OPTION = 7
 	, ST_INDEX_OPTION = 8
 	};
-
+	
+	/*==========================================================================*/
 	enum HistoricalDataIntervalEnum : int
 	{ INTERVAL_TICK = 0
 	, INTERVAL_1_SECOND = 1
@@ -304,7 +253,7 @@ namespace GSP
 	struct s_SymbolExchange
 	{
 		char Symbol[SYMBOL_LENGTH];
-		char Exchange[ EXCHANGE_LENGTH];
+		char Exchange[EXCHANGE_LENGTH];
 	};
 
 	/*==========================================================================*/
@@ -313,23 +262,15 @@ namespace GSP
 		unsigned short Size;
 		unsigned short Type;
 		int ProtocolVersion;
-
-		char  Username[32];
+		char Username[32];
 		char Password[32];
-
-		char  GeneralTextData[64];
-
+		char GeneralTextData[64];
 		int Integer_1;
 		int Integer_2;
-
 		int  HeartbeatIntervalInSeconds; 
-
 		TradeModeEnum TradeMode;
-
-		char TradeAccount[TRADE_ACCOUNT_LENGTH];
- 
+		char TradeAccount[TRADE_ACCOUNT_LENGTH]; 
 		char HardwareIdentifier[64];
-
 		char ClientName[32];
 
 		s_LogonRequest()
@@ -340,11 +281,9 @@ namespace GSP
 			ProtocolVersion = CURRENT_VERSION;
 		}
 
-		// The following functions are only for convenience.  They are not required to be used.  You can directly access the structure data members.
-		
+		// The following functions are only for convenience. They are not required to be used.  You can directly access the structure data members.		
 		unsigned short GetMessageSize();
-		void CopyFrom(void * p_SourceData);
-		
+		void CopyFrom(void * p_SourceData);		
 		int GetProtocolVersion();
 		const char * GetUsername();
 		void SetUsername(const char * NewValue);
@@ -364,7 +303,8 @@ namespace GSP
 		void SetTradeAccount(const char * NewValue);
 		char * GetHardwareIdentifier();
 		void SetHardwareIdentifier(const char * NewValue);
-
+		char * GetClientName();
+		void SetClientName(const char * NewValue);
 	};
 
 	/*==========================================================================*/
@@ -372,38 +312,22 @@ namespace GSP
 	{
 		unsigned short Size;
 		unsigned short Type;
-
 		int ProtocolVersion;
-
 		LogonStatusEnum Result;
-
 		char ResultText[TEXT_DESCRIPTION_LENGTH];
-
 		char ReconnectAddress [64];
-
 		int Integer_1;
-
 		char ServerVersion[12]; 
 		char ServerName[24];
 		char ServiceProviderName[24];
-
 		unsigned char MarketDepthUpdatesBestBidAndAsk;
-
 		unsigned char TradingIsSupported;
-
 		unsigned char OCOOrdersSupported;
-
 		unsigned char OrderCancelReplaceSupported;
-
 		char SymbolExchangeDelimiter[4];
-
 		unsigned char SecurityDefinitionsSupported;
-
 		unsigned char HistoricalPriceDataSupported;
-
 		unsigned char ResubscribeWhenMarketDataFeedRestored;
-
-
 
 		s_LogonResponse()
 		{
@@ -414,14 +338,23 @@ namespace GSP
 			OrderCancelReplaceSupported = 1;
 		}
 
-		int GetProtocolVersion();
-
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		int GetProtocolVersion();
 		LogonStatusEnum GetResult();
 		void SetResult(LogonStatusEnum NewValue);
 		char * GetResultText();
 		void SetResultText(const char * NewValue);
-
+		char * GetReconnectAddress();
+		void SetReconnectAddress(const char * NewValue);
+		int GetInteger_1();
+		void SetInteger_1(int NewValue);		
+		char * GetServerVersion();
+		void SetServerVersion(const char * NewValue);		
+		char * GetServerName();
+		void SetServerName(const char * NewValue);		
+		char * GetServiceProviderName();
+		void SetServiceProviderName(const char * NewValue);
 		unsigned char GetMarketDepthUpdatesBestBidAndAsk();
 		void SetMarketDepthUpdatesBestBidAndAsk(unsigned char NewValue);
 		unsigned char GetTradingIsSupported();
@@ -436,9 +369,8 @@ namespace GSP
 		void SetSecurityDefinitionsSupported(unsigned char NewValue);
 		unsigned char GetHistoricalPriceDataSupported();
 		void SetHistoricalPriceDataSupported(unsigned char NewValue);
-		char * GetReconnectAddress();
-		void SetReconnectAddress(const char * NewValue);
-
+		unsigned char GetResubscribeWhenMarketDataFeedRestored();
+		void SetResubscribeWhenMarketDataFeedRestored(unsigned char NewValue);
 	};
 
 	/*==========================================================================*/
@@ -446,7 +378,6 @@ namespace GSP
 	{
 		unsigned short Size;
 		unsigned short Type;
-
 		unsigned int DroppedMessages;
 
 		s_Heartbeat()
@@ -457,6 +388,9 @@ namespace GSP
 		}
 		
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		unsigned int GetDroppedMessages();
+		void SetDroppedMessages(unsigned int NewValue);
 	};
 
 	/*==========================================================================*/
@@ -464,7 +398,6 @@ namespace GSP
 	{
 		unsigned short Size;
 		unsigned short Type;
-
 		char DisconnectReason[TEXT_DESCRIPTION_LENGTH];
 
 		s_DisconnectFromServer()
@@ -475,11 +408,10 @@ namespace GSP
 		}
 		
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 		char * GetDisconnectReason();
 		void SetDisconnectReason(const char * NewValue);
-
 	};
-
 
 	/*==========================================================================*/
 	struct s_MarketDataFeedStatus
@@ -496,9 +428,9 @@ namespace GSP
 		}
 		
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 		MarketDataFeedStatusEnum GetStatus();
 		void SetStatus(MarketDataFeedStatusEnum NewValue);
-
 	};
 
 	/*==========================================================================*/
@@ -516,6 +448,12 @@ namespace GSP
 			Size=sizeof(s_MarketDataFeedSymbolStatus);
 		}
 
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		unsigned short GetMarketDataSymbolID();
+		void SetMarketDataSymbolID(unsigned short NewValue);
+		MarketDataFeedStatusEnum GetStatus();
+		void SetStatus(MarketDataFeedStatusEnum NewValue);
 	};
 	
 	/*==========================================================================*/
@@ -524,11 +462,8 @@ namespace GSP
 		unsigned short Size;
 		unsigned short Type;
 		RequestActionEnum RequestActionValue;
-
 		unsigned short MarketDataSymbolID;
-
 		char Symbol[SYMBOL_LENGTH];
-
 		char Exchange[EXCHANGE_LENGTH];
 
 		s_MarketDataRequest()
@@ -540,6 +475,7 @@ namespace GSP
 		}
 		
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 		RequestActionEnum GetRequestActionValue();
 		void SetRequestActionValue(RequestActionEnum NewValue);
 		unsigned short GetMarketDataSymbolID();
@@ -555,11 +491,8 @@ namespace GSP
 	{
 		unsigned short Size;
 		unsigned short Type;
-
 		RequestActionEnum RequestActionValue;
-
 		unsigned short MarketDataSymbolID;
-
 		char Symbol[SYMBOL_LENGTH];
 		char Exchange[EXCHANGE_LENGTH];
 		int NumberOfLevels;
@@ -575,6 +508,7 @@ namespace GSP
 		}
 		
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 		RequestActionEnum GetRequestActionValue();
 		void SetRequestActionValue(RequestActionEnum NewValue);
 		unsigned short GetMarketDataSymbolID();
@@ -592,7 +526,6 @@ namespace GSP
 	{
 		unsigned short Size;
 		unsigned short Type;
-
 		unsigned short MarketDataSymbolID;
 		char RejectText[TEXT_DESCRIPTION_LENGTH];
 
@@ -604,6 +537,7 @@ namespace GSP
 		}
 		
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 		unsigned short GetMarketDataSymbolID();
 		void SetMarketDataSymbolID(unsigned short NewValue);
 		char * GetRejectText();
@@ -615,28 +549,23 @@ namespace GSP
 	{
 		unsigned short Size;
 		unsigned short Type;
-
 		unsigned short MarketDataSymbolID;
-
 		double SettlementPrice;
 		double DailyOpen;
 		double DailyHigh;
 		double DailyLow;
 		double DailyVolume;
 		unsigned int DailyNumberOfTrades;
-
 		union
 		{
 			unsigned int SharesOutstanding;
 			unsigned int OpenInterest;
 			unsigned int UnitsOutstanding;
 		};
-
 		double Bid;
 		double Ask;
 		unsigned int AskSize;
 		unsigned int BidSize;
-
 		double LastTradePrice;
 		unsigned int LastTradeSize;
 		t_DateTime LastTradeDateTimeUnix;
@@ -650,8 +579,11 @@ namespace GSP
 		}
 		
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 		unsigned short GetMarketDataSymbolID();
 		void SetMarketDataSymbolID(unsigned short NewValue);
+		double GetSettlementPrice();
+		void SetSettlementPrice(double NewValue);
 		double GetDailyOpen();
 		void SetDailyOpen(double NewValue);
 		double GetDailyHigh();
@@ -684,27 +616,21 @@ namespace GSP
 		void SetLastTradeDateTimeUnix(t_DateTime NewValue);
 		short GetLastTradeMilliseconds();
 		void SetLastTradeMilliseconds(short NewValue);
-		void SetToUnsetValues ();
-
+		void SetToUnsetValues();
 	};
 	/*==========================================================================*/
 	struct s_FundamentalDataResponse
 	{
 		unsigned short Size;
 		unsigned short Type;
-
 		unsigned short MarketDataSymbolID;
-
 		char SymbolDescription[SYMBOL_DESCRIPTION_LENGTH];
-
 		float TickSize;
-
 		float TickCurrencyValue;
-
 		DisplayFormatEnum DisplayFormat;
-
 		float BuyRolloverInterest;
 		float SellRolloverInterest;
+		float OrderPriceMultiplier;
 
 		s_FundamentalDataResponse()
 		{
@@ -714,8 +640,8 @@ namespace GSP
 			DisplayFormat = DISPLAY_FORMAT_UNSET;
 		}
 
-
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 		unsigned short GetMarketDataSymbolID();
 		void SetMarketDataSymbolID(unsigned short NewValue);
 		char * GetSymbolDescription();
@@ -730,9 +656,9 @@ namespace GSP
 		void SetBuyRolloverInterest(float NewValue);
 		float GetSellRolloverInterest();
 		void SetSellRolloverInterest(float NewValue);
-
+		float GetOrderPriceMultiplier();
+		void SetOrderPriceMultiplier(float NewValue);
 		void SetDisplayFormatFromTickSize();
-
 	};
 
 	/*==========================================================================*/
@@ -766,7 +692,8 @@ namespace GSP
 			Size=sizeof(s_TradeIncrementalUpdateWithFullDepth);
 		}
 
-
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 	/*==========================================================================*/
@@ -795,6 +722,8 @@ namespace GSP
 		}
 	
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
 		unsigned short GetMarketDataSymbolID();
 		void SetMarketDataSymbolID(unsigned short NewValue);
 	};
@@ -823,7 +752,10 @@ namespace GSP
 			Size=sizeof(s_MarketDepthFullUpdateLarge);
 
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+        
 	};
 
 	/*==========================================================================*/
@@ -847,7 +779,10 @@ namespace GSP
 			Size=sizeof(s_MarketDepthIncrementalUpdate);
 
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+        
 	};
 
 	/*==========================================================================*/
@@ -878,6 +813,9 @@ namespace GSP
 		{
 			return Price;
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 	/*==========================================================================*/
@@ -906,13 +844,16 @@ namespace GSP
 		}
 		double GetBidPrice()
 		{
-				return BidPrice;
+			return BidPrice;
 		}
 
 		double GetAskPrice()
 		{
-				return AskPrice;
+			return AskPrice;
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 	/*==========================================================================*/
@@ -939,6 +880,9 @@ namespace GSP
 		{
 			return Price;
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 	/*==========================================================================*/
@@ -956,6 +900,10 @@ namespace GSP
 			Type=DAILY_VOLUME_INCREMENTAL_UPDATE;
 			Size=sizeof(s_DailyVolumeIncrementalUpdate);
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+        
 	};
 	/*==========================================================================*/
 	struct s_DailyHighIncrementalUpdate
@@ -973,6 +921,10 @@ namespace GSP
 			Size=sizeof(s_DailyHighIncrementalUpdate);
 
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+        
 	};
 	/*==========================================================================*/
 	struct s_DailyLowIncrementalUpdate
@@ -988,8 +940,11 @@ namespace GSP
 			memset(this, 0,sizeof(s_DailyLowIncrementalUpdate));
 			Type=DAILY_LOW_INCREMENTAL_UPDATE;
 			Size=sizeof(s_DailyLowIncrementalUpdate);
-
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+        
 	};
 	/*==========================================================================*/
 
@@ -1020,12 +975,19 @@ namespace GSP
 
 		char IsParentOrder;
 
+		int Price1AsInteger;
+		int Price2AsInteger;
+		float Divisor;
+
 		s_SubmitNewSingleOrder()
 		{
 			memset(this, 0,sizeof(s_SubmitNewSingleOrder));
 			Type=SUBMIT_NEW_SINGLE_ORDER;
 			Size=sizeof(s_SubmitNewSingleOrder);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 	/*==========================================================================*/
@@ -1046,13 +1008,19 @@ namespace GSP
 
 		char TradeAccount [TRADE_ACCOUNT_LENGTH];//Not required by GSP
 
+		int Price1AsInteger;
+		int Price2AsInteger;
+		float Divisor;
+
 		s_CancelReplaceOrder()
 		{
 			memset(this, 0,sizeof(s_CancelReplaceOrder));
 			Type=CANCEL_REPLACE_ORDER;
 			Size=sizeof(s_CancelReplaceOrder);
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 	/*==========================================================================*/
 	//Custom Cancel/Replace order request
@@ -1083,7 +1051,9 @@ namespace GSP
 			Type=CANCEL_REPLACE_ORDER_2;
 			Size=sizeof(s_CancelReplaceOrder2);
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 	/*==========================================================================*/
 
@@ -1106,6 +1076,9 @@ namespace GSP
 			Type=CANCEL_ORDER;
 			Size=sizeof(s_CancelOrder);
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 	/*==========================================================================*/
@@ -1146,9 +1119,10 @@ namespace GSP
 			memset(this, 0,sizeof(s_SubmitNewOCOOrder));
 			Type=SUBMIT_NEW_OCO_ORDER;
 			Size=sizeof(s_SubmitNewOCOOrder);
-
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 
@@ -1172,7 +1146,9 @@ namespace GSP
 			Size=sizeof(s_OpenOrdersRequest);
 			RequestAllOpenOrders = 1;
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 	/*==========================================================================*/
 
@@ -1192,9 +1168,10 @@ namespace GSP
 			memset(this, 0,sizeof(s_RequestHistoricalOrderFills));
 			Type=REQUEST_HISTORICAL_ORDER_FILLS;
 			Size=sizeof(s_RequestHistoricalOrderFills);
-
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 	/*==========================================================================*/
@@ -1207,14 +1184,16 @@ namespace GSP
 
 		s_CurrentPositionsRequest()
 		{
-
 			memset(this, 0,sizeof(s_CurrentPositionsRequest));
 			Type=CURRENT_POSITIONS_REQUEST;
 			Size=sizeof(s_CurrentPositionsRequest);
-
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
+
 	/*==========================================================================*/
 	struct s_CurrentPositionsRequestReject
 	{
@@ -1229,11 +1208,12 @@ namespace GSP
 			memset(this, 0,sizeof(s_CurrentPositionsRequestReject));
 			Type=CURRENT_POSITIONS_REQUEST_REJECT;
 			Size=sizeof(s_CurrentPositionsRequestReject);
-
 		}
 
-	};
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
+	};
 
 	/*==========================================================================*/
 
@@ -1310,6 +1290,9 @@ namespace GSP
 			LastFillQuantity = UINT_MAX;
 		}
 
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
 		char * GetSymbol();
 		void SetSymbol(const char * NewValue);
 		char * GetExchange();
@@ -1344,9 +1327,10 @@ namespace GSP
 			memset(this, 0,sizeof(s_OpenOrdersRequestReject));
 			Type=OPEN_ORDERS_REQUEST_REJECT;
 			Size=sizeof(s_OpenOrdersRequestReject);
-
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 	/*==========================================================================*/
 
@@ -1384,7 +1368,9 @@ namespace GSP
 			Size=sizeof(s_HistoricalOrderFillReport);
 
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 	/*==========================================================================*/
@@ -1415,12 +1401,13 @@ namespace GSP
 
 		s_PositionReport()
 		{
-
 			memset(this, 0,sizeof(s_PositionReport));
 			Type=POSITION_REPORT;
 			Size=sizeof(s_PositionReport);
-
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 		void SetSymbol(const char * NewValue);
 		void SetTradeAccount(const char * NewValue);
@@ -1433,16 +1420,15 @@ namespace GSP
 		unsigned short Size;
 		unsigned short Type;
 
-
 		s_RequestAccounts()
 		{
-
 			memset(this, 0,sizeof(s_RequestAccounts));
 			Type=REQUEST_ACCOUNTS;
 			Size=sizeof(s_RequestAccounts);
-
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 
@@ -1464,9 +1450,10 @@ namespace GSP
 			memset(this, 0,sizeof(s_AccountsListResponse));
 			Type=ACCOUNTS_LIST_RESPONSE;
 			Size=sizeof(s_AccountsListResponse);
-
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 
@@ -1479,7 +1466,6 @@ namespace GSP
 
 		int RequestID;
 
-
 		s_ExchangeListRequest()
 		{
 
@@ -1487,6 +1473,9 @@ namespace GSP
 			Type=EXCHANGE_LIST_REQUEST;
 			Size=sizeof(s_ExchangeListRequest);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1503,11 +1492,13 @@ namespace GSP
 
 		s_ExchangeListResponse()
 		{
-
 			memset(this, 0,sizeof(s_ExchangeListResponse));
 			Type=EXCHANGE_LIST_RESPONSE;
 			Size=sizeof(s_ExchangeListResponse);
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1531,6 +1522,9 @@ namespace GSP
 			Size=sizeof(s_SymbolsForExchangeRequest);
 		}
 
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
 	};
 
 	/*==========================================================================*/
@@ -1548,11 +1542,13 @@ namespace GSP
 
 		s_UnderlyingSymbolsForExchangeRequest()
 		{
-
 			memset(this, 0,sizeof(s_UnderlyingSymbolsForExchangeRequest));
 			Type=UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST;
 			Size=sizeof(s_UnderlyingSymbolsForExchangeRequest);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1572,11 +1568,14 @@ namespace GSP
 
 		s_SymbolsForUnderlyingRequest()
 		{
-
 			memset(this, 0,sizeof(s_SymbolsForUnderlyingRequest));
 			Type=SYMBOLS_FOR_UNDERLYING_REQUEST;
 			Size=sizeof(s_SymbolsForUnderlyingRequest);
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
 	};
 	/*==========================================================================*/
 
@@ -1594,11 +1593,13 @@ namespace GSP
 
 		s_SecurityDefinitionForSymbolRequest()
 		{
-
 			memset(this, 0,sizeof(s_SecurityDefinitionForSymbolRequest));
 			Type=SECURITY_DEFINITION_FOR_SYMBOL_REQUEST;
 			Size=sizeof(s_SecurityDefinitionForSymbolRequest);
 		}
+
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1618,11 +1619,13 @@ namespace GSP
 
 		s_SymbolResponse()
 		{
-
 			memset(this, 0,sizeof(s_SymbolResponse));
 			Type=SYMBOL_RESPONSE;
 			Size=sizeof(s_SymbolResponse);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 	==========================================================================*/
@@ -1649,12 +1652,13 @@ namespace GSP
 
 		s_SecurityDefinitionResponse()
 		{
-
 			memset(this, 0,sizeof(s_SecurityDefinitionResponse));
 			Type=SECURITY_DEFINITION_RESPONSE;
 			Size=sizeof(s_SecurityDefinitionResponse);
 		}
-
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 	};
 
 
@@ -1680,6 +1684,9 @@ namespace GSP
 			Type=ACCOUNT_BALANCE_UPDATE;
 			Size=sizeof(s_AccountBalanceUpdate);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 		void SetAccountCurrency(const char * NewValue);
 		void SetTradeAccount(const char * NewValue);
@@ -1703,6 +1710,9 @@ namespace GSP
 			Size=sizeof(s_UserMessage);
 			PopupMessage = 1;
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 	/*==========================================================================*/
@@ -1720,6 +1730,9 @@ namespace GSP
 			Type=GENERAL_LOG_MESSAGE;
 			Size=sizeof(s_GeneralLogMessage);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 	/*==========================================================================*/
@@ -1746,6 +1759,9 @@ namespace GSP
 			Type=HISTORICAL_PRICE_DATA_REQUEST;
 			Size=sizeof(s_HistoricalPriceDataRequest);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1768,6 +1784,9 @@ namespace GSP
 			Type=HISTORICAL_PRICE_DATA_HEADER_RESPONSE;
 			Size=sizeof(s_HistoricalPriceDataHeaderResponse);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 	/*==========================================================================*/
@@ -1786,6 +1805,9 @@ namespace GSP
 			Type=HISTORICAL_PRICE_DATA_REJECT;
 			Size=sizeof(s_HistoricalPriceDataReject);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1818,6 +1840,9 @@ namespace GSP
 			Type=HISTORICAL_PRICE_DATA_RECORD_RESPONSE;
 			Size=sizeof(s_HistoricalPriceDataRecordResponse);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1844,6 +1869,9 @@ namespace GSP
 			Type=HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE;
 			Size=sizeof(s_HistoricalPriceDataTickRecordResponse);
 		}
+		
+		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
 
 	};
 
@@ -1862,6 +1890,8 @@ namespace GSP
 		}
 
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
 	};
 
 
@@ -1888,6 +1918,8 @@ namespace GSP
 		int GetProtocolVersion();
 
 		unsigned short GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
 		char * GetServerName();
 		void SetServerName(const char * NewValue);
 		char * GetServerVersion();
