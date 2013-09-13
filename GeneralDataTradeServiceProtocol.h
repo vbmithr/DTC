@@ -45,6 +45,7 @@ namespace GSP
 	const unsigned __int16 DAILY_HIGH_INCREMENTAL_UPDATE = 114;
 	const unsigned __int16 DAILY_LOW_INCREMENTAL_UPDATE = 115;
 	const unsigned __int16 MARKET_DATA_FEED_SYMBOL_STATUS = 116;
+	const unsigned __int16 QUOTE_INCREMENTAL_UPDATE_COMPACT = 117;
 	const unsigned __int16 SUBMIT_NEW_SINGLE_ORDER = 200;
 	const unsigned __int16 SUBMIT_NEW_OCO_ORDER = 201;
 	const unsigned __int16 CANCEL_REPLACE_ORDER = 202;
@@ -78,7 +79,7 @@ namespace GSP
 	const unsigned __int16 HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE = 804;
 
 	/*==========================================================================*/
-	//Nonstandard messages which are not considered part of the standard specification.  A standard GSP server and client do not need to implement these.
+	//Nonstandard messages which are not considered part of the standard specification.  A standard GSP server and client implement these.
 	//----------------------------------------------
 
 	const unsigned __int16 CONFIGURATION_REQUEST_FROM_CLIENT = 10001; //Client >> Server
@@ -97,7 +98,6 @@ namespace GSP
 	{ LOGON_SUCCESS = 1
 	, LOGON_ERROR = 2
 	, LOGON_ERROR_NO_RECONNECT = 3
-	//You can use this logon status in the LOGON_RESPONSE message instruct the Client to reconnect to the Server at a different address.  This supports dynamic connections to a server farm.
 	, LOGON_RECONNECT_NEW_ADDRESS = 4
 	};
 
@@ -199,10 +199,9 @@ namespace GSP
 	};
 
 	/*==========================================================================*/
-	// These statuses apply to all  symbols that have been subscribed to.
+	
 	enum MarketDataFeedStatusEnum : __int32
 	{ MARKET_DATA_FEED_LOST = 1
-	// Upon a connection to the server, this is assumed to be the status.  It is not until there has been expressly given MARKET_DATA_FEED_LOST, will the data feed be considered lost. The Client will resubscribe to all symbols using MARKET_DATA_REQUEST messages, when this status is received and.
 	, MARKET_DATA_FEED_RESTORED = 2
 	};
 
@@ -250,6 +249,11 @@ namespace GSP
 	enum HistoricalDataIntervalEnum : __int32
 	{ INTERVAL_TICK = 0
 	, INTERVAL_1_SECOND = 1
+	, INTERVAL_2_SECONDS = 2
+	, INTERVAL_4_SECONDS = 4
+	, INTERVAL_5_SECONDS = 5
+	, INTERVAL_10_SECONDS = 10
+	, INTERVAL_30_SECONDS = 30
 	, INTERVAL_1_MINUTE = 60
 	, INTERVAL_1_DAY = 86400
 	, INTERVAL_1_WEEK = 604800
@@ -864,6 +868,32 @@ namespace GSP
 
 	/*==========================================================================*/
 
+	struct s_QuoteIncrementalUpdateCompact
+	{
+		unsigned __int16 Size;
+		unsigned __int16 Type;
+
+		float BidPrice;
+		unsigned __int32 BidSize;
+		float AskPrice;
+		unsigned __int32 AskSize;
+
+		t_DateTime4Byte QuoteDateTimeUnix;
+
+		unsigned __int16 MarketDataSymbolID;
+
+		s_QuoteIncrementalUpdateCompact()
+		{
+			memset(this, 0,sizeof(s_QuoteIncrementalUpdateCompact));
+			Type=QUOTE_INCREMENTAL_UPDATE_COMPACT;
+			Size=sizeof(s_QuoteIncrementalUpdateCompact);
+			BidPrice=FLT_MAX;
+			AskPrice=FLT_MAX;
+		}
+	};
+
+	/*==========================================================================*/
+
 	struct s_TradeIncrementalUpdateCompact
 	{
 		unsigned __int16 Size;
@@ -1186,7 +1216,9 @@ namespace GSP
 	{
 		unsigned __int16 Size;
 		unsigned __int16 Type;
+
 		__int32 RequestID;
+		char  TradeAccount[TRADE_ACCOUNT_LENGTH];
 
 		s_CurrentPositionsRequest()
 		{
@@ -1769,6 +1801,12 @@ namespace GSP
 		
 		unsigned __int16 GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+
+
+		char * GetSymbol();
+		void SetSymbol(const char * NewValue);
+		char * GetExchange();
+		void SetExchange(const char * NewValue);
 
 	};
 
