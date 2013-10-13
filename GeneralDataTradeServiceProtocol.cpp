@@ -1,9 +1,12 @@
+#include "CommonPCH.h"
 
 #include <float.h>
 #include <limits.h>
 #include <string.h>
 #include <memory.h> 
 #include <stddef.h>
+
+#pragma warning( disable : 4996 )	//	microsoft specific
 
 #include "GeneralDataTradeServiceProtocol.h"
 
@@ -22,7 +25,7 @@
 /*============================================================================
 	Will get the size of the message received over the network
 ----------------------------------------------------------------------------*/
-unsigned __int16 GSP::s_LogonRequest::GetMessageSize()
+unsigned __int16 DTC::s_LogonRequest::GetMessageSize()
 {
 	return Size;
 }
@@ -31,13 +34,13 @@ unsigned __int16 GSP::s_LogonRequest::GetMessageSize()
 	Performs a safe copy of data into this structure instance from the given
 	data pointer.
 ----------------------------------------------------------------------------*/
-void GSP::s_LogonRequest::CopyFrom(void* p_SourceData)
+void DTC::s_LogonRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_LogonRequest), Size));
 }
 
 /*==========================================================================*/
-__int32 GSP::s_LogonRequest::GetProtocolVersion()
+__int32 DTC::s_LogonRequest::GetProtocolVersion()
 {
 	if (Size < offsetof(s_LogonRequest, ProtocolVersion) + sizeof(ProtocolVersion))
 		return 0;
@@ -46,7 +49,7 @@ __int32 GSP::s_LogonRequest::GetProtocolVersion()
 }
 
 /*==========================================================================*/
-const char* GSP::s_LogonRequest::GetUsername()
+const char* DTC::s_LogonRequest::GetUsername()
 {
 	if (Size < offsetof(s_LogonRequest, Username) + sizeof(Username))
 		return "";
@@ -57,13 +60,13 @@ const char* GSP::s_LogonRequest::GetUsername()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetUsername(const char* NewValue)
+void DTC::s_LogonRequest::SetUsername(const char* NewValue)
 {
 	strncpy(Username, NewValue, sizeof(Username) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonRequest::GetPassword()
+char* DTC::s_LogonRequest::GetPassword()
 {
 	if (Size < offsetof(s_LogonRequest, Password) + sizeof(Password))
 		return "";
@@ -74,13 +77,13 @@ char* GSP::s_LogonRequest::GetPassword()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetPassword(const char* NewValue)
+void DTC::s_LogonRequest::SetPassword(const char* NewValue)
 {
 	strncpy(Password, NewValue, sizeof(Password) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonRequest::GetGeneralTextData()
+char* DTC::s_LogonRequest::GetGeneralTextData()
 {
 	if (Size < offsetof(s_LogonRequest, GeneralTextData) + sizeof(GeneralTextData))
 		return "";
@@ -91,13 +94,13 @@ char* GSP::s_LogonRequest::GetGeneralTextData()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetGeneralTextData(const char* NewValue)
+void DTC::s_LogonRequest::SetGeneralTextData(const char* NewValue)
 {
 	strncpy(GeneralTextData, NewValue, sizeof(GeneralTextData) - 1);
 }
 
 /*==========================================================================*/
-__int32 GSP::s_LogonRequest::GetInteger_1()
+__int32 DTC::s_LogonRequest::GetInteger_1()
 {
 	if (Size < offsetof(s_LogonRequest, Integer_1) + sizeof(Integer_1))
 		return 0;
@@ -106,13 +109,13 @@ __int32 GSP::s_LogonRequest::GetInteger_1()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetInteger_1(__int32 NewValue)
+void DTC::s_LogonRequest::SetInteger_1(__int32 NewValue)
 {
 	Integer_1 = NewValue;
 }
 
 /*==========================================================================*/
-__int32 GSP::s_LogonRequest::GetInteger_2()
+__int32 DTC::s_LogonRequest::GetInteger_2()
 {
 	if (Size < offsetof(s_LogonRequest, Integer_2) + sizeof(Integer_2))
 		return 0;
@@ -121,13 +124,13 @@ __int32 GSP::s_LogonRequest::GetInteger_2()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetInteger_2(__int32 NewValue)
+void DTC::s_LogonRequest::SetInteger_2(__int32 NewValue)
 {
 	Integer_2 = NewValue;
 }
 
 /*==========================================================================*/
-__int32 GSP::s_LogonRequest::GetInHeartbeatIntervalInSeconds()
+__int32 DTC::s_LogonRequest::GetInHeartbeatIntervalInSeconds()
 {
 	if (Size < offsetof(s_LogonRequest, HeartbeatIntervalInSeconds) + sizeof(HeartbeatIntervalInSeconds))
 		return 0;
@@ -136,13 +139,13 @@ __int32 GSP::s_LogonRequest::GetInHeartbeatIntervalInSeconds()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetHeartbeatIntervalInSeconds(__int32 NewValue)
+void DTC::s_LogonRequest::SetHeartbeatIntervalInSeconds(__int32 NewValue)
 {
 	HeartbeatIntervalInSeconds = NewValue;
 }
 
 /*==========================================================================*/
-GSP::TradeModeEnum GSP::s_LogonRequest::GetTradeMode()
+DTC::TradeModeEnum DTC::s_LogonRequest::GetTradeMode()
 {
 	if (Size < offsetof(s_LogonRequest, TradeMode) + sizeof(TradeMode))
 		return (TradeModeEnum)0;
@@ -151,13 +154,13 @@ GSP::TradeModeEnum GSP::s_LogonRequest::GetTradeMode()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetTradeMode(GSP::TradeModeEnum NewValue)
+void DTC::s_LogonRequest::SetTradeMode(DTC::TradeModeEnum NewValue)
 {
 	TradeMode = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonRequest::GetTradeAccount()
+char* DTC::s_LogonRequest::GetTradeAccount()
 {
 	if (Size < offsetof(s_LogonRequest, TradeAccount) + sizeof(TradeAccount))
 		return "";
@@ -168,13 +171,13 @@ char* GSP::s_LogonRequest::GetTradeAccount()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetTradeAccount(const char* NewValue)
+void DTC::s_LogonRequest::SetTradeAccount(const char* NewValue)
 {
 	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonRequest::GetHardwareIdentifier()
+char* DTC::s_LogonRequest::GetHardwareIdentifier()
 {
 	if (Size < offsetof(s_LogonRequest, HardwareIdentifier) + sizeof(HardwareIdentifier))
 		return "";
@@ -185,13 +188,13 @@ char* GSP::s_LogonRequest::GetHardwareIdentifier()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetHardwareIdentifier(const char* NewValue)
+void DTC::s_LogonRequest::SetHardwareIdentifier(const char* NewValue)
 {
 	strncpy(HardwareIdentifier, NewValue, sizeof(HardwareIdentifier) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonRequest::GetClientName()
+char* DTC::s_LogonRequest::GetClientName()
 {
 	if (Size < offsetof(s_LogonRequest, ClientName) + sizeof(ClientName))
 		return "";
@@ -202,7 +205,7 @@ char* GSP::s_LogonRequest::GetClientName()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonRequest::SetClientName(const char* NewValue)
+void DTC::s_LogonRequest::SetClientName(const char* NewValue)
 {
 	strncpy(ClientName, NewValue, sizeof(ClientName) - 1);
 }
@@ -211,19 +214,19 @@ void GSP::s_LogonRequest::SetClientName(const char* NewValue)
 // s_LogonResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_LogonResponse::GetMessageSize()
+unsigned __int16 DTC::s_LogonResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::CopyFrom(void* p_SourceData)
+void DTC::s_LogonResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_LogonResponse), Size));
 }
 
 /*==========================================================================*/
-__int32 GSP::s_LogonResponse::GetProtocolVersion()
+__int32 DTC::s_LogonResponse::GetProtocolVersion()
 {
 	if (Size < offsetof(s_LogonResponse, ProtocolVersion) + sizeof(ProtocolVersion))
 		return 0;
@@ -232,7 +235,7 @@ __int32 GSP::s_LogonResponse::GetProtocolVersion()
 }
 
 /*==========================================================================*/
-GSP::LogonStatusEnum GSP::s_LogonResponse::GetResult()
+DTC::LogonStatusEnum DTC::s_LogonResponse::GetResult()
 {
 	if (Size < offsetof(s_LogonResponse, Result) + sizeof(Result))
 		return (LogonStatusEnum)0;
@@ -241,13 +244,13 @@ GSP::LogonStatusEnum GSP::s_LogonResponse::GetResult()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetResult(LogonStatusEnum NewValue)
+void DTC::s_LogonResponse::SetResult(LogonStatusEnum NewValue)
 {
 	Result = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonResponse::GetResultText()
+char* DTC::s_LogonResponse::GetResultText()
 {
 	if (Size < offsetof(s_LogonResponse, ResultText) + sizeof(ResultText))
 		return "";
@@ -258,13 +261,13 @@ char* GSP::s_LogonResponse::GetResultText()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetResultText(const char* NewValue)
+void DTC::s_LogonResponse::SetResultText(const char* NewValue)
 {
 	strncpy(ResultText, NewValue, sizeof(ResultText) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonResponse::GetReconnectAddress()
+char* DTC::s_LogonResponse::GetReconnectAddress()
 {
 	if (Size < offsetof(s_LogonResponse, ReconnectAddress) + sizeof(ReconnectAddress))
 		return "";
@@ -275,13 +278,13 @@ char* GSP::s_LogonResponse::GetReconnectAddress()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetReconnectAddress(const char* NewValue)
+void DTC::s_LogonResponse::SetReconnectAddress(const char* NewValue)
 {
 	strncpy(ReconnectAddress, NewValue, sizeof(ReconnectAddress) - 1);
 }
 
 /*==========================================================================*/
-__int32 GSP::s_LogonResponse::GetInteger_1()
+__int32 DTC::s_LogonResponse::GetInteger_1()
 {
 	if (Size < offsetof(s_LogonResponse, Integer_1) + sizeof(Integer_1))
 		return 0;
@@ -290,13 +293,13 @@ __int32 GSP::s_LogonResponse::GetInteger_1()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetInteger_1(__int32 NewValue)
+void DTC::s_LogonResponse::SetInteger_1(__int32 NewValue)
 {
 	Integer_1 = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonResponse::GetServerVersion()
+char* DTC::s_LogonResponse::GetServerVersion()
 {
 	if (Size < offsetof(s_LogonResponse, ServerVersion) + sizeof(ServerVersion))
 		return "";
@@ -307,13 +310,13 @@ char* GSP::s_LogonResponse::GetServerVersion()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetServerVersion(const char* NewValue)
+void DTC::s_LogonResponse::SetServerVersion(const char* NewValue)
 {
 	strncpy(ServerVersion, NewValue, sizeof(ServerVersion) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonResponse::GetServerName()
+char* DTC::s_LogonResponse::GetServerName()
 {
 	if (Size < offsetof(s_LogonResponse, ServerName) + sizeof(ServerName))
 		return "";
@@ -324,13 +327,13 @@ char* GSP::s_LogonResponse::GetServerName()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetServerName(const char* NewValue)
+void DTC::s_LogonResponse::SetServerName(const char* NewValue)
 {
 	strncpy(ServerName, NewValue, sizeof(ServerName) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonResponse::GetServiceProviderName()
+char* DTC::s_LogonResponse::GetServiceProviderName()
 {
 	if (Size < offsetof(s_LogonResponse, ServiceProviderName) + sizeof(ServiceProviderName))
 		return "";
@@ -341,13 +344,13 @@ char* GSP::s_LogonResponse::GetServiceProviderName()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetServiceProviderName(const char* NewValue)
+void DTC::s_LogonResponse::SetServiceProviderName(const char* NewValue)
 {
 	strncpy(ServiceProviderName, NewValue, sizeof(ServiceProviderName) - 1);
 }
 
 /*==========================================================================*/
-unsigned char GSP::s_LogonResponse::GetMarketDepthUpdatesBestBidAndAsk()
+unsigned char DTC::s_LogonResponse::GetMarketDepthUpdatesBestBidAndAsk()
 {
 	if (Size < offsetof(s_LogonResponse, MarketDepthUpdatesBestBidAndAsk) + sizeof(MarketDepthUpdatesBestBidAndAsk))
 		return 0;
@@ -356,13 +359,13 @@ unsigned char GSP::s_LogonResponse::GetMarketDepthUpdatesBestBidAndAsk()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetMarketDepthUpdatesBestBidAndAsk(unsigned char NewValue)
+void DTC::s_LogonResponse::SetMarketDepthUpdatesBestBidAndAsk(unsigned char NewValue)
 {
 	MarketDepthUpdatesBestBidAndAsk = NewValue;
 }
 
 /*==========================================================================*/
-unsigned char GSP::s_LogonResponse::GetTradingIsSupported()
+unsigned char DTC::s_LogonResponse::GetTradingIsSupported()
 {
 	if (Size < offsetof(s_LogonResponse, TradingIsSupported) + sizeof(TradingIsSupported))
 		return 0;
@@ -371,13 +374,13 @@ unsigned char GSP::s_LogonResponse::GetTradingIsSupported()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetTradingIsSupported(unsigned char NewValue)
+void DTC::s_LogonResponse::SetTradingIsSupported(unsigned char NewValue)
 {
 	TradingIsSupported = NewValue;
 }
 
 /*==========================================================================*/
-unsigned char GSP::s_LogonResponse::GetOCOOrdersSupported()
+unsigned char DTC::s_LogonResponse::GetOCOOrdersSupported()
 {
 	if (Size < offsetof(s_LogonResponse, OCOOrdersSupported) + sizeof(OCOOrdersSupported))
 		return 0;
@@ -386,13 +389,13 @@ unsigned char GSP::s_LogonResponse::GetOCOOrdersSupported()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetOCOOrdersSupported(unsigned char NewValue)
+void DTC::s_LogonResponse::SetOCOOrdersSupported(unsigned char NewValue)
 {
 	OCOOrdersSupported = NewValue;
 }
 
 /*==========================================================================*/
-unsigned char GSP::s_LogonResponse::GetOrderCancelReplaceSupported()
+unsigned char DTC::s_LogonResponse::GetOrderCancelReplaceSupported()
 {
 	if (Size < offsetof(s_LogonResponse, OrderCancelReplaceSupported) + sizeof(OrderCancelReplaceSupported))
 		return 0;
@@ -401,13 +404,13 @@ unsigned char GSP::s_LogonResponse::GetOrderCancelReplaceSupported()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetOrderCancelReplaceSupported(unsigned char NewValue)
+void DTC::s_LogonResponse::SetOrderCancelReplaceSupported(unsigned char NewValue)
 {
 	OrderCancelReplaceSupported = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_LogonResponse::GetSymbolExchangeDelimiter()
+char* DTC::s_LogonResponse::GetSymbolExchangeDelimiter()
 {
 	if (Size < offsetof(s_LogonResponse, SymbolExchangeDelimiter) + sizeof(SymbolExchangeDelimiter))
 		return "";
@@ -418,13 +421,13 @@ char* GSP::s_LogonResponse::GetSymbolExchangeDelimiter()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetSymbolExchangeDelimiter(const char* NewValue)
+void DTC::s_LogonResponse::SetSymbolExchangeDelimiter(const char* NewValue)
 {
 	strncpy(SymbolExchangeDelimiter, NewValue, sizeof(SymbolExchangeDelimiter) - 1);
 }
 
 /*==========================================================================*/
-unsigned char GSP::s_LogonResponse::GetSecurityDefinitionsSupported()
+unsigned char DTC::s_LogonResponse::GetSecurityDefinitionsSupported()
 {
 	if (Size < offsetof(s_LogonResponse, SecurityDefinitionsSupported) + sizeof(SecurityDefinitionsSupported))
 		return 0;
@@ -433,13 +436,13 @@ unsigned char GSP::s_LogonResponse::GetSecurityDefinitionsSupported()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetSecurityDefinitionsSupported(unsigned char NewValue)
+void DTC::s_LogonResponse::SetSecurityDefinitionsSupported(unsigned char NewValue)
 {
 	SecurityDefinitionsSupported = NewValue;
 }
 
 /*==========================================================================*/
-unsigned char GSP::s_LogonResponse::GetHistoricalPriceDataSupported()
+unsigned char DTC::s_LogonResponse::GetHistoricalPriceDataSupported()
 {
 	if (Size < offsetof(s_LogonResponse, HistoricalPriceDataSupported) + sizeof(HistoricalPriceDataSupported))
 		return 0;
@@ -448,13 +451,13 @@ unsigned char GSP::s_LogonResponse::GetHistoricalPriceDataSupported()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetHistoricalPriceDataSupported(unsigned char NewValue)
+void DTC::s_LogonResponse::SetHistoricalPriceDataSupported(unsigned char NewValue)
 {
 	HistoricalPriceDataSupported  = NewValue;
 }
 
 /*==========================================================================*/
-unsigned char GSP::s_LogonResponse::GetResubscribeWhenMarketDataFeedRestored()
+unsigned char DTC::s_LogonResponse::GetResubscribeWhenMarketDataFeedRestored()
 {
 	if (Size < offsetof(s_LogonResponse, ResubscribeWhenMarketDataFeedRestored) + sizeof(ResubscribeWhenMarketDataFeedRestored))
 		return 0;
@@ -463,7 +466,7 @@ unsigned char GSP::s_LogonResponse::GetResubscribeWhenMarketDataFeedRestored()
 }
 
 /*==========================================================================*/
-void GSP::s_LogonResponse::SetResubscribeWhenMarketDataFeedRestored(unsigned char NewValue)
+void DTC::s_LogonResponse::SetResubscribeWhenMarketDataFeedRestored(unsigned char NewValue)
 {
 	ResubscribeWhenMarketDataFeedRestored = NewValue;
 }
@@ -472,19 +475,19 @@ void GSP::s_LogonResponse::SetResubscribeWhenMarketDataFeedRestored(unsigned cha
 // s_Heartbeat
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_Heartbeat::GetMessageSize()
+unsigned __int16 DTC::s_Heartbeat::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_Heartbeat::CopyFrom(void* p_SourceData)
+void DTC::s_Heartbeat::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_Heartbeat), Size));
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_Heartbeat::GetDroppedMessages()
+unsigned __int32 DTC::s_Heartbeat::GetDroppedMessages()
 {
 	if (Size < offsetof(s_Heartbeat, DroppedMessages) + sizeof(DroppedMessages))
 		return 0;
@@ -493,13 +496,13 @@ unsigned __int32 GSP::s_Heartbeat::GetDroppedMessages()
 }
 
 /*==========================================================================*/
-void GSP::s_Heartbeat::SetDroppedMessages(unsigned __int32 NewValue)
+void DTC::s_Heartbeat::SetDroppedMessages(unsigned __int32 NewValue)
 {
 	DroppedMessages = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_DisconnectFromServer::GetMessageSize()
+unsigned __int16 DTC::s_DisconnectFromServer::GetMessageSize()
 {
 	return Size;
 }
@@ -508,13 +511,13 @@ unsigned __int16 GSP::s_DisconnectFromServer::GetMessageSize()
 // s_DisconnectFromServer
 
 /*==========================================================================*/
-void GSP::s_DisconnectFromServer::CopyFrom(void* p_SourceData)
+void DTC::s_DisconnectFromServer::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_DisconnectFromServer), Size));
 }
 
 /*==========================================================================*/
-char* GSP::s_DisconnectFromServer::GetDisconnectReason()
+char* DTC::s_DisconnectFromServer::GetDisconnectReason()
 {
 	if (Size < offsetof(s_DisconnectFromServer, DisconnectReason) + sizeof(DisconnectReason))
 		return "";
@@ -525,7 +528,7 @@ char* GSP::s_DisconnectFromServer::GetDisconnectReason()
 }
 
 /*==========================================================================*/
-void GSP::s_DisconnectFromServer::SetDisconnectReason(const char* NewValue)
+void DTC::s_DisconnectFromServer::SetDisconnectReason(const char* NewValue)
 {
 	strncpy(DisconnectReason, NewValue, sizeof(DisconnectReason) - 1);
 }
@@ -534,19 +537,19 @@ void GSP::s_DisconnectFromServer::SetDisconnectReason(const char* NewValue)
 // s_MarketDataFeedStatus
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataFeedStatus::GetMessageSize()
+unsigned __int16 DTC::s_MarketDataFeedStatus::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataFeedStatus::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDataFeedStatus::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDataFeedStatus), Size));
 }
 
 /*==========================================================================*/
-GSP::MarketDataFeedStatusEnum GSP::s_MarketDataFeedStatus::GetStatus()
+DTC::MarketDataFeedStatusEnum DTC::s_MarketDataFeedStatus::GetStatus()
 {
 	if (Size < offsetof(s_MarketDataFeedStatus, Status) + sizeof(Status))
 		return (MarketDataFeedStatusEnum)0;
@@ -555,7 +558,7 @@ GSP::MarketDataFeedStatusEnum GSP::s_MarketDataFeedStatus::GetStatus()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataFeedStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
+void DTC::s_MarketDataFeedStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
 {
 	Status = NewValue;
 }
@@ -564,19 +567,19 @@ void GSP::s_MarketDataFeedStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
 // s_MarketDataFeedSymbolStatus
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataFeedSymbolStatus::GetMessageSize()
+unsigned __int16 DTC::s_MarketDataFeedSymbolStatus::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataFeedSymbolStatus::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDataFeedSymbolStatus::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDataFeedSymbolStatus), Size));
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataFeedSymbolStatus::GetMarketDataSymbolID()
+unsigned __int16 DTC::s_MarketDataFeedSymbolStatus::GetMarketDataSymbolID()
 {
 	if (Size < offsetof(s_MarketDataFeedSymbolStatus, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 		return 0;
@@ -585,13 +588,13 @@ unsigned __int16 GSP::s_MarketDataFeedSymbolStatus::GetMarketDataSymbolID()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataFeedSymbolStatus::SetMarketDataSymbolID(unsigned __int16 NewValue)
+void DTC::s_MarketDataFeedSymbolStatus::SetMarketDataSymbolID(unsigned __int16 NewValue)
 {
 	MarketDataSymbolID = NewValue;
 }
 
 /*==========================================================================*/
-GSP::MarketDataFeedStatusEnum GSP::s_MarketDataFeedSymbolStatus::GetStatus()
+DTC::MarketDataFeedStatusEnum DTC::s_MarketDataFeedSymbolStatus::GetStatus()
 {
 	if (Size < offsetof(s_MarketDataFeedSymbolStatus, Status) + sizeof(Status))
 		return (MarketDataFeedStatusEnum)0;
@@ -600,7 +603,7 @@ GSP::MarketDataFeedStatusEnum GSP::s_MarketDataFeedSymbolStatus::GetStatus()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataFeedSymbolStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
+void DTC::s_MarketDataFeedSymbolStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
 {
 	Status = NewValue;
 }
@@ -609,19 +612,19 @@ void GSP::s_MarketDataFeedSymbolStatus::SetStatus(MarketDataFeedStatusEnum NewVa
 // s_MarketDataRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataRequest::GetMessageSize()
+unsigned __int16 DTC::s_MarketDataRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataRequest::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDataRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDataRequest), Size));
 }
 
 /*==========================================================================*/
-GSP::RequestActionEnum GSP::s_MarketDataRequest::GetRequestActionValue()
+DTC::RequestActionEnum DTC::s_MarketDataRequest::GetRequestActionValue()
 {
 	if (Size < offsetof(s_MarketDataRequest, RequestActionValue) + sizeof(RequestActionValue))
 		return (RequestActionEnum)0;
@@ -630,13 +633,13 @@ GSP::RequestActionEnum GSP::s_MarketDataRequest::GetRequestActionValue()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataRequest::SetRequestActionValue(GSP::RequestActionEnum NewValue)
+void DTC::s_MarketDataRequest::SetRequestActionValue(DTC::RequestActionEnum NewValue)
 {
 	RequestActionValue = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataRequest::GetMarketDataSymbolID()
+unsigned __int16 DTC::s_MarketDataRequest::GetMarketDataSymbolID()
 {
 	if (Size < offsetof(s_MarketDataRequest, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 		return 0;
@@ -645,13 +648,13 @@ unsigned __int16 GSP::s_MarketDataRequest::GetMarketDataSymbolID()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataRequest::SetMarketDataSymbolID(unsigned __int16 NewValue)
+void DTC::s_MarketDataRequest::SetMarketDataSymbolID(unsigned __int16 NewValue)
 {
 	MarketDataSymbolID = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_MarketDataRequest::GetSymbol()
+char* DTC::s_MarketDataRequest::GetSymbol()
 {
 	if (Size < offsetof(s_MarketDataRequest, Symbol) + sizeof(Symbol))
 		return "";
@@ -662,13 +665,13 @@ char* GSP::s_MarketDataRequest::GetSymbol()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataRequest::SetSymbol(const char* NewValue)
+void DTC::s_MarketDataRequest::SetSymbol(const char* NewValue)
 {
 	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_MarketDataRequest::GetExchange()
+char* DTC::s_MarketDataRequest::GetExchange()
 {
 	if (Size < offsetof(s_MarketDataRequest, Exchange) + sizeof(Exchange))
 		return "";
@@ -679,7 +682,7 @@ char* GSP::s_MarketDataRequest::GetExchange()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataRequest::SetExchange(const char* NewValue)
+void DTC::s_MarketDataRequest::SetExchange(const char* NewValue)
 {
 	strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 }
@@ -688,19 +691,19 @@ void GSP::s_MarketDataRequest::SetExchange(const char* NewValue)
 // s_MarketDepthRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDepthRequest::GetMessageSize()
+unsigned __int16 DTC::s_MarketDepthRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthRequest::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDepthRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDepthRequest), Size));
 }
 
 /*==========================================================================*/
-GSP::RequestActionEnum GSP::s_MarketDepthRequest::GetRequestActionValue()
+DTC::RequestActionEnum DTC::s_MarketDepthRequest::GetRequestActionValue()
 {
 	if (Size < offsetof(s_MarketDepthRequest, RequestActionValue) + sizeof(RequestActionValue))
 		return (RequestActionEnum)0;
@@ -709,13 +712,13 @@ GSP::RequestActionEnum GSP::s_MarketDepthRequest::GetRequestActionValue()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthRequest::SetRequestActionValue(GSP::RequestActionEnum NewValue)
+void DTC::s_MarketDepthRequest::SetRequestActionValue(DTC::RequestActionEnum NewValue)
 {
 	RequestActionValue = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDepthRequest::GetMarketDataSymbolID()
+unsigned __int16 DTC::s_MarketDepthRequest::GetMarketDataSymbolID()
 {
 	if (Size < offsetof(s_MarketDepthRequest, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 		return 0;
@@ -724,13 +727,13 @@ unsigned __int16 GSP::s_MarketDepthRequest::GetMarketDataSymbolID()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthRequest::SetMarketDataSymbolID(unsigned __int16 NewValue)
+void DTC::s_MarketDepthRequest::SetMarketDataSymbolID(unsigned __int16 NewValue)
 {
 	MarketDataSymbolID = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_MarketDepthRequest::GetSymbol()
+char* DTC::s_MarketDepthRequest::GetSymbol()
 {
 	if (Size < offsetof(s_MarketDepthRequest, Symbol) + sizeof(Symbol))
 		return "";
@@ -741,13 +744,13 @@ char* GSP::s_MarketDepthRequest::GetSymbol()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthRequest::SetSymbol(const char* NewValue)
+void DTC::s_MarketDepthRequest::SetSymbol(const char* NewValue)
 {
 	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_MarketDepthRequest::GetExchange()
+char* DTC::s_MarketDepthRequest::GetExchange()
 {
 	if (Size < offsetof(s_MarketDepthRequest, Exchange) + sizeof(Exchange))
 		return "";
@@ -758,13 +761,13 @@ char* GSP::s_MarketDepthRequest::GetExchange()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthRequest::SetExchange(const char* NewValue)
+void DTC::s_MarketDepthRequest::SetExchange(const char* NewValue)
 {
 	strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 }
 
 /*==========================================================================*/
-__int32 GSP::s_MarketDepthRequest::GetNumberOfLevels()
+__int32 DTC::s_MarketDepthRequest::GetNumberOfLevels()
 {
 	if (Size < offsetof(s_MarketDepthRequest, NumberOfLevels) + sizeof(NumberOfLevels))
 		return 0;
@@ -773,7 +776,7 @@ __int32 GSP::s_MarketDepthRequest::GetNumberOfLevels()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthRequest::SetNumberOfLevels(__int32 NewValue)
+void DTC::s_MarketDepthRequest::SetNumberOfLevels(__int32 NewValue)
 {
 	NumberOfLevels = NewValue;
 }
@@ -782,19 +785,19 @@ void GSP::s_MarketDepthRequest::SetNumberOfLevels(__int32 NewValue)
 // s_MarketDataReject
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataReject::GetMessageSize()
+unsigned __int16 DTC::s_MarketDataReject::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataReject::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDataReject::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDataReject), Size));
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataReject::GetMarketDataSymbolID()
+unsigned __int16 DTC::s_MarketDataReject::GetMarketDataSymbolID()
 {
 	if (Size < offsetof(s_MarketDataReject, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 		return 0;
@@ -803,13 +806,13 @@ unsigned __int16 GSP::s_MarketDataReject::GetMarketDataSymbolID()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataReject::SetMarketDataSymbolID(unsigned __int16 NewValue)
+void DTC::s_MarketDataReject::SetMarketDataSymbolID(unsigned __int16 NewValue)
 {
 	MarketDataSymbolID = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_MarketDataReject::GetRejectText()
+char* DTC::s_MarketDataReject::GetRejectText()
 {
 	if (Size < offsetof(s_MarketDataReject, RejectText) + sizeof(RejectText))
 		return "";
@@ -820,7 +823,7 @@ char* GSP::s_MarketDataReject::GetRejectText()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataReject::SetRejectText(const char* NewValue)
+void DTC::s_MarketDataReject::SetRejectText(const char* NewValue)
 {
 	strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 }
@@ -829,19 +832,19 @@ void GSP::s_MarketDataReject::SetRejectText(const char* NewValue)
 // s_MarketDataSnapshot
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataSnapshot::GetMessageSize()
+unsigned __int16 DTC::s_MarketDataSnapshot::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDataSnapshot::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDataSnapshot), Size));
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDataSnapshot::GetMarketDataSymbolID()
+unsigned __int16 DTC::s_MarketDataSnapshot::GetMarketDataSymbolID()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 		return 0;
@@ -850,13 +853,13 @@ unsigned __int16 GSP::s_MarketDataSnapshot::GetMarketDataSymbolID()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetMarketDataSymbolID(unsigned __int16 NewValue)
+void DTC::s_MarketDataSnapshot::SetMarketDataSymbolID(unsigned __int16 NewValue)
 {
 	MarketDataSymbolID = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetSettlementPrice()
+double DTC::s_MarketDataSnapshot::GetSettlementPrice()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, SettlementPrice) + sizeof(SettlementPrice))
 		return 0;
@@ -865,13 +868,13 @@ double GSP::s_MarketDataSnapshot::GetSettlementPrice()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetSettlementPrice(double NewValue)
+void DTC::s_MarketDataSnapshot::SetSettlementPrice(double NewValue)
 {
 	SettlementPrice = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetDailyOpen()
+double DTC::s_MarketDataSnapshot::GetDailyOpen()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, DailyOpen) + sizeof(DailyOpen))
 		return 0;
@@ -880,13 +883,13 @@ double GSP::s_MarketDataSnapshot::GetDailyOpen()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetDailyOpen(double NewValue)
+void DTC::s_MarketDataSnapshot::SetDailyOpen(double NewValue)
 {
 	DailyOpen = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetDailyHigh()
+double DTC::s_MarketDataSnapshot::GetDailyHigh()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, DailyHigh) + sizeof(DailyHigh))
 		return 0;
@@ -895,13 +898,13 @@ double GSP::s_MarketDataSnapshot::GetDailyHigh()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetDailyHigh(double NewValue)
+void DTC::s_MarketDataSnapshot::SetDailyHigh(double NewValue)
 {
 	DailyHigh = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetDailyLow()
+double DTC::s_MarketDataSnapshot::GetDailyLow()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, DailyLow) + sizeof(DailyLow))
 		return 0;
@@ -910,13 +913,13 @@ double GSP::s_MarketDataSnapshot::GetDailyLow()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetDailyLow(double NewValue)
+void DTC::s_MarketDataSnapshot::SetDailyLow(double NewValue)
 {
 	DailyLow = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetDailyVolume()
+double DTC::s_MarketDataSnapshot::GetDailyVolume()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, DailyVolume) + sizeof(DailyVolume))
 		return 0;
@@ -925,13 +928,13 @@ double GSP::s_MarketDataSnapshot::GetDailyVolume()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetDailyVolume(double NewValue)
+void DTC::s_MarketDataSnapshot::SetDailyVolume(double NewValue)
 {
 	DailyVolume = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_MarketDataSnapshot::GetDailyNumberOfTrades()
+unsigned __int32 DTC::s_MarketDataSnapshot::GetDailyNumberOfTrades()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, DailyNumberOfTrades) + sizeof(DailyNumberOfTrades))
 		return 0;
@@ -940,13 +943,13 @@ unsigned __int32 GSP::s_MarketDataSnapshot::GetDailyNumberOfTrades()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetDailyNumberOfTrades(unsigned __int32 NewValue)
+void DTC::s_MarketDataSnapshot::SetDailyNumberOfTrades(unsigned __int32 NewValue)
 {
 	DailyNumberOfTrades = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_MarketDataSnapshot::GetSharesOutstanding()
+unsigned __int32 DTC::s_MarketDataSnapshot::GetSharesOutstanding()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, SharesOutstanding) + sizeof(SharesOutstanding))
 		return 0;
@@ -955,13 +958,13 @@ unsigned __int32 GSP::s_MarketDataSnapshot::GetSharesOutstanding()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetSharesOutstanding(unsigned __int32 NewValue)
+void DTC::s_MarketDataSnapshot::SetSharesOutstanding(unsigned __int32 NewValue)
 {
 	SharesOutstanding = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_MarketDataSnapshot::GetOpenInterest()
+unsigned __int32 DTC::s_MarketDataSnapshot::GetOpenInterest()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, OpenInterest) + sizeof(OpenInterest))
 		return 0;
@@ -970,13 +973,13 @@ unsigned __int32 GSP::s_MarketDataSnapshot::GetOpenInterest()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetOpenInterest(unsigned __int32 NewValue)
+void DTC::s_MarketDataSnapshot::SetOpenInterest(unsigned __int32 NewValue)
 {
 	OpenInterest = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_MarketDataSnapshot::GetUnitsOutstanding()
+unsigned __int32 DTC::s_MarketDataSnapshot::GetUnitsOutstanding()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, UnitsOutstanding) + sizeof(UnitsOutstanding))
 		return 0;
@@ -985,13 +988,13 @@ unsigned __int32 GSP::s_MarketDataSnapshot::GetUnitsOutstanding()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetUnitsOutstanding(unsigned __int32 NewValue)
+void DTC::s_MarketDataSnapshot::SetUnitsOutstanding(unsigned __int32 NewValue)
 {
 	UnitsOutstanding = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetBid()
+double DTC::s_MarketDataSnapshot::GetBid()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, Bid) + sizeof(Bid))
 		return 0;
@@ -1000,13 +1003,13 @@ double GSP::s_MarketDataSnapshot::GetBid()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetBid(double NewValue)
+void DTC::s_MarketDataSnapshot::SetBid(double NewValue)
 {
 	Bid = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetAsk()
+double DTC::s_MarketDataSnapshot::GetAsk()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, Ask) + sizeof(Ask))
 		return 0;
@@ -1015,13 +1018,13 @@ double GSP::s_MarketDataSnapshot::GetAsk()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetAsk(double NewValue)
+void DTC::s_MarketDataSnapshot::SetAsk(double NewValue)
 {
 	Ask = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_MarketDataSnapshot::GetAskSize()
+unsigned __int32 DTC::s_MarketDataSnapshot::GetAskSize()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, AskSize) + sizeof(AskSize))
 		return 0;
@@ -1030,13 +1033,13 @@ unsigned __int32 GSP::s_MarketDataSnapshot::GetAskSize()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetAskSize(unsigned __int32 NewValue)
+void DTC::s_MarketDataSnapshot::SetAskSize(unsigned __int32 NewValue)
 {
 	AskSize = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_MarketDataSnapshot::GetBidSize()
+unsigned __int32 DTC::s_MarketDataSnapshot::GetBidSize()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, BidSize) + sizeof(BidSize))
 		return 0;
@@ -1045,13 +1048,13 @@ unsigned __int32 GSP::s_MarketDataSnapshot::GetBidSize()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetBidSize(unsigned __int32 NewValue)
+void DTC::s_MarketDataSnapshot::SetBidSize(unsigned __int32 NewValue)
 {
 	BidSize = NewValue;
 }
 
 /*==========================================================================*/
-double GSP::s_MarketDataSnapshot::GetLastTradePrice()
+double DTC::s_MarketDataSnapshot::GetLastTradePrice()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, LastTradePrice) + sizeof(LastTradePrice))
 		return 0;
@@ -1060,13 +1063,13 @@ double GSP::s_MarketDataSnapshot::GetLastTradePrice()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetLastTradePrice(double NewValue)
+void DTC::s_MarketDataSnapshot::SetLastTradePrice(double NewValue)
 {
 	LastTradePrice = NewValue;
 }
 
 /*==========================================================================*/
-unsigned __int32 GSP::s_MarketDataSnapshot::GetLastTradeSize()
+unsigned __int32 DTC::s_MarketDataSnapshot::GetLastTradeSize()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, LastTradeSize) + sizeof(LastTradeSize))
 		return 0;
@@ -1075,13 +1078,13 @@ unsigned __int32 GSP::s_MarketDataSnapshot::GetLastTradeSize()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetLastTradeSize(unsigned __int32 NewValue)
+void DTC::s_MarketDataSnapshot::SetLastTradeSize(unsigned __int32 NewValue)
 {
 	LastTradeSize = NewValue;
 }
 
 /*==========================================================================*/
-GSP::t_DateTime GSP::s_MarketDataSnapshot::GetLastTradeDateTimeUnix()
+DTC::t_DateTime DTC::s_MarketDataSnapshot::GetLastTradeDateTimeUnix()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, LastTradeDateTimeUnix) + sizeof(LastTradeDateTimeUnix))
 		return 0;
@@ -1090,13 +1093,13 @@ GSP::t_DateTime GSP::s_MarketDataSnapshot::GetLastTradeDateTimeUnix()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetLastTradeDateTimeUnix(GSP::t_DateTime NewValue)
+void DTC::s_MarketDataSnapshot::SetLastTradeDateTimeUnix(DTC::t_DateTime NewValue)
 {
 	LastTradeDateTimeUnix = NewValue;
 }
 
 /*==========================================================================*/
-__int16 GSP::s_MarketDataSnapshot::GetLastTradeMilliseconds()
+__int16 DTC::s_MarketDataSnapshot::GetLastTradeMilliseconds()
 {
 	if (Size < offsetof(s_MarketDataSnapshot, LastTradeMilliseconds) + sizeof(LastTradeMilliseconds))
 		return 0;
@@ -1105,13 +1108,13 @@ __int16 GSP::s_MarketDataSnapshot::GetLastTradeMilliseconds()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetLastTradeMilliseconds(__int16 NewValue)
+void DTC::s_MarketDataSnapshot::SetLastTradeMilliseconds(__int16 NewValue)
 {
 	LastTradeMilliseconds = NewValue;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDataSnapshot::SetToUnsetValues()
+void DTC::s_MarketDataSnapshot::SetToUnsetValues()
 {
 	SettlementPrice = DBL_MAX;
 	DailyOpen = DBL_MAX;
@@ -1135,19 +1138,19 @@ void GSP::s_MarketDataSnapshot::SetToUnsetValues()
 // s_FundamentalDataResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_FundamentalDataResponse::GetMessageSize()
+unsigned __int16 DTC::s_FundamentalDataResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::CopyFrom(void* p_SourceData)
+void DTC::s_FundamentalDataResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_FundamentalDataResponse), Size));
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_FundamentalDataResponse::GetMarketDataSymbolID()
+unsigned __int16 DTC::s_FundamentalDataResponse::GetMarketDataSymbolID()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 		return 0;
@@ -1156,13 +1159,13 @@ unsigned __int16 GSP::s_FundamentalDataResponse::GetMarketDataSymbolID()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetMarketDataSymbolID(unsigned __int16 NewValue)
+void DTC::s_FundamentalDataResponse::SetMarketDataSymbolID(unsigned __int16 NewValue)
 {
 	MarketDataSymbolID = NewValue;
 }
 
 /*==========================================================================*/
-char* GSP::s_FundamentalDataResponse::GetSymbolDescription()
+char* DTC::s_FundamentalDataResponse::GetSymbolDescription()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, SymbolDescription) + sizeof(SymbolDescription))
 		return "";
@@ -1173,13 +1176,13 @@ char* GSP::s_FundamentalDataResponse::GetSymbolDescription()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetSymbolDescription(const char* NewValue)
+void DTC::s_FundamentalDataResponse::SetSymbolDescription(const char* NewValue)
 {
 	strncpy(SymbolDescription, NewValue, sizeof(SymbolDescription) - 1);
 }
 
 /*==========================================================================*/
-float GSP::s_FundamentalDataResponse::GetTickSize()
+float DTC::s_FundamentalDataResponse::GetTickSize()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, TickSize) + sizeof(TickSize))
 		return 0;
@@ -1188,13 +1191,13 @@ float GSP::s_FundamentalDataResponse::GetTickSize()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetTickSize(float NewValue)
+void DTC::s_FundamentalDataResponse::SetTickSize(float NewValue)
 {
 	TickSize = NewValue;
 }
 
 /*==========================================================================*/
-float GSP::s_FundamentalDataResponse::GetTickCurrencyValue()
+float DTC::s_FundamentalDataResponse::GetTickCurrencyValue()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, TickCurrencyValue) + sizeof(TickCurrencyValue))
 		return 0;
@@ -1203,13 +1206,13 @@ float GSP::s_FundamentalDataResponse::GetTickCurrencyValue()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetTickCurrencyValue(float NewValue)
+void DTC::s_FundamentalDataResponse::SetTickCurrencyValue(float NewValue)
 {
 	TickCurrencyValue = NewValue;
 }
 
 /*==========================================================================*/
-GSP::DisplayFormatEnum GSP::s_FundamentalDataResponse::GetDisplayFormat()
+DTC::DisplayFormatEnum DTC::s_FundamentalDataResponse::GetDisplayFormat()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, DisplayFormat) + sizeof(DisplayFormat))
 		return (DisplayFormatEnum)0;
@@ -1218,13 +1221,13 @@ GSP::DisplayFormatEnum GSP::s_FundamentalDataResponse::GetDisplayFormat()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetDisplayFormat(GSP::DisplayFormatEnum NewValue)
+void DTC::s_FundamentalDataResponse::SetDisplayFormat(DTC::DisplayFormatEnum NewValue)
 {
 	DisplayFormat = NewValue;
 }
 
 /*==========================================================================*/
-float GSP::s_FundamentalDataResponse::GetBuyRolloverInterest()
+float DTC::s_FundamentalDataResponse::GetBuyRolloverInterest()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, BuyRolloverInterest) + sizeof(BuyRolloverInterest))
 		return 0;
@@ -1233,13 +1236,13 @@ float GSP::s_FundamentalDataResponse::GetBuyRolloverInterest()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetBuyRolloverInterest(float NewValue)
+void DTC::s_FundamentalDataResponse::SetBuyRolloverInterest(float NewValue)
 {
 	BuyRolloverInterest = NewValue;
 }
 
 /*==========================================================================*/
-float GSP::s_FundamentalDataResponse::GetSellRolloverInterest()
+float DTC::s_FundamentalDataResponse::GetSellRolloverInterest()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, SellRolloverInterest) + sizeof(SellRolloverInterest))
 		return 0;
@@ -1248,13 +1251,13 @@ float GSP::s_FundamentalDataResponse::GetSellRolloverInterest()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetSellRolloverInterest(float NewValue)
+void DTC::s_FundamentalDataResponse::SetSellRolloverInterest(float NewValue)
 {
 	SellRolloverInterest = NewValue;
 }
 
 /*==========================================================================*/
-float GSP::s_FundamentalDataResponse::GetOrderPriceMultiplier()
+float DTC::s_FundamentalDataResponse::GetOrderPriceMultiplier()
 {
 	if (Size < offsetof(s_FundamentalDataResponse, OrderPriceMultiplier) + sizeof(OrderPriceMultiplier))
 		return 0;
@@ -1263,72 +1266,72 @@ float GSP::s_FundamentalDataResponse::GetOrderPriceMultiplier()
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetOrderPriceMultiplier(float NewValue)
+void DTC::s_FundamentalDataResponse::SetOrderPriceMultiplier(float NewValue)
 {
 	OrderPriceMultiplier = NewValue;
 }
 
 /*==========================================================================*/
-void GSP::s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
+void DTC::s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
 {
-	if (TickSize == 0.0f && DisplayFormat == GSP:: DISPLAY_FORMAT_UNSET)
+	if (TickSize == 0.0f && DisplayFormat == DTC:: DISPLAY_FORMAT_UNSET)
 	{
-		DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_3;
+		DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_3;
 		return;
 	}
 
 	if (TickSize < 0.00000995f)
-		DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_6;
+		DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_6;
 	else if (TickSize < 0.0000995f)
-		DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_5;
+		DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_5;
 	else if (TickSize < 0.000995f)
-		DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_4;
+		DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_4;
 	else if (TickSize > 0.00249f && TickSize < 0.00251f)
-		DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_4;
+		DisplayFormat  = DTC::DISPLAY_FORMAT_DECIMAL_4;
 	else if (TickSize < 0.00995f)
 	{
 		if (TickSize > 0.00390620f && TickSize < 0.00390630f)  //== 0.00390625)
-			DisplayFormat = GSP::DISPLAY_FORMAT_DENOMINATOR_256;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DENOMINATOR_256;
 		else if (TickSize > 0.0078120f && TickSize < 0.0078130f)  // .25/32 = 0.0078125
-			DisplayFormat = GSP::DISPLAY_FORMAT_DENOMINATOR_32_QUARTERS;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DENOMINATOR_32_QUARTERS;
 		else
-			DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_3;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_3;
 	}
 	else if (TickSize < 0.0995f)
 	{
 		if (TickSize > 0.0249f &&  TickSize < 0.0251f)
-			DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_3;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_3;
 		else if (TickSize > 0.015620f && TickSize < 0.015630f)  // .5/32 = 0.015625
-			DisplayFormat = GSP::DISPLAY_FORMAT_DENOMINATOR_32_HALVES;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DENOMINATOR_32_HALVES;
 		else if (TickSize > 0.03120f && TickSize < 0.03130f)  // 1/32 = 0.03125 
-			DisplayFormat = GSP::DISPLAY_FORMAT_DENOMINATOR_32;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DENOMINATOR_32;
 		else if (TickSize > 0.0620f && TickSize < 0.0630f)  //== 0.0625)
-			DisplayFormat = GSP::DISPLAY_FORMAT_DENOMINATOR_16;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DENOMINATOR_16;
 		else
-			DisplayFormat  = GSP::DISPLAY_FORMAT_DECIMAL_2;
+			DisplayFormat  = DTC::DISPLAY_FORMAT_DECIMAL_2;
 	}
 	else if (TickSize < 0.995f)
 	{
 		if (TickSize > 0.120 && TickSize < 0.130)  //== 0.125)
-			DisplayFormat = GSP::DISPLAY_FORMAT_DENOMINATOR_8;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DENOMINATOR_8;
 		else
-			DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_1;
+			DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_1;
 	}
 	else
-		DisplayFormat = GSP::DISPLAY_FORMAT_DECIMAL_0;
+		DisplayFormat = DTC::DISPLAY_FORMAT_DECIMAL_0;
 }
 
 /****************************************************************************/
 // s_TradeIncrementalUpdateWithFullDepth
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_TradeIncrementalUpdateWithFullDepth::GetMessageSize()
+unsigned __int16 DTC::s_TradeIncrementalUpdateWithFullDepth::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_TradeIncrementalUpdateWithFullDepth::CopyFrom(void* p_SourceData)
+void DTC::s_TradeIncrementalUpdateWithFullDepth::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdateWithFullDepth), Size));
 }
@@ -1337,19 +1340,19 @@ void GSP::s_TradeIncrementalUpdateWithFullDepth::CopyFrom(void* p_SourceData)
 // s_MarketDepthFullUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDepthFullUpdate::GetMessageSize()
+unsigned __int16 DTC::s_MarketDepthFullUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthFullUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDepthFullUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDepthFullUpdate), Size));
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDepthFullUpdate::GetMarketDataSymbolID()
+unsigned __int16 DTC::s_MarketDepthFullUpdate::GetMarketDataSymbolID()
 {
 	if (Size < offsetof(s_MarketDepthFullUpdate, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 		return 0;
@@ -1358,7 +1361,7 @@ unsigned __int16 GSP::s_MarketDepthFullUpdate::GetMarketDataSymbolID()
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthFullUpdate::SetMarketDataSymbolID(unsigned __int16 NewValue)
+void DTC::s_MarketDepthFullUpdate::SetMarketDataSymbolID(unsigned __int16 NewValue)
 {
 	MarketDataSymbolID = NewValue;
 }
@@ -1367,13 +1370,13 @@ void GSP::s_MarketDepthFullUpdate::SetMarketDataSymbolID(unsigned __int16 NewVal
 // s_MarketDepthFullUpdateLarge
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDepthFullUpdateLarge::GetMessageSize()
+unsigned __int16 DTC::s_MarketDepthFullUpdateLarge::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthFullUpdateLarge::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDepthFullUpdateLarge::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDepthFullUpdateLarge), Size));
 }
@@ -1382,13 +1385,13 @@ void GSP::s_MarketDepthFullUpdateLarge::CopyFrom(void* p_SourceData)
 // s_MarketDepthIncrementalUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_MarketDepthIncrementalUpdate::GetMessageSize()
+unsigned __int16 DTC::s_MarketDepthIncrementalUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_MarketDepthIncrementalUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_MarketDepthIncrementalUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdate), Size));
 }
@@ -1397,13 +1400,13 @@ void GSP::s_MarketDepthIncrementalUpdate::CopyFrom(void* p_SourceData)
 // s_TradeIncrementalUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_TradeIncrementalUpdate::GetMessageSize()
+unsigned __int16 DTC::s_TradeIncrementalUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_TradeIncrementalUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_TradeIncrementalUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdate), Size));
 }
@@ -1412,13 +1415,13 @@ void GSP::s_TradeIncrementalUpdate::CopyFrom(void* p_SourceData)
 // s_QuoteIncrementalUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_QuoteIncrementalUpdate::GetMessageSize()
+unsigned __int16 DTC::s_QuoteIncrementalUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_QuoteIncrementalUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_QuoteIncrementalUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_QuoteIncrementalUpdate), Size));
 }
@@ -1427,13 +1430,13 @@ void GSP::s_QuoteIncrementalUpdate::CopyFrom(void* p_SourceData)
 // s_TradeIncrementalUpdateCompact
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_TradeIncrementalUpdateCompact::GetMessageSize()
+unsigned __int16 DTC::s_TradeIncrementalUpdateCompact::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_TradeIncrementalUpdateCompact::CopyFrom(void* p_SourceData)
+void DTC::s_TradeIncrementalUpdateCompact::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdateCompact), Size));
 }
@@ -1442,13 +1445,13 @@ void GSP::s_TradeIncrementalUpdateCompact::CopyFrom(void* p_SourceData)
 // s_DailyVolumeIncrementalUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_DailyVolumeIncrementalUpdate::GetMessageSize()
+unsigned __int16 DTC::s_DailyVolumeIncrementalUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_DailyVolumeIncrementalUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_DailyVolumeIncrementalUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_DailyVolumeIncrementalUpdate), Size));
 }
@@ -1457,13 +1460,13 @@ void GSP::s_DailyVolumeIncrementalUpdate::CopyFrom(void* p_SourceData)
 // s_DailyHighIncrementalUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_DailyHighIncrementalUpdate::GetMessageSize()
+unsigned __int16 DTC::s_DailyHighIncrementalUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_DailyHighIncrementalUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_DailyHighIncrementalUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_DailyHighIncrementalUpdate), Size));
 }
@@ -1472,19 +1475,19 @@ void GSP::s_DailyHighIncrementalUpdate::CopyFrom(void* p_SourceData)
 // s_DailyLowIncrementalUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_DailyLowIncrementalUpdate::GetMessageSize()
+unsigned __int16 DTC::s_DailyLowIncrementalUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_DailyLowIncrementalUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_DailyLowIncrementalUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_DailyLowIncrementalUpdate), Size));
 }
 
 /*==========================================================================*/
-char* GSP::s_OrderUpdateReport::GetSymbol()
+char* DTC::s_OrderUpdateReport::GetSymbol()
 {
 	if (Size < offsetof(s_OrderUpdateReport, Symbol) + sizeof(Symbol))
 		return "";
@@ -1498,13 +1501,13 @@ char* GSP::s_OrderUpdateReport::GetSymbol()
 // s_SubmitNewSingleOrder
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_SubmitNewSingleOrder::GetMessageSize()
+unsigned __int16 DTC::s_SubmitNewSingleOrder::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_SubmitNewSingleOrder::CopyFrom(void* p_SourceData)
+void DTC::s_SubmitNewSingleOrder::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_SubmitNewSingleOrder), Size));
 }
@@ -1513,13 +1516,13 @@ void GSP::s_SubmitNewSingleOrder::CopyFrom(void* p_SourceData)
 // s_CancelReplaceOrder
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_CancelReplaceOrder::GetMessageSize()
+unsigned __int16 DTC::s_CancelReplaceOrder::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_CancelReplaceOrder::CopyFrom(void* p_SourceData)
+void DTC::s_CancelReplaceOrder::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_CancelReplaceOrder), Size));
 }
@@ -1528,13 +1531,13 @@ void GSP::s_CancelReplaceOrder::CopyFrom(void* p_SourceData)
 // s_CancelReplaceOrder2
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_CancelReplaceOrder2::GetMessageSize()
+unsigned __int16 DTC::s_CancelReplaceOrder2::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_CancelReplaceOrder2::CopyFrom(void* p_SourceData)
+void DTC::s_CancelReplaceOrder2::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_CancelReplaceOrder2), Size));
 }
@@ -1543,13 +1546,13 @@ void GSP::s_CancelReplaceOrder2::CopyFrom(void* p_SourceData)
 // s_CancelOrder
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_CancelOrder::GetMessageSize()
+unsigned __int16 DTC::s_CancelOrder::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_CancelOrder::CopyFrom(void* p_SourceData)
+void DTC::s_CancelOrder::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_CancelOrder), Size));
 }
@@ -1558,13 +1561,13 @@ void GSP::s_CancelOrder::CopyFrom(void* p_SourceData)
 // s_SubmitNewOCOOrder
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_SubmitNewOCOOrder::GetMessageSize()
+unsigned __int16 DTC::s_SubmitNewOCOOrder::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_SubmitNewOCOOrder::CopyFrom(void* p_SourceData)
+void DTC::s_SubmitNewOCOOrder::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_SubmitNewOCOOrder), Size));
 }
@@ -1573,13 +1576,13 @@ void GSP::s_SubmitNewOCOOrder::CopyFrom(void* p_SourceData)
 // s_OpenOrdersRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_OpenOrdersRequest::GetMessageSize()
+unsigned __int16 DTC::s_OpenOrdersRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_OpenOrdersRequest::CopyFrom(void* p_SourceData)
+void DTC::s_OpenOrdersRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequest), Size));
 }
@@ -1588,13 +1591,13 @@ void GSP::s_OpenOrdersRequest::CopyFrom(void* p_SourceData)
 // s_RequestHistoricalOrderFills
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_RequestHistoricalOrderFills::GetMessageSize()
+unsigned __int16 DTC::s_RequestHistoricalOrderFills::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_RequestHistoricalOrderFills::CopyFrom(void* p_SourceData)
+void DTC::s_RequestHistoricalOrderFills::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_RequestHistoricalOrderFills), Size));
 }
@@ -1603,13 +1606,13 @@ void GSP::s_RequestHistoricalOrderFills::CopyFrom(void* p_SourceData)
 // s_CurrentPositionsRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_CurrentPositionsRequest::GetMessageSize()
+unsigned __int16 DTC::s_CurrentPositionsRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_CurrentPositionsRequest::CopyFrom(void* p_SourceData)
+void DTC::s_CurrentPositionsRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequest), Size));
 }
@@ -1618,13 +1621,13 @@ void GSP::s_CurrentPositionsRequest::CopyFrom(void* p_SourceData)
 // s_CurrentPositionsRequestReject
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_CurrentPositionsRequestReject::GetMessageSize()
+unsigned __int16 DTC::s_CurrentPositionsRequestReject::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_CurrentPositionsRequestReject::CopyFrom(void* p_SourceData)
+void DTC::s_CurrentPositionsRequestReject::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequestReject), Size));
 }
@@ -1633,25 +1636,25 @@ void GSP::s_CurrentPositionsRequestReject::CopyFrom(void* p_SourceData)
 // s_OrderUpdateReport
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_OrderUpdateReport::GetMessageSize()
+unsigned __int16 DTC::s_OrderUpdateReport::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::CopyFrom(void* p_SourceData)
+void DTC::s_OrderUpdateReport::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_OrderUpdateReport), Size));
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetSymbol(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetSymbol(const char* NewValue)
 {
 	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_OrderUpdateReport::GetExchange()
+char* DTC::s_OrderUpdateReport::GetExchange()
 {
 	if (Size < offsetof(s_OrderUpdateReport, Exchange) + sizeof(Exchange))
 		return "";
@@ -1662,12 +1665,12 @@ char* GSP::s_OrderUpdateReport::GetExchange()
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetExchange(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetExchange(const char* NewValue)
 {
 	strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 }
 /*==========================================================================*/
-char* GSP::s_OrderUpdateReport::GetPreviousServerOrderID()
+char* DTC::s_OrderUpdateReport::GetPreviousServerOrderID()
 {
 	if (Size < offsetof(s_OrderUpdateReport, PreviousServerOrderID) + sizeof(PreviousServerOrderID))
 		return "";
@@ -1678,13 +1681,13 @@ char* GSP::s_OrderUpdateReport::GetPreviousServerOrderID()
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetPreviousServerOrderID(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetPreviousServerOrderID(const char* NewValue)
 {
 	strncpy(PreviousServerOrderID, NewValue, sizeof(PreviousServerOrderID) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_OrderUpdateReport::GetServerOrderID()
+char* DTC::s_OrderUpdateReport::GetServerOrderID()
 {
 	if (Size < offsetof(s_OrderUpdateReport, ServerOrderID) + sizeof(ServerOrderID))
 		return "";
@@ -1695,13 +1698,13 @@ char* GSP::s_OrderUpdateReport::GetServerOrderID()
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetServerOrderID(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetServerOrderID(const char* NewValue)
 {
 	strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_OrderUpdateReport::GetClientOrderID()
+char* DTC::s_OrderUpdateReport::GetClientOrderID()
 {
 	if (Size < offsetof(s_OrderUpdateReport, ClientOrderID) + sizeof(ClientOrderID))
 		return "";
@@ -1712,13 +1715,13 @@ char* GSP::s_OrderUpdateReport::GetClientOrderID()
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetClientOrderID(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetClientOrderID(const char* NewValue)
 {
 	strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_OrderUpdateReport::GetExchangeOrderID()
+char* DTC::s_OrderUpdateReport::GetExchangeOrderID()
 {
 	if (Size < offsetof(s_OrderUpdateReport, ExchangeOrderID) + sizeof(ExchangeOrderID))
 		return "";
@@ -1729,25 +1732,25 @@ char* GSP::s_OrderUpdateReport::GetExchangeOrderID()
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetExchangeOrderID(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetExchangeOrderID(const char* NewValue)
 {
 	strncpy(ExchangeOrderID, NewValue, sizeof(ExchangeOrderID) - 1);
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetUniqueFillExecutionID(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetUniqueFillExecutionID(const char* NewValue)
 {
 	strncpy(UniqueFillExecutionID, NewValue, sizeof(UniqueFillExecutionID) - 1);
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetTradeAccount(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetTradeAccount(const char* NewValue)
 {
 	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 }
 
 /*==========================================================================*/
-void GSP::s_OrderUpdateReport::SetInfoText(const char* NewValue)
+void DTC::s_OrderUpdateReport::SetInfoText(const char* NewValue)
 {
 	strncpy(InfoText, NewValue, sizeof(InfoText) - 1);
 }
@@ -1756,13 +1759,13 @@ void GSP::s_OrderUpdateReport::SetInfoText(const char* NewValue)
 // s_OpenOrdersRequestReject
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_OpenOrdersRequestReject::GetMessageSize()
+unsigned __int16 DTC::s_OpenOrdersRequestReject::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_OpenOrdersRequestReject::CopyFrom(void* p_SourceData)
+void DTC::s_OpenOrdersRequestReject::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequestReject), Size));
 }
@@ -1771,13 +1774,13 @@ void GSP::s_OpenOrdersRequestReject::CopyFrom(void* p_SourceData)
 // s_HistoricalOrderFillReport
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_HistoricalOrderFillReport::GetMessageSize()
+unsigned __int16 DTC::s_HistoricalOrderFillReport::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalOrderFillReport::CopyFrom(void* p_SourceData)
+void DTC::s_HistoricalOrderFillReport::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_HistoricalOrderFillReport), Size));
 }
@@ -1786,25 +1789,25 @@ void GSP::s_HistoricalOrderFillReport::CopyFrom(void* p_SourceData)
 // s_PositionReport
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_PositionReport::GetMessageSize()
+unsigned __int16 DTC::s_PositionReport::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_PositionReport::CopyFrom(void* p_SourceData)
+void DTC::s_PositionReport::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_PositionReport), Size));
 }
 
 /*==========================================================================*/
-void GSP::s_PositionReport::SetSymbol(const char* NewValue)
+void DTC::s_PositionReport::SetSymbol(const char* NewValue)
 {
 	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 }
 
 /*==========================================================================*/
-void GSP::s_PositionReport::SetTradeAccount(const char* NewValue)
+void DTC::s_PositionReport::SetTradeAccount(const char* NewValue)
 {
 	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 }
@@ -1813,13 +1816,13 @@ void GSP::s_PositionReport::SetTradeAccount(const char* NewValue)
 // s_RequestAccounts
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_RequestAccounts::GetMessageSize()
+unsigned __int16 DTC::s_RequestAccounts::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_RequestAccounts::CopyFrom(void* p_SourceData)
+void DTC::s_RequestAccounts::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_RequestAccounts), Size));
 }
@@ -1828,13 +1831,13 @@ void GSP::s_RequestAccounts::CopyFrom(void* p_SourceData)
 // s_AccountsListResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_AccountsListResponse::GetMessageSize()
+unsigned __int16 DTC::s_AccountsListResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_AccountsListResponse::CopyFrom(void* p_SourceData)
+void DTC::s_AccountsListResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_AccountsListResponse), Size));
 }
@@ -1843,13 +1846,13 @@ void GSP::s_AccountsListResponse::CopyFrom(void* p_SourceData)
 // s_ExchangeListRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_ExchangeListRequest::GetMessageSize()
+unsigned __int16 DTC::s_ExchangeListRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_ExchangeListRequest::CopyFrom(void* p_SourceData)
+void DTC::s_ExchangeListRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_ExchangeListRequest), Size));
 }
@@ -1858,13 +1861,13 @@ void GSP::s_ExchangeListRequest::CopyFrom(void* p_SourceData)
 // s_ExchangeListResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_ExchangeListResponse::GetMessageSize()
+unsigned __int16 DTC::s_ExchangeListResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_ExchangeListResponse::CopyFrom(void* p_SourceData)
+void DTC::s_ExchangeListResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_ExchangeListResponse), Size));
 }
@@ -1873,13 +1876,13 @@ void GSP::s_ExchangeListResponse::CopyFrom(void* p_SourceData)
 // s_SymbolsForExchangeRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_SymbolsForExchangeRequest::GetMessageSize()
+unsigned __int16 DTC::s_SymbolsForExchangeRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_SymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
+void DTC::s_SymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_SymbolsForExchangeRequest), Size));
 }
@@ -1888,13 +1891,13 @@ void GSP::s_SymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
 // s_UnderlyingSymbolsForExchangeRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_UnderlyingSymbolsForExchangeRequest::GetMessageSize()
+unsigned __int16 DTC::s_UnderlyingSymbolsForExchangeRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_UnderlyingSymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
+void DTC::s_UnderlyingSymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_UnderlyingSymbolsForExchangeRequest), Size));
 }
@@ -1903,13 +1906,13 @@ void GSP::s_UnderlyingSymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
 // s_SymbolsForUnderlyingRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_SymbolsForUnderlyingRequest::GetMessageSize()
+unsigned __int16 DTC::s_SymbolsForUnderlyingRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_SymbolsForUnderlyingRequest::CopyFrom(void* p_SourceData)
+void DTC::s_SymbolsForUnderlyingRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_SymbolsForUnderlyingRequest), Size));
 }
@@ -1918,45 +1921,29 @@ void GSP::s_SymbolsForUnderlyingRequest::CopyFrom(void* p_SourceData)
 // s_SecurityDefinitionForSymbolRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_SecurityDefinitionForSymbolRequest::GetMessageSize()
+unsigned __int16 DTC::s_SecurityDefinitionForSymbolRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_SecurityDefinitionForSymbolRequest::CopyFrom(void* p_SourceData)
+void DTC::s_SecurityDefinitionForSymbolRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_SecurityDefinitionForSymbolRequest), Size));
 }
 
-/****************************************************************************/
-// s_SymbolResponse
-
-#if 0
-/*==========================================================================*/
-unsigned __int16 GSP::s_SymbolResponse::GetMessageSize()
-{
-	return Size;
-}
-
-/*==========================================================================*/
-void GSP::s_SymbolResponse::CopyFrom(void* p_SourceData)
-{
-	memcpy(this, p_SourceData, min(sizeof(s_SymbolResponse), Size));
-}
-#endif
 
 /****************************************************************************/
 // s_SecurityDefinitionResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_SecurityDefinitionResponse::GetMessageSize()
+unsigned __int16 DTC::s_SecurityDefinitionResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_SecurityDefinitionResponse::CopyFrom(void* p_SourceData)
+void DTC::s_SecurityDefinitionResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_SecurityDefinitionResponse), Size));
 }
@@ -1965,25 +1952,25 @@ void GSP::s_SecurityDefinitionResponse::CopyFrom(void* p_SourceData)
 // s_AccountBalanceUpdate
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_AccountBalanceUpdate::GetMessageSize()
+unsigned __int16 DTC::s_AccountBalanceUpdate::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_AccountBalanceUpdate::CopyFrom(void* p_SourceData)
+void DTC::s_AccountBalanceUpdate::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_AccountBalanceUpdate), Size));
 }
 
 /*==========================================================================*/
-void GSP::s_AccountBalanceUpdate::SetAccountCurrency(const char* NewValue)
+void DTC::s_AccountBalanceUpdate::SetAccountCurrency(const char* NewValue)
 {
 	strncpy(AccountCurrency, NewValue, sizeof(AccountCurrency) - 1);
 }
 
 /*==========================================================================*/
-void GSP::s_AccountBalanceUpdate::SetTradeAccount(const char* NewValue)
+void DTC::s_AccountBalanceUpdate::SetTradeAccount(const char* NewValue)
 {
 	strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 }
@@ -1992,13 +1979,13 @@ void GSP::s_AccountBalanceUpdate::SetTradeAccount(const char* NewValue)
 // s_UserMessage
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_UserMessage::GetMessageSize()
+unsigned __int16 DTC::s_UserMessage::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_UserMessage::CopyFrom(void* p_SourceData)
+void DTC::s_UserMessage::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_UserMessage), Size));
 }
@@ -2007,13 +1994,13 @@ void GSP::s_UserMessage::CopyFrom(void* p_SourceData)
 // s_GeneralLogMessage
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_GeneralLogMessage::GetMessageSize()
+unsigned __int16 DTC::s_GeneralLogMessage::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_GeneralLogMessage::CopyFrom(void* p_SourceData)
+void DTC::s_GeneralLogMessage::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_GeneralLogMessage), Size));
 }
@@ -2022,19 +2009,19 @@ void GSP::s_GeneralLogMessage::CopyFrom(void* p_SourceData)
 // s_HistoricalPriceDataRequest
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_HistoricalPriceDataRequest::GetMessageSize()
+unsigned __int16 DTC::s_HistoricalPriceDataRequest::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalPriceDataRequest::CopyFrom(void* p_SourceData)
+void DTC::s_HistoricalPriceDataRequest::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataRequest), Size));
 }
 
 /*==========================================================================*/
-char* GSP::s_HistoricalPriceDataRequest::GetSymbol()
+char* DTC::s_HistoricalPriceDataRequest::GetSymbol()
 {
 	if (Size < offsetof(s_HistoricalPriceDataRequest, Symbol) + sizeof(Symbol))
 		return "";
@@ -2045,13 +2032,13 @@ char* GSP::s_HistoricalPriceDataRequest::GetSymbol()
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalPriceDataRequest::SetSymbol(const char* NewValue)
+void DTC::s_HistoricalPriceDataRequest::SetSymbol(const char* NewValue)
 {
 	strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_HistoricalPriceDataRequest::GetExchange()
+char* DTC::s_HistoricalPriceDataRequest::GetExchange()
 {
 	if (Size < offsetof(s_HistoricalPriceDataRequest, Exchange) + sizeof(Exchange))
 		return "";
@@ -2062,7 +2049,7 @@ char* GSP::s_HistoricalPriceDataRequest::GetExchange()
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalPriceDataRequest::SetExchange(const char* NewValue)
+void DTC::s_HistoricalPriceDataRequest::SetExchange(const char* NewValue)
 {
 	strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 }
@@ -2071,13 +2058,13 @@ void GSP::s_HistoricalPriceDataRequest::SetExchange(const char* NewValue)
 // s_HistoricalPriceDataHeaderResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_HistoricalPriceDataHeaderResponse::GetMessageSize()
+unsigned __int16 DTC::s_HistoricalPriceDataHeaderResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalPriceDataHeaderResponse::CopyFrom(void* p_SourceData)
+void DTC::s_HistoricalPriceDataHeaderResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataHeaderResponse), Size));
 }
@@ -2086,13 +2073,13 @@ void GSP::s_HistoricalPriceDataHeaderResponse::CopyFrom(void* p_SourceData)
 // s_HistoricalPriceDataReject
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_HistoricalPriceDataReject::GetMessageSize()
+unsigned __int16 DTC::s_HistoricalPriceDataReject::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalPriceDataReject::CopyFrom(void* p_SourceData)
+void DTC::s_HistoricalPriceDataReject::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataReject), Size));
 }
@@ -2101,13 +2088,13 @@ void GSP::s_HistoricalPriceDataReject::CopyFrom(void* p_SourceData)
 // s_HistoricalPriceDataRecordResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_HistoricalPriceDataRecordResponse::GetMessageSize()
+unsigned __int16 DTC::s_HistoricalPriceDataRecordResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalPriceDataRecordResponse::CopyFrom(void* p_SourceData)
+void DTC::s_HistoricalPriceDataRecordResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataRecordResponse), Size));
 }
@@ -2116,28 +2103,36 @@ void GSP::s_HistoricalPriceDataRecordResponse::CopyFrom(void* p_SourceData)
 // s_HistoricalPriceDataTickRecordResponse
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_HistoricalPriceDataTickRecordResponse::GetMessageSize()
+unsigned __int16 DTC::s_HistoricalPriceDataTickRecordResponse::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_HistoricalPriceDataTickRecordResponse::CopyFrom(void* p_SourceData)
+void DTC::s_HistoricalPriceDataTickRecordResponse::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataTickRecordResponse), Size));
+}
+
+/*==========================================================================*/
+void DTC::s_HistoricalPriceDataTickRecordResponse::Clear()
+{
+	memset(this, 0,sizeof(s_HistoricalPriceDataTickRecordResponse));
+	Type=HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE;
+	Size=sizeof(s_HistoricalPriceDataTickRecordResponse);
 }
 
 /****************************************************************************/
 // s_ConfigurationRequestFromClient
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_ConfigurationRequestFromClient::GetMessageSize()
+unsigned __int16 DTC::s_ConfigurationRequestFromClient::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_ConfigurationRequestFromClient::CopyFrom(void* p_SourceData)
+void DTC::s_ConfigurationRequestFromClient::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_ConfigurationRequestFromClient), Size));
 }
@@ -2146,7 +2141,7 @@ void GSP::s_ConfigurationRequestFromClient::CopyFrom(void* p_SourceData)
 // s_ServerReadyToReceive
 
 /*==========================================================================*/
-__int32 GSP::s_ServerReadyToReceive::GetProtocolVersion()
+__int32 DTC::s_ServerReadyToReceive::GetProtocolVersion()
 {
 	if (Size < offsetof(s_ServerReadyToReceive, ProtocolVersion) + sizeof(ProtocolVersion))
 		return 0;
@@ -2155,19 +2150,19 @@ __int32 GSP::s_ServerReadyToReceive::GetProtocolVersion()
 }
 
 /*==========================================================================*/
-unsigned __int16 GSP::s_ServerReadyToReceive::GetMessageSize()
+unsigned __int16 DTC::s_ServerReadyToReceive::GetMessageSize()
 {
 	return Size;
 }
 
 /*==========================================================================*/
-void GSP::s_ServerReadyToReceive::CopyFrom(void* p_SourceData)
+void DTC::s_ServerReadyToReceive::CopyFrom(void* p_SourceData)
 {
 	memcpy(this, p_SourceData, min(sizeof(s_ServerReadyToReceive), Size));
 }
 
 /*==========================================================================*/
-char* GSP::s_ServerReadyToReceive::GetServerName()
+char* DTC::s_ServerReadyToReceive::GetServerName()
 {
 	if (Size < offsetof(s_ServerReadyToReceive, ServerName) + sizeof(ServerName))
 		return "";
@@ -2178,13 +2173,13 @@ char* GSP::s_ServerReadyToReceive::GetServerName()
 }
 
 /*==========================================================================*/
-void GSP::s_ServerReadyToReceive::SetServerName(const char* NewValue)
+void DTC::s_ServerReadyToReceive::SetServerName(const char* NewValue)
 {
 	strncpy(ServerName, NewValue, sizeof(ServerName) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_ServerReadyToReceive::GetServerVersion()
+char* DTC::s_ServerReadyToReceive::GetServerVersion()
 {
 	if (Size < offsetof(s_ServerReadyToReceive, ServerVersion) + sizeof(ServerVersion))
 		return "";
@@ -2195,13 +2190,13 @@ char* GSP::s_ServerReadyToReceive::GetServerVersion()
 }
 
 /*==========================================================================*/
-void GSP::s_ServerReadyToReceive::SetServerVersion(const char* NewValue)
+void DTC::s_ServerReadyToReceive::SetServerVersion(const char* NewValue)
 {
 	strncpy(ServerVersion, NewValue, sizeof(ServerVersion) - 1);
 }
 
 /*==========================================================================*/
-char* GSP::s_ServerReadyToReceive::GetServiceProviderName()
+char* DTC::s_ServerReadyToReceive::GetServiceProviderName()
 {
 	if (Size < offsetof(s_ServerReadyToReceive, ServiceProviderName) + sizeof(ServiceProviderName))
 		return "";
@@ -2212,7 +2207,7 @@ char* GSP::s_ServerReadyToReceive::GetServiceProviderName()
 }
 
 /*==========================================================================*/
-void GSP::s_ServerReadyToReceive::SetServiceProviderName(const char* NewValue)
+void DTC::s_ServerReadyToReceive::SetServiceProviderName(const char* NewValue)
 {
 	strncpy(ServiceProviderName, NewValue, sizeof(ServiceProviderName) - 1);
 }

@@ -1,8 +1,6 @@
-//General Data and Trading Service Protocol (GSP)
+//Data and Trading Service Communications protocol (DTC protocol)
 
-//New proposed name: Data and Trading Communications Protocol (DTC Protocol)
-
-//Documentation: http://www.sierrachart.com/index.php?file=doc/doc_GSPMessageDocumentation.php
+//Documentation: http://www.sierrachart.com/index.php?file=doc/doc_DTCMessageDocumentation.php
 
 // Integers of type "__int32" are 32 bits.
 
@@ -10,7 +8,7 @@
 
 #pragma once
 
-namespace GSP
+namespace DTC
 {
 #pragma pack(8)
 
@@ -46,6 +44,7 @@ namespace GSP
 	const unsigned __int16 DAILY_LOW_INCREMENTAL_UPDATE = 115;
 	const unsigned __int16 MARKET_DATA_FEED_SYMBOL_STATUS = 116;
 	const unsigned __int16 QUOTE_INCREMENTAL_UPDATE_COMPACT = 117;
+	const unsigned __int16 MARKET_DEPTH_INCREMENTAL_UPDATE_COMPACT = 118;
 	const unsigned __int16 SUBMIT_NEW_SINGLE_ORDER = 200;
 	const unsigned __int16 SUBMIT_NEW_OCO_ORDER = 201;
 	const unsigned __int16 CANCEL_REPLACE_ORDER = 202;
@@ -66,7 +65,6 @@ namespace GSP
 	const unsigned __int16 SYMBOLS_FOR_EXCHANGE_REQUEST = 502;
 	const unsigned __int16 UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST = 503;
 	const unsigned __int16 SYMBOLS_FOR_UNDERLYING_REQUEST = 504;
-	//const unsigned __int16 SYMBOL_RESPONSE = 505;
 	const unsigned __int16 SECURITY_DEFINITION_FOR_SYMBOL_REQUEST = 506;
 	const unsigned __int16 SECURITY_DEFINITION_RESPONSE = 507;
 	const unsigned __int16 ACCOUNT_BALANCE_UPDATE = 600;
@@ -79,7 +77,7 @@ namespace GSP
 	const unsigned __int16 HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE = 804;
 
 	/*==========================================================================*/
-	//Nonstandard messages which are not considered part of the standard specification.  A standard GSP server and client implement these.
+	//Nonstandard messages which are not considered part of the standard specification.  A standard DTC server and client will not implement these.
 	//----------------------------------------------
 
 	const unsigned __int16 CONFIGURATION_REQUEST_FROM_CLIENT = 10001; //Client >> Server
@@ -338,6 +336,8 @@ namespace GSP
 		unsigned char SecurityDefinitionsSupported;
 		unsigned char HistoricalPriceDataSupported;
 		unsigned char ResubscribeWhenMarketDataFeedRestored;
+		unsigned char MarketDepthIsSupported;
+		unsigned char OneHistoricalPriceDataRequestPerConnection;
 
 		s_LogonResponse()
 		{
@@ -346,6 +346,7 @@ namespace GSP
 			Size=sizeof(s_LogonResponse);
 			ProtocolVersion = CURRENT_VERSION;
 			OrderCancelReplaceSupported = 1;
+			MarketDepthIsSupported = 1;
 		}
 
 		unsigned __int16 GetMessageSize();
@@ -794,6 +795,33 @@ namespace GSP
 		void CopyFrom(void * p_SourceData);
         
 	};
+	/*==========================================================================*/
+	struct s_MarketDepthIncrementalUpdateCompact
+	{	 
+		unsigned __int16 Size;
+		unsigned __int16 Type;
+
+		unsigned __int16 MarketDataSymbolID;
+		BidOrAskEnum Side;
+		float Price;
+		unsigned __int32 Volume;
+
+		MarketDepthIncrementalUpdateTypeEnum UpdateType;
+
+		s_MarketDepthIncrementalUpdateCompact()
+		{
+
+			memset(this, 0,sizeof(s_MarketDepthIncrementalUpdateCompact));
+			Type=MARKET_DEPTH_INCREMENTAL_UPDATE_COMPACT;
+			Size=sizeof(s_MarketDepthIncrementalUpdateCompact);
+
+		}
+
+		unsigned __int16 GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
+	};
+	
 
 	/*==========================================================================*/
 
@@ -1042,7 +1070,7 @@ namespace GSP
 
 		unsigned __int32 OrderQuantity;
 
-		char TradeAccount [TRADE_ACCOUNT_LENGTH];//Not required by GSP
+		char TradeAccount [TRADE_ACCOUNT_LENGTH];//Not required by DTC
 
 		__int32 Price1AsInteger;
 		__int32 Price2AsInteger;
@@ -1074,12 +1102,12 @@ namespace GSP
 
 		unsigned __int32 OrderQuantity;
 
-		char TradeAccount [TRADE_ACCOUNT_LENGTH];//Not required by GSP
+		char TradeAccount [TRADE_ACCOUNT_LENGTH];//Not required by DTC
 
-		char Symbol[SYMBOL_LENGTH];//Not required by GSP
-		char Exchange[EXCHANGE_LENGTH];//Not required by GSP
-		OrderTypeEnum OrderType;//Not required by GSP
-		TimeInForceEnum TimeInForce;//Not required by GSP
+		char Symbol[SYMBOL_LENGTH];//Not required by DTC
+		char Exchange[EXCHANGE_LENGTH];//Not required by DTC
+		OrderTypeEnum OrderType;//Not required by DTC
+		TimeInForceEnum TimeInForce;//Not required by DTC
 
 		s_CancelReplaceOrder2()
 		{
@@ -1103,8 +1131,8 @@ namespace GSP
 		char ClientOrderID[ORDER_ID_LENGTH];
 		char TradeAccount [TRADE_ACCOUNT_LENGTH];
 
-		char Symbol[SYMBOL_LENGTH];//Not required by GSP
-		char Exchange[EXCHANGE_LENGTH];//Not required by GSP
+		char Symbol[SYMBOL_LENGTH];//Not required by DTC
+		char Exchange[EXCHANGE_LENGTH];//Not required by DTC
 
 		s_CancelOrder()
 		{
@@ -1641,32 +1669,7 @@ namespace GSP
 
 	};
 
-	/*==========================================================================
-
-	struct s_SymbolResponse
-	{
-		unsigned __int16 Size;
-		unsigned __int16 Type;
-
-		__int32 RequestID;
-		char Symbol[SYMBOL_LENGTH];
-		char Exchange[EXCHANGE_LENGTH];
-
-		SecurityTypeEnum SecurityType;
-		char FinalMessage;
-
-		s_SymbolResponse()
-		{
-			memset(this, 0,sizeof(s_SymbolResponse));
-			Type=SYMBOL_RESPONSE;
-			Size=sizeof(s_SymbolResponse);
-		}
-		
-		unsigned __int16 GetMessageSize();
-		void CopyFrom(void * p_SourceData);
-
-	};
-	==========================================================================*/
+	/*==========================================================================*/
 
 	struct s_SecurityDefinitionResponse
 	{
@@ -1786,7 +1789,7 @@ namespace GSP
 		HistoricalDataIntervalEnum DataInterval;
 		t_DateTime StartDateTime;
 		t_DateTime EndDateTime;
-		__int32 MaximumDaysToReturn;
+		unsigned __int32 MaximumDaysToReturn;
 		char  UseZLibCompression;
 
 		char DividendAdjustedStockData;
@@ -1916,8 +1919,7 @@ namespace GSP
 		unsigned __int16 Type;
 		__int32 RequestIdentifier;
 
-		t_DateTime TradeDateTime;
-		__int16 Milliseconds;
+		double TradeDateTimeWithMilliseconds;
 		BidOrAskEnum BidOrAsk;
 
 		double TradePrice;
@@ -1934,7 +1936,7 @@ namespace GSP
 		
 		unsigned __int16 GetMessageSize();
 		void CopyFrom(void * p_SourceData);
-
+		void Clear();
 	};
 
 
