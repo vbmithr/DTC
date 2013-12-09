@@ -110,13 +110,7 @@ namespace DTC
 
 		return Integer_1;
 	}
-
-	/*==========================================================================*/
-	void s_LogonRequest::SetInteger_1(__int32 NewValue)
-	{
-		Integer_1 = NewValue;
-	}
-
+	
 	/*==========================================================================*/
 	__int32 s_LogonRequest::GetInteger_2()
 	{
@@ -126,11 +120,6 @@ namespace DTC
 		return Integer_2;
 	}
 
-	/*==========================================================================*/
-	void s_LogonRequest::SetInteger_2(__int32 NewValue)
-	{
-		Integer_2 = NewValue;
-	}
 
 	/*==========================================================================*/
 	__int32 s_LogonRequest::GetInHeartbeatIntervalInSeconds()
@@ -141,11 +130,6 @@ namespace DTC
 		return HeartbeatIntervalInSeconds;
 	}
 
-	/*==========================================================================*/
-	void s_LogonRequest::SetHeartbeatIntervalInSeconds(__int32 NewValue)
-	{
-		HeartbeatIntervalInSeconds = NewValue;
-	}
 
 	/*==========================================================================*/
 	TradeModeEnum s_LogonRequest::GetTradeMode()
@@ -156,11 +140,6 @@ namespace DTC
 		return TradeMode;
 	}
 
-	/*==========================================================================*/
-	void s_LogonRequest::SetTradeMode(TradeModeEnum NewValue)
-	{
-		TradeMode = NewValue;
-	}
 
 	/*==========================================================================*/
 	char* s_LogonRequest::GetTradeAccount()
@@ -245,13 +224,7 @@ namespace DTC
 
 		return Result;
 	}
-
-	/*==========================================================================*/
-	void s_LogonResponse::SetResult(LogonStatusEnum NewValue)
-	{
-		Result = NewValue;
-	}
-
+	
 	/*==========================================================================*/
 	char* s_LogonResponse::GetResultText()
 	{
@@ -295,11 +268,6 @@ namespace DTC
 		return Integer_1;
 	}
 
-	/*==========================================================================*/
-	void s_LogonResponse::SetInteger_1(__int32 NewValue)
-	{
-		Integer_1 = NewValue;
-	}
 
 	/*==========================================================================*/
 	char* s_LogonResponse::GetServerVersion()
@@ -311,13 +279,11 @@ namespace DTC
 
 		return ServerVersion;
 	}
-
 	/*==========================================================================*/
-	void s_LogonResponse::SetServerVersion(const char* NewValue)
+	void s_LogonResponse::SetServerVersion(const char * NewValue)
 	{
 		strncpy(ServerVersion, NewValue, sizeof(ServerVersion) - 1);
 	}
-
 	/*==========================================================================*/
 	char* s_LogonResponse::GetServerName()
 	{
@@ -362,12 +328,6 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_LogonResponse::SetMarketDepthUpdatesBestBidAndAsk(unsigned char NewValue)
-	{
-		MarketDepthUpdatesBestBidAndAsk = NewValue;
-	}
-
-	/*==========================================================================*/
 	unsigned char s_LogonResponse::GetTradingIsSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, TradingIsSupported) + sizeof(TradingIsSupported))
@@ -376,11 +336,6 @@ namespace DTC
 		return TradingIsSupported;
 	}
 
-	/*==========================================================================*/
-	void s_LogonResponse::SetTradingIsSupported(unsigned char NewValue)
-	{
-		TradingIsSupported = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned char s_LogonResponse::GetOCOOrdersSupported()
@@ -400,11 +355,6 @@ namespace DTC
 		return OrderCancelReplaceSupported;
 	}
 
-	/*==========================================================================*/
-	void s_LogonResponse::SetOrderCancelReplaceSupported(unsigned char NewValue)
-	{
-		OrderCancelReplaceSupported = NewValue;
-	}
 
 	/*==========================================================================*/
 	char* s_LogonResponse::GetSymbolExchangeDelimiter()
@@ -432,11 +382,6 @@ namespace DTC
 		return SecurityDefinitionsSupported;
 	}
 
-	/*==========================================================================*/
-	void s_LogonResponse::SetSecurityDefinitionsSupported(unsigned char NewValue)
-	{
-		SecurityDefinitionsSupported = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned char s_LogonResponse::GetHistoricalPriceDataSupported()
@@ -447,11 +392,6 @@ namespace DTC
 		return HistoricalPriceDataSupported;
 	}
 
-	/*==========================================================================*/
-	void s_LogonResponse::SetHistoricalPriceDataSupported(unsigned char NewValue)
-	{
-		HistoricalPriceDataSupported  = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned char s_LogonResponse::GetResubscribeWhenMarketDataFeedRestored()
@@ -460,12 +400,6 @@ namespace DTC
 			return 0;
 
 		return ResubscribeWhenMarketDataFeedRestored;
-	}
-
-	/*==========================================================================*/
-	void s_LogonResponse::SetResubscribeWhenMarketDataFeedRestored(unsigned char NewValue)
-	{
-		ResubscribeWhenMarketDataFeedRestored = NewValue;
 	}
 
 	/****************************************************************************/
@@ -490,12 +424,6 @@ namespace DTC
 			return 0;
 
 		return DroppedMessages;
-	}
-
-	/*==========================================================================*/
-	void s_Heartbeat::SetDroppedMessages(unsigned __int32 NewValue)
-	{
-		DroppedMessages = NewValue;
 	}
 
 	/*==========================================================================*/
@@ -554,11 +482,6 @@ namespace DTC
 		return Status;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataFeedStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
-	{
-		Status = NewValue;
-	}
 
 	/****************************************************************************/
 	// s_MarketDataFeedSymbolStatus
@@ -584,11 +507,6 @@ namespace DTC
 		return MarketDataSymbolID;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataFeedSymbolStatus::SetMarketDataSymbolID(unsigned __int16 NewValue)
-	{
-		MarketDataSymbolID = NewValue;
-	}
 
 	/*==========================================================================*/
 	MarketDataFeedStatusEnum s_MarketDataFeedSymbolStatus::GetStatus()
@@ -599,11 +517,6 @@ namespace DTC
 		return Status;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataFeedSymbolStatus::SetStatus(MarketDataFeedStatusEnum NewValue)
-	{
-		Status = NewValue;
-	}
 
 	/****************************************************************************/
 	// s_MarketDataRequest
@@ -629,11 +542,6 @@ namespace DTC
 		return RequestActionValue;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataRequest::SetRequestActionValue(RequestActionEnum NewValue)
-	{
-		RequestActionValue = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned __int16 s_MarketDataRequest::GetMarketDataSymbolID()
@@ -644,11 +552,6 @@ namespace DTC
 		return MarketDataSymbolID;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataRequest::SetMarketDataSymbolID(unsigned __int16 NewValue)
-	{
-		MarketDataSymbolID = NewValue;
-	}
 
 	/*==========================================================================*/
 	char* s_MarketDataRequest::GetSymbol()
@@ -708,11 +611,6 @@ namespace DTC
 		return RequestActionValue;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDepthRequest::SetRequestActionValue(RequestActionEnum NewValue)
-	{
-		RequestActionValue = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned __int16 s_MarketDepthRequest::GetMarketDataSymbolID()
@@ -723,11 +621,6 @@ namespace DTC
 		return MarketDataSymbolID;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDepthRequest::SetMarketDataSymbolID(unsigned __int16 NewValue)
-	{
-		MarketDataSymbolID = NewValue;
-	}
 
 	/*==========================================================================*/
 	char* s_MarketDepthRequest::GetSymbol()
@@ -772,11 +665,6 @@ namespace DTC
 		return NumberOfLevels;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDepthRequest::SetNumberOfLevels(__int32 NewValue)
-	{
-		NumberOfLevels = NewValue;
-	}
 
 	/****************************************************************************/
 	// s_MarketDataReject
@@ -802,11 +690,6 @@ namespace DTC
 		return MarketDataSymbolID;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataReject::SetMarketDataSymbolID(unsigned __int16 NewValue)
-	{
-		MarketDataSymbolID = NewValue;
-	}
 
 	/*==========================================================================*/
 	char* s_MarketDataReject::GetRejectText()
@@ -849,11 +732,6 @@ namespace DTC
 		return MarketDataSymbolID;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetMarketDataSymbolID(unsigned __int16 NewValue)
-	{
-		MarketDataSymbolID = NewValue;
-	}
 
 	/*==========================================================================*/
 	double s_MarketDataSnapshot::GetSettlementPrice()
@@ -864,11 +742,6 @@ namespace DTC
 		return SettlementPrice;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetSettlementPrice(double NewValue)
-	{
-		SettlementPrice = NewValue;
-	}
 
 	/*==========================================================================*/
 	double s_MarketDataSnapshot::GetDailyOpen()
@@ -879,11 +752,6 @@ namespace DTC
 		return DailyOpen;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetDailyOpen(double NewValue)
-	{
-		DailyOpen = NewValue;
-	}
 
 	/*==========================================================================*/
 	double s_MarketDataSnapshot::GetDailyHigh()
@@ -894,11 +762,6 @@ namespace DTC
 		return DailyHigh;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetDailyHigh(double NewValue)
-	{
-		DailyHigh = NewValue;
-	}
 
 	/*==========================================================================*/
 	double s_MarketDataSnapshot::GetDailyLow()
@@ -909,11 +772,6 @@ namespace DTC
 		return DailyLow;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetDailyLow(double NewValue)
-	{
-		DailyLow = NewValue;
-	}
 
 	/*==========================================================================*/
 	double s_MarketDataSnapshot::GetDailyVolume()
@@ -924,11 +782,6 @@ namespace DTC
 		return DailyVolume;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetDailyVolume(double NewValue)
-	{
-		DailyVolume = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned __int32 s_MarketDataSnapshot::GetDailyNumberOfTrades()
@@ -940,12 +793,6 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetDailyNumberOfTrades(unsigned __int32 NewValue)
-	{
-		DailyNumberOfTrades = NewValue;
-	}
-
-	/*==========================================================================*/
 	unsigned __int32 s_MarketDataSnapshot::GetSharesOutstanding()
 	{
 		if (Size < offsetof(s_MarketDataSnapshot, SharesOutstanding) + sizeof(SharesOutstanding))
@@ -954,11 +801,6 @@ namespace DTC
 		return SharesOutstanding;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetSharesOutstanding(unsigned __int32 NewValue)
-	{
-		SharesOutstanding = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned __int32 s_MarketDataSnapshot::GetOpenInterest()
@@ -969,11 +811,6 @@ namespace DTC
 		return OpenInterest;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetOpenInterest(unsigned __int32 NewValue)
-	{
-		OpenInterest = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned __int32 s_MarketDataSnapshot::GetUnitsOutstanding()
@@ -984,11 +821,6 @@ namespace DTC
 		return UnitsOutstanding;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetUnitsOutstanding(unsigned __int32 NewValue)
-	{
-		UnitsOutstanding = NewValue;
-	}
 
 	/*==========================================================================*/
 	double s_MarketDataSnapshot::GetBid()
@@ -998,13 +830,6 @@ namespace DTC
 
 		return Bid;
 	}
-
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetBid(double NewValue)
-	{
-		Bid = NewValue;
-	}
-
 	/*==========================================================================*/
 	double s_MarketDataSnapshot::GetAsk()
 	{
@@ -1012,12 +837,6 @@ namespace DTC
 			return 0;
 
 		return Ask;
-	}
-
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetAsk(double NewValue)
-	{
-		Ask = NewValue;
 	}
 
 	/*==========================================================================*/
@@ -1029,11 +848,6 @@ namespace DTC
 		return AskSize;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetAskSize(unsigned __int32 NewValue)
-	{
-		AskSize = NewValue;
-	}
 
 	/*==========================================================================*/
 	unsigned __int32 s_MarketDataSnapshot::GetBidSize()
@@ -1042,12 +856,6 @@ namespace DTC
 			return 0;
 
 		return BidSize;
-	}
-
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetBidSize(unsigned __int32 NewValue)
-	{
-		BidSize = NewValue;
 	}
 
 	/*==========================================================================*/
@@ -1060,12 +868,6 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetLastTradePrice(double NewValue)
-	{
-		LastTradePrice = NewValue;
-	}
-
-	/*==========================================================================*/
 	unsigned __int32 s_MarketDataSnapshot::GetLastTradeSize()
 	{
 		if (Size < offsetof(s_MarketDataSnapshot, LastTradeSize) + sizeof(LastTradeSize))
@@ -1073,15 +875,8 @@ namespace DTC
 
 		return LastTradeSize;
 	}
-
 	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetLastTradeSize(unsigned __int32 NewValue)
-	{
-		LastTradeSize = NewValue;
-	}
-
-	/*==========================================================================*/
-	t_DateTime s_MarketDataSnapshot::GetLastTradeDateTimeUnix()
+	double s_MarketDataSnapshot::GetLastTradeDateTimeUnix()
 	{
 		if (Size < offsetof(s_MarketDataSnapshot, LastTradeDateTimeUnix) + sizeof(LastTradeDateTimeUnix))
 			return 0;
@@ -1089,26 +884,8 @@ namespace DTC
 		return LastTradeDateTimeUnix;
 	}
 
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetLastTradeDateTimeUnix(t_DateTime NewValue)
-	{
-		LastTradeDateTimeUnix = NewValue;
-	}
 
-	/*==========================================================================*/
-	__int16 s_MarketDataSnapshot::GetLastTradeMilliseconds()
-	{
-		if (Size < offsetof(s_MarketDataSnapshot, LastTradeMilliseconds) + sizeof(LastTradeMilliseconds))
-			return 0;
 
-		return LastTradeMilliseconds;
-	}
-
-	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetLastTradeMilliseconds(__int16 NewValue)
-	{
-		LastTradeMilliseconds = NewValue;
-	}
 
 	/*==========================================================================*/
 	void s_MarketDataSnapshot::SetToUnsetValues()
@@ -1156,12 +933,6 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetMarketDataSymbolID(unsigned __int16 NewValue)
-	{
-		MarketDataSymbolID = NewValue;
-	}
-
-	/*==========================================================================*/
 	char* s_FundamentalDataResponse::GetSymbolDescription()
 	{
 		if (Size < offsetof(s_FundamentalDataResponse, SymbolDescription) + sizeof(SymbolDescription))
@@ -1187,11 +958,6 @@ namespace DTC
 		return TickSize;
 	}
 
-	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetTickSize(float NewValue)
-	{
-		TickSize = NewValue;
-	}
 
 	/*==========================================================================*/
 	float s_FundamentalDataResponse::GetTickCurrencyValue()
@@ -1202,11 +968,6 @@ namespace DTC
 		return TickCurrencyValue;
 	}
 
-	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetTickCurrencyValue(float NewValue)
-	{
-		TickCurrencyValue = NewValue;
-	}
 
 	/*==========================================================================*/
 	DisplayFormatEnum s_FundamentalDataResponse::GetDisplayFormat()
@@ -1358,24 +1119,78 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_MarketDepthFullUpdate::SetMarketDataSymbolID(unsigned __int16 NewValue)
-	{
-		MarketDataSymbolID = NewValue;
-	}
-
-	/****************************************************************************/
-	// s_MarketDepthFullUpdateLarge
-
-	/*==========================================================================*/
-	unsigned __int16 s_MarketDepthFullUpdateLarge::GetMessageSize()
+	unsigned __int16 s_MarketDepthSnapshotLevel::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDepthFullUpdateLarge::CopyFrom(void* p_SourceData)
+	unsigned __int16 s_MarketDepthSnapshotLevel::GetMarketDataSymbolID()
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthFullUpdateLarge), Size));
+		if (Size < offsetof(s_MarketDepthSnapshotLevel, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	BidOrAskEnum s_MarketDepthSnapshotLevel::GetSide()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel, Side) + sizeof(Side))
+			return BID_ASK_UNSET;
+
+		return Side;
+	}
+
+	/*==========================================================================*/
+	double s_MarketDepthSnapshotLevel::GetPrice()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel, Price) + sizeof(Price))
+			return 0.0;
+
+		return Price;
+	}
+
+	/*==========================================================================*/
+	double s_MarketDepthSnapshotLevel::GetVolume()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel, Volume) + sizeof(Volume))
+			return 0.0;
+
+		return Volume;
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthSnapshotLevel::GetLevel()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel, Level) + sizeof(Level))
+			return 0;
+
+		return Level;
+	}
+
+	/*==========================================================================*/
+	unsigned char s_MarketDepthSnapshotLevel::GetFirstMessageInBatch()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel, FirstMessageInBatch) + sizeof(FirstMessageInBatch))
+			return 0;
+
+		return FirstMessageInBatch;
+	}
+
+	/*==========================================================================*/
+	unsigned char s_MarketDepthSnapshotLevel::GetLastMessageInBatch()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel, LastMessageInBatch) + sizeof(LastMessageInBatch))
+			return 0;
+
+		return LastMessageInBatch;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDepthSnapshotLevel::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthSnapshotLevel), Size));
 	}
 
 	/****************************************************************************/
@@ -1710,6 +1525,16 @@ namespace DTC
 
 		return MarketDataSymbolID;
 	}
+
+	/*==========================================================================*/
+	BidOrAskEnum s_TradeIncrementalUpdateCompact::GetTradeAtBidOrAsk() const
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdateCompact, TradeAtBidOrAsk) + sizeof(TradeAtBidOrAsk))
+			return BID_ASK_UNSET;
+
+		return TradeAtBidOrAsk;
+	}
+
 
 	/****************************************************************************/
 	// s_DailyVolumeIncrementalUpdate
