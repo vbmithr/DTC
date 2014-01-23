@@ -47,7 +47,7 @@ namespace DTC
 	const unsigned __int16 TRADE_INCREMENTAL_UPDATE = 107;
 	const unsigned __int16 QUOTE_INCREMENTAL_UPDATE = 108;
 	const unsigned __int16 FUNDAMENTAL_DATA_RESPONSE = 110;
-	const unsigned __int16 TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH = 111;
+	
 	const unsigned __int16 TRADE_INCREMENTAL_UPDATE_COMPACT = 112;
 	const unsigned __int16 DAILY_VOLUME_INCREMENTAL_UPDATE = 113;
 	const unsigned __int16 DAILY_HIGH_INCREMENTAL_UPDATE = 114;
@@ -65,7 +65,6 @@ namespace DTC
 	const unsigned __int16 SUBMIT_NEW_OCO_ORDER = 201;
 	const unsigned __int16 CANCEL_REPLACE_ORDER = 202;
 	const unsigned __int16 CANCEL_ORDER = 203;
-	const unsigned __int16 CANCEL_REPLACE_ORDER_2 = 204;
 
 	// Trading related
 	const unsigned __int16 OPEN_ORDERS_REQUEST = 300;
@@ -103,13 +102,6 @@ namespace DTC
 	const unsigned __int16 HISTORICAL_PRICE_DATA_REJECT = 802;
 	const unsigned __int16 HISTORICAL_PRICE_DATA_RECORD_RESPONSE = 803;
 	const unsigned __int16 HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE = 804;
-
-	/*==========================================================================*/
-	//Nonstandard messages which are not considered part of the standard specification.  A standard DTC server and client will not implement these.
-	//----------------------------------------------
-
-	const unsigned __int16 CONFIGURATION_REQUEST_FROM_CLIENT = 10001; //Client >> Server
-	const unsigned __int16 SERVER_READY_TO_RECEIVE =  10002;//Server  >> Client
 
 
 	/*==========================================================================*/
@@ -680,41 +672,6 @@ namespace DTC
 	};
 
 	/*==========================================================================*/
-	struct s_TradeIncrementalUpdateWithFullDepth
-	{
-		static const __int32 NUM_DEPTH_LEVELS =10;
-		unsigned __int16 Size;
-		unsigned __int16 Type;
-
-		unsigned __int16 MarketDataSymbolID;
-
-		BidOrAskEnum TradeAtBidOrAsk;
-
-		double Price;
-		unsigned __int32 TradeVolume;
-		unsigned __int32 TotalDailyVolume;
-		t_DateTime4Byte TradeDateTimeUnix;
-		__int16 LastTradeMilliseconds;
-
-		struct 
-		{
-			double Price;
-			unsigned __int32 Volume;
-		} BidDepth[NUM_DEPTH_LEVELS], AskDepth[NUM_DEPTH_LEVELS];
-
-
-		s_TradeIncrementalUpdateWithFullDepth()
-		{
-			memset(this, 0,sizeof(s_TradeIncrementalUpdateWithFullDepth));
-			Type=TRADE_INCREMENTAL_UPDATE_WITH_FULL_DEPTH;
-			Size=sizeof(s_TradeIncrementalUpdateWithFullDepth);
-		}
-
-		unsigned __int16 GetMessageSize();
-		void CopyFrom(void * p_SourceData);
-	};
-
-	/*==========================================================================*/
 	struct s_MarketDepthFullUpdate
 	{
 		static const __int32 NUM_DEPTH_LEVELS =20;
@@ -1177,39 +1134,7 @@ namespace DTC
 		unsigned __int16 GetMessageSize();
 		void CopyFrom(void * p_SourceData);
 	};
-	/*==========================================================================*/
-	//Custom Cancel/Replace order request
-	struct s_CancelReplaceOrder2
-	{
 
-		unsigned __int16 Size;
-		unsigned __int16 Type;
-
-		char ServerOrderID[ORDER_ID_LENGTH];
-		char ClientOrderID[ORDER_ID_LENGTH];
-
-		double Price1;
-		double Price2;
-
-		unsigned __int32 OrderQuantity;
-
-		char TradeAccount [TRADE_ACCOUNT_LENGTH];//Not required by DTC
-
-		char Symbol[SYMBOL_LENGTH];//Not required by DTC
-		char Exchange[EXCHANGE_LENGTH];//Not required by DTC
-		OrderTypeEnum OrderType;//Not required by DTC
-		TimeInForceEnum TimeInForce;//Not required by DTC
-
-		s_CancelReplaceOrder2()
-		{
-			memset(this, 0,sizeof(s_CancelReplaceOrder2));
-			Type=CANCEL_REPLACE_ORDER_2;
-			Size=sizeof(s_CancelReplaceOrder2);
-		}
-		
-		unsigned __int16 GetMessageSize();
-		void CopyFrom(void * p_SourceData);
-	};
 	/*==========================================================================*/
 
 	struct s_CancelOrder
@@ -2045,45 +1970,6 @@ namespace DTC
 		void Clear();
 	};
 
-
-	/*==========================================================================*/
-	struct s_ConfigurationRequestFromClient
-	{
-		unsigned __int16 Size;
-		unsigned __int16 Type;
-
-		s_ConfigurationRequestFromClient()
-		{
-			memset(this, 0,sizeof(s_ConfigurationRequestFromClient));
-			Type=CONFIGURATION_REQUEST_FROM_CLIENT;
-			Size=sizeof(s_ConfigurationRequestFromClient);
-		}
-
-
-	};
-
-
-	/*==========================================================================*/
-	struct s_ServerReadyToReceive
-	{
-		unsigned __int16 Size;
-		unsigned __int16 Type;
-
-		char ServerName[25];
-		char ServerVersion[25]; 
-		char ServiceProviderName[25];
-
-		__int32 ProtocolVersion;
-
-		s_ServerReadyToReceive()
-		{			
-			memset(this, 0,sizeof(s_ServerReadyToReceive));
-			Type=SERVER_READY_TO_RECEIVE;
-			Size=sizeof(s_ServerReadyToReceive);
-			ProtocolVersion=  CURRENT_VERSION;
-		}
-
-	};
 
 #pragma pack()
 }

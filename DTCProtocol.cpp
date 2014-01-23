@@ -1,4 +1,4 @@
-#include "CommonPCH.h"// Project specific. Should be removed.
+
 
 #pragma unmanaged
 
@@ -1079,20 +1079,6 @@ namespace DTC
 			DisplayFormat = DISPLAY_FORMAT_DECIMAL_0;
 	}
 
-	/****************************************************************************/
-	// s_TradeIncrementalUpdateWithFullDepth
-
-	/*==========================================================================*/
-	unsigned __int16 s_TradeIncrementalUpdateWithFullDepth::GetMessageSize()
-	{
-		return Size;
-	}
-
-	/*==========================================================================*/
-	void s_TradeIncrementalUpdateWithFullDepth::CopyFrom(void* p_SourceData)
-	{
-		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdateWithFullDepth), Size));
-	}
 
 	/****************************************************************************/
 	// s_MarketDepthFullUpdate
@@ -1665,20 +1651,6 @@ namespace DTC
 		memcpy(this, p_SourceData, min(sizeof(s_CancelReplaceOrder), Size));
 	}
 
-	/****************************************************************************/
-	// s_CancelReplaceOrder2
-
-	/*==========================================================================*/
-	unsigned __int16 s_CancelReplaceOrder2::GetMessageSize()
-	{
-		return Size;
-	}
-
-	/*==========================================================================*/
-	void s_CancelReplaceOrder2::CopyFrom(void* p_SourceData)
-	{
-		memcpy(this, p_SourceData, min(sizeof(s_CancelReplaceOrder2), Size));
-	}
 
 	/****************************************************************************/
 	// s_CancelOrder
