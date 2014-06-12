@@ -41,7 +41,7 @@ namespace DTC
 	----------------------------------------------------------------------------*/
 	void s_LogonRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_LogonRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_LogonRequest), *static_cast<unsigned __int16*>( p_SourceData)  ));
 	}
 
 	/*==========================================================================*/
@@ -206,7 +206,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_LogonResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_LogonResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -405,6 +405,21 @@ namespace DTC
 	}
 
 	/****************************************************************************/
+	// s_LogoffRequest
+
+	/*==========================================================================*/
+	unsigned __int16 s_LogoffRequest::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_LogoffRequest::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_LogoffRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/****************************************************************************/
 	// s_Heartbeat
 
 	/*==========================================================================*/
@@ -416,7 +431,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_Heartbeat::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_Heartbeat), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_Heartbeat), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -440,7 +455,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_DisconnectFromServer::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_DisconnectFromServer), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_DisconnectFromServer), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -472,7 +487,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataFeedStatus::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataFeedStatus), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataFeedStatus), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -497,7 +512,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataFeedSymbolStatus::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataFeedSymbolStatus), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataFeedSymbolStatus), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -532,7 +547,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -601,7 +616,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDepthRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -680,7 +695,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataReject::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataReject), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataReject), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -691,7 +706,6 @@ namespace DTC
 
 		return MarketDataSymbolID;
 	}
-
 
 	/*==========================================================================*/
 	char* s_MarketDataReject::GetRejectText()
@@ -711,6 +725,47 @@ namespace DTC
 	}
 
 	/****************************************************************************/
+	// s_MarketDepthReject
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthReject::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDepthReject::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthReject), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthReject::GetMarketDataSymbolID()
+	{
+		if (Size < offsetof(s_MarketDepthReject, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	char* s_MarketDepthReject::GetRejectText()
+	{
+		if (Size < offsetof(s_MarketDepthReject, RejectText) + sizeof(RejectText))
+			return "";
+
+		RejectText[sizeof(RejectText) - 1] = '\0';
+
+		return RejectText;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDepthReject::SetRejectText(const char* NewValue)
+	{
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
+	}
+
+	/****************************************************************************/
 	// s_MarketDataSnapshot
 
 	/*==========================================================================*/
@@ -722,7 +777,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataSnapshot::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataSnapshot), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataSnapshot), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -842,7 +897,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_MarketDataSnapshot::GetAskSize()
+	double s_MarketDataSnapshot::GetAskSize()
 	{
 		if (Size < offsetof(s_MarketDataSnapshot, AskSize) + sizeof(AskSize))
 			return 0;
@@ -852,7 +907,7 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	unsigned __int32 s_MarketDataSnapshot::GetBidSize()
+	double s_MarketDataSnapshot::GetBidSize()
 	{
 		if (Size < offsetof(s_MarketDataSnapshot, BidSize) + sizeof(BidSize))
 			return 0;
@@ -870,7 +925,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_MarketDataSnapshot::GetLastTradeSize()
+	double s_MarketDataSnapshot::GetLastTradeSize()
 	{
 		if (Size < offsetof(s_MarketDataSnapshot, LastTradeSize) + sizeof(LastTradeSize))
 			return 0;
@@ -901,11 +956,11 @@ namespace DTC
 
 		Bid = DBL_MAX;
 		Ask = DBL_MAX;
-		AskSize = UINT_MAX;
-		BidSize = UINT_MAX;
+		AskSize = DBL_MAX;
+		BidSize = DBL_MAX;
 
 		LastTradePrice = DBL_MAX;
-		LastTradeSize = UINT_MAX;
+		LastTradeSize = DBL_MAX;
 	}
 
 	/****************************************************************************/
@@ -920,7 +975,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_FundamentalDataResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_FundamentalDataResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_FundamentalDataResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1081,24 +1136,24 @@ namespace DTC
 
 
 	/****************************************************************************/
-	// s_MarketDepthFullUpdate
+	// s_MarketDepthFullUpdate20
 
 	/*==========================================================================*/
-	unsigned __int16 s_MarketDepthFullUpdate::GetMessageSize()
+	unsigned __int16 s_MarketDepthFullUpdate20::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDepthFullUpdate::CopyFrom(void* p_SourceData)
+	void s_MarketDepthFullUpdate20::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthFullUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthFullUpdate20), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	unsigned __int16 s_MarketDepthFullUpdate::GetMarketDataSymbolID()
+	unsigned __int16 s_MarketDepthFullUpdate20::GetMarketDataSymbolID()
 	{
-		if (Size < offsetof(s_MarketDepthFullUpdate, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+		if (Size < offsetof(s_MarketDepthFullUpdate20, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
 			return 0;
 
 		return MarketDataSymbolID;
@@ -1176,7 +1231,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDepthSnapshotLevel::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthSnapshotLevel), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthSnapshotLevel), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1191,7 +1246,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDepthIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1206,7 +1261,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDepthIncrementalUpdateCompact::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdateCompact), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdateCompact), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1237,7 +1292,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_MarketDepthIncrementalUpdateCompact::GetVolume() const
+	float s_MarketDepthIncrementalUpdateCompact::GetVolume() const
 	{
 		if (Size < offsetof(s_MarketDepthIncrementalUpdateCompact, Volume) + sizeof(Volume))
 			return 0;
@@ -1266,7 +1321,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SettlementIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_SettlementIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_SettlementIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1299,7 +1354,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_DailyOpenIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_DailyOpenIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_DailyOpenIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1332,7 +1387,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_TradeIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1347,7 +1402,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_QuoteIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_QuoteIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_QuoteIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1369,7 +1424,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_QuoteIncrementalUpdate::GetBidSize() const
+	float s_QuoteIncrementalUpdate::GetBidSize() const
 	{
 		if (Size < offsetof(s_QuoteIncrementalUpdate, BidSize) + sizeof(BidSize))
 			return 0;
@@ -1387,7 +1442,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_QuoteIncrementalUpdate::GetAskSize() const
+	float s_QuoteIncrementalUpdate::GetAskSize() const
 	{
 		if (Size < offsetof(s_QuoteIncrementalUpdate, AskSize) + sizeof(AskSize))
 			return 0;
@@ -1426,7 +1481,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_QuoteIncrementalUpdateCompact::GetBidSize() const
+	float s_QuoteIncrementalUpdateCompact::GetBidSize() const
 	{
 		if (Size < offsetof(s_QuoteIncrementalUpdateCompact, BidSize) + sizeof(BidSize))
 			return 0;
@@ -1444,7 +1499,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_QuoteIncrementalUpdateCompact::GetAskSize() const
+	float s_QuoteIncrementalUpdateCompact::GetAskSize() const
 	{
 		if (Size < offsetof(s_QuoteIncrementalUpdateCompact, AskSize) + sizeof(AskSize))
 			return 0;
@@ -1473,7 +1528,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_TradeIncrementalUpdateCompact::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdateCompact), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdateCompact), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1486,7 +1541,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned __int32 s_TradeIncrementalUpdateCompact::GetTradeVolume() const
+	float s_TradeIncrementalUpdateCompact::GetTradeVolume() const
 	{
 		if (Size < offsetof(s_TradeIncrementalUpdateCompact, TradeVolume) + sizeof(TradeVolume))
 			return 0;
@@ -1521,7 +1576,6 @@ namespace DTC
 		return TradeAtBidOrAsk;
 	}
 
-
 	/****************************************************************************/
 	// s_DailyVolumeIncrementalUpdate
 
@@ -1534,7 +1588,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_DailyVolumeIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_DailyVolumeIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_DailyVolumeIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1555,6 +1609,40 @@ namespace DTC
 		return DailyVolume;
 	}
 
+
+	/****************************************************************************/
+	// s_OpenInterestIncrementalUpdate
+
+	/*==========================================================================*/
+	unsigned __int16 s_OpenInterestIncrementalUpdate::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_OpenInterestIncrementalUpdate::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_OpenInterestIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_OpenInterestIncrementalUpdate::GetMarketDataSymbolID() const
+	{
+		if (Size < offsetof(s_DailyVolumeIncrementalUpdate, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	unsigned __int32 s_OpenInterestIncrementalUpdate::GetOpenInterest() const
+	{
+		if (Size < offsetof(s_OpenInterestIncrementalUpdate, OpenInterest) + sizeof(OpenInterest))
+			return 0;
+
+		return OpenInterest;
+	}
+
 	/****************************************************************************/
 	// s_DailyHighIncrementalUpdate
 
@@ -1567,7 +1655,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_DailyHighIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_DailyHighIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_DailyHighIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1600,7 +1688,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_DailyLowIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_DailyLowIncrementalUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_DailyLowIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1633,9 +1721,14 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_SubmitNewSingleOrder), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_SubmitNewSingleOrder), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
+	/*==========================================================================*/
+	void s_SubmitNewSingleOrder::SetClientOrderID(const char* NewValue)
+	{
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+	}
 	/****************************************************************************/
 	// s_CancelReplaceOrder
 
@@ -1648,7 +1741,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelReplaceOrder::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_CancelReplaceOrder), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_CancelReplaceOrder), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 
@@ -1664,7 +1757,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelOrder::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_CancelOrder), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_CancelOrder), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1679,9 +1772,18 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_SubmitNewOCOOrder), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_SubmitNewOCOOrder), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
-
+	/*==========================================================================*/
+	void s_SubmitNewOCOOrder::SetClientOrderID_1(const char* NewValue)
+	{
+		strncpy(ClientOrderID_1, NewValue, sizeof(ClientOrderID_1) - 1);
+	}
+	/*==========================================================================*/
+	void s_SubmitNewOCOOrder::SetClientOrderID_2(const char* NewValue)
+	{
+		strncpy(ClientOrderID_2, NewValue, sizeof(ClientOrderID_2) - 1);
+	}
 	/****************************************************************************/
 	// s_OpenOrdersRequest
 
@@ -1694,7 +1796,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OpenOrdersRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1709,7 +1811,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillsRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_HistoricalOrderFillsRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_HistoricalOrderFillsRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1724,7 +1826,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CurrentPositionsRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1739,7 +1841,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CurrentPositionsRequestReject::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequestReject), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequestReject), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1754,7 +1856,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdateReport::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_OrderUpdateReport), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_OrderUpdateReport), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1879,19 +1981,37 @@ namespace DTC
 	/*==========================================================================*/
 	double s_OrderUpdateReport::GetOrderQuantity()
 	{
-
-		if (Size < offsetof(s_OrderUpdateReport, OrderQuantityAsFloat) + sizeof(OrderQuantityAsFloat))
-		{
-			if (OrderQuantity==UINT_MAX)
-				return DBL_MAX;
-			else
-				return OrderQuantity;
-		}
-
-		if (OrderQuantity== UINT_MAX)
-			return OrderQuantityAsFloat;
+		if (Size < offsetof(s_OrderUpdateReport, OrderQuantity) + sizeof(OrderQuantity))
+			return DBL_MAX;
 
 		return OrderQuantity;
+	}
+
+	/*==========================================================================*/
+	double s_OrderUpdateReport::GetFilledQuantity()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, FilledQuantity) + sizeof(FilledQuantity))
+			return DBL_MAX;
+
+		return FilledQuantity;
+	}
+
+	/*==========================================================================*/
+	double s_OrderUpdateReport::GetRemainingQuantity()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, RemainingQuantity) + sizeof(RemainingQuantity))
+			return DBL_MAX;
+
+		return RemainingQuantity;
+	}
+
+	/*==========================================================================*/
+	double s_OrderUpdateReport::GetLastFillQuantity()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, LastFillQuantity) + sizeof(LastFillQuantity))
+			return DBL_MAX;
+
+		return LastFillQuantity;
 	}
 
 	/****************************************************************************/
@@ -1906,7 +2026,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OpenOrdersRequestReject::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequestReject), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequestReject), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1921,7 +2041,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillReport::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_HistoricalOrderFillReport), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_HistoricalOrderFillReport), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1936,7 +2056,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_PositionReport::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_PositionReport), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_PositionReport), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -1963,7 +2083,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_AccountsRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_AccountsRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_AccountsRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1978,7 +2098,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_AccountListResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_AccountListResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_AccountListResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1993,7 +2113,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_ExchangeListRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_ExchangeListRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_ExchangeListRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2008,7 +2128,41 @@ namespace DTC
 	/*==========================================================================*/
 	void s_ExchangeListResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_ExchangeListResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_ExchangeListResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	char* s_ExchangeListResponse::GetExchangeText()
+	{
+		if (Size < offsetof(s_ExchangeListResponse, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_ExchangeListResponse::SetExchangeText(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+
+	/*==========================================================================*/
+	char* s_ExchangeListResponse::GetExchangeDescriptionText()
+	{
+		if (Size < offsetof(s_ExchangeListResponse, ExchangeDescription) + sizeof(ExchangeDescription))
+			return "";
+
+		ExchangeDescription[sizeof(Exchange) - 1] = '\0';
+
+		return ExchangeDescription;
+	}
+
+	/*==========================================================================*/
+	void s_ExchangeListResponse::SetExchangeDescriptionText(const char* NewValue)
+	{
+		strncpy(ExchangeDescription, NewValue, sizeof(ExchangeDescription) - 1);
 	}
 
 	/****************************************************************************/
@@ -2023,7 +2177,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_SymbolsForExchangeRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_SymbolsForExchangeRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2038,7 +2192,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_UnderlyingSymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_UnderlyingSymbolsForExchangeRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_UnderlyingSymbolsForExchangeRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2053,7 +2207,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SymbolsForUnderlyingRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_SymbolsForUnderlyingRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_SymbolsForUnderlyingRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2068,7 +2222,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionForSymbolRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_SecurityDefinitionForSymbolRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_SecurityDefinitionForSymbolRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -2117,7 +2271,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_SecurityDefinitionResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_SecurityDefinitionResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -2141,6 +2295,12 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
+	void s_SecurityDefinitionResponse::SetSymbol(const char* NewValue)
+	{
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
+	}
+
+	/*==========================================================================*/
 	const char* s_SecurityDefinitionResponse::GetExchange()
 	{
 		if (Size < offsetof(s_SecurityDefinitionResponse, Exchange) + sizeof(Exchange))
@@ -2149,6 +2309,12 @@ namespace DTC
 		Exchange[sizeof(Exchange) - 1] = '\0';  // Ensure that the null terminator exists
 
 		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_SecurityDefinitionResponse::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/*==========================================================================*/
@@ -2169,6 +2335,12 @@ namespace DTC
 		SymbolDescription[sizeof(SymbolDescription) - 1] = '\0';  // Ensure that the null terminator exists
 
 		return SymbolDescription;
+	}
+
+	/*==========================================================================*/
+	void s_SecurityDefinitionResponse::SetSymbolDescription(const char* NewValue)
+	{
+		strncpy(SymbolDescription, NewValue, sizeof(SymbolDescription) - 1);
 	}
 
 	/*==========================================================================*/
@@ -2219,7 +2391,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_AccountBalanceUpdate::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_AccountBalanceUpdate), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_AccountBalanceUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -2246,7 +2418,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_UserMessage::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_UserMessage), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_UserMessage), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2261,7 +2433,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_GeneralLogMessage::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_GeneralLogMessage), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_GeneralLogMessage), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2276,7 +2448,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataRequest::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataRequest), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
@@ -2325,7 +2497,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataHeaderResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataHeaderResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataHeaderResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2340,8 +2512,26 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataReject::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataReject), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataReject),*static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+
+	/*==========================================================================*/
+	char* s_HistoricalPriceDataReject::GetRejectText()
+	{
+		if (Size < offsetof(s_MarketDataReject, RejectText) + sizeof(RejectText))
+			return "";
+
+		RejectText[sizeof(RejectText) - 1] = '\0';
+
+		return RejectText;
+	}
+
+	/*==========================================================================*/
+	void s_HistoricalPriceDataReject::SetRejectText(const char* NewValue)
+	{
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
+	}
+
 
 	/****************************************************************************/
 	// s_HistoricalPriceDataRecordResponse
@@ -2355,7 +2545,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataRecordResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataRecordResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataRecordResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -2370,7 +2560,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataTickRecordResponse::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataTickRecordResponse), Size));
+		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataTickRecordResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
