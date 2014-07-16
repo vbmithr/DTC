@@ -3,7 +3,7 @@
 
 // This protocol is in the public domain and freely usable by anyone.
 
-// Documentation: http://www.sierrachart.com/index.php?file=doc/doc_DTCMessageDocumentation.php
+// Documentation: http://DTCprotocol.org/index.php?page=doc_DTCMessageDocumentation.php
 
 // Integers of type "__int32" are 32 bits.
 
@@ -17,8 +17,6 @@ namespace DTC
 
 	// DTC protocol version
 	const __int32 CURRENT_VERSION = 4;
-	//Version history:
-	//4: converting quantities from integers to floats for trading.
 
 	// Text string lengths. The protocol is intended to be updated to support variable length strings making these irrelevant at that time.
 	const __int32 SYMBOL_LENGTH = 64;
@@ -50,6 +48,7 @@ namespace DTC
 	const unsigned __int16 MARKET_DEPTH_INCREMENTAL_UPDATE = 106;
 	const unsigned __int16 TRADE_INCREMENTAL_UPDATE = 107;
 	const unsigned __int16 QUOTE_INCREMENTAL_UPDATE = 108;
+	const unsigned __int16 FUNDAMENTAL_DATA_REQUEST = 109;
 	const unsigned __int16 FUNDAMENTAL_DATA_RESPONSE = 110;
 	
 	const unsigned __int16 TRADE_INCREMENTAL_UPDATE_COMPACT = 112;
@@ -95,6 +94,7 @@ namespace DTC
 	const unsigned __int16 SYMBOLS_FOR_UNDERLYING_REQUEST = 504;
 	const unsigned __int16 SECURITY_DEFINITION_FOR_SYMBOL_REQUEST = 506;
 	const unsigned __int16 SECURITY_DEFINITION_RESPONSE = 507;
+	const unsigned __int16 SYMBOL_SEARCH_BY_DESCRIPTION = 508;
 
 	// Account balance
 	const unsigned __int16 ACCOUNT_BALANCE_UPDATE = 600;
@@ -345,6 +345,7 @@ namespace DTC
 		char ResultText[TEXT_DESCRIPTION_LENGTH];
 		char ReconnectAddress [64];
 		__int32 Integer_1;
+		//ServerName[32];
 		char ServerVersion[12]; 
 		char ServerName[24];
 		char ServiceProviderName[24];
@@ -650,6 +651,33 @@ namespace DTC
 	};
 
 	/*==========================================================================*/
+	struct s_FundamentalDataRequest
+	{
+		unsigned __int16 Size;
+		unsigned __int16 Type;
+		unsigned __int16 MarketDataSymbolID;
+
+		char Symbol[SYMBOL_LENGTH];
+		char Exchange[EXCHANGE_LENGTH];
+
+		s_FundamentalDataRequest()
+		{
+			memset(this, 0,sizeof(s_FundamentalDataRequest));
+			Type=FUNDAMENTAL_DATA_REQUEST;
+			Size=sizeof(s_FundamentalDataRequest);
+		}
+
+		unsigned __int16 GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		unsigned __int16 GetMarketDataSymbolID();
+
+		char * GetSymbol();
+		void SetSymbol(const char * NewValue);
+		char * GetExchange();
+		void SetExchange(const char * NewValue);
+	};
+
+	/*==========================================================================*/
 	struct s_FundamentalDataResponse
 	{
 		unsigned __int16 Size;
@@ -674,22 +702,14 @@ namespace DTC
 		unsigned __int16 GetMessageSize();
 		void CopyFrom(void * p_SourceData);
 		unsigned __int16 GetMarketDataSymbolID();
-		void SetMarketDataSymbolID(unsigned __int16 NewValue);
 		char * GetSymbolDescription();
 		void SetSymbolDescription(const char * NewValue);
 		float GetTickSize();
-		void SetTickSize(float NewValue);
 		float GetTickCurrencyValue();
-		void SetTickCurrencyValue(float NewValue);
 		DisplayFormatEnum GetDisplayFormat();
-		void SetDisplayFormat(DisplayFormatEnum NewValue);
 		float GetBuyRolloverInterest();
-		void SetBuyRolloverInterest(float NewValue);
 		float GetSellRolloverInterest();
-		void SetSellRolloverInterest(float NewValue);
 		float GetOrderPriceMultiplier();
-		void SetOrderPriceMultiplier(float NewValue);
-		void SetDisplayFormatFromTickSize();
 	};
 
 	/*==========================================================================*/
@@ -1736,6 +1756,34 @@ namespace DTC
 
 		unsigned __int16 GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+	};
+
+	/*==========================================================================*/
+	struct s_SymbolSearchByDescriptionRequest
+	{
+		unsigned __int16 Size;
+		unsigned __int16 Type;
+
+		__int32 RequestID;
+		char Exchange[EXCHANGE_LENGTH];
+		char SymbolDescription[SYMBOL_DESCRIPTION_LENGTH];
+
+		SecurityTypeEnum SecurityType;
+
+		s_SymbolSearchByDescriptionRequest()
+		{
+			memset(this, 0, sizeof(s_SymbolSearchByDescriptionRequest));
+			Type=SYMBOL_SEARCH_BY_DESCRIPTION;
+			Size=sizeof(s_SymbolSearchByDescriptionRequest);
+		}
+
+		unsigned __int16 GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
+		char * GetExchange();
+		void SetExchange(const char * NewValue);
+		char * GetDescription();
+		void SetDescription(const char * NewValue);
 	};
 
 	/*==========================================================================*/
