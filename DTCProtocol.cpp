@@ -964,6 +964,65 @@ namespace DTC
 	}
 
 	/****************************************************************************/
+	// s_FundamentalDataRequest
+
+	/*==========================================================================*/
+	unsigned __int16 s_FundamentalDataRequest::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_FundamentalDataRequest::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_FundamentalDataRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_FundamentalDataRequest::GetMarketDataSymbolID()
+	{
+		if (Size < offsetof(s_FundamentalDataRequest, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	char* s_FundamentalDataRequest::GetSymbol()
+	{
+		if (Size < offsetof(s_FundamentalDataRequest, Symbol) + sizeof(Symbol))
+			return "";
+
+		Symbol[sizeof(Symbol) - 1] = '\0';
+
+		return Symbol;
+	}
+
+	/*==========================================================================*/
+	void s_FundamentalDataRequest::SetSymbol(const char* NewValue)
+	{
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
+	}
+
+	/*==========================================================================*/
+	char* s_FundamentalDataRequest::GetExchange()
+	{
+		if (Size < offsetof(s_FundamentalDataRequest, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_FundamentalDataRequest::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+
+
+	/****************************************************************************/
 	// s_FundamentalDataResponse
 
 	/*==========================================================================*/
@@ -1033,11 +1092,6 @@ namespace DTC
 		return DisplayFormat;
 	}
 
-	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetDisplayFormat(DisplayFormatEnum NewValue)
-	{
-		DisplayFormat = NewValue;
-	}
 
 	/*==========================================================================*/
 	float s_FundamentalDataResponse::GetBuyRolloverInterest()
@@ -1048,11 +1102,6 @@ namespace DTC
 		return BuyRolloverInterest;
 	}
 
-	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetBuyRolloverInterest(float NewValue)
-	{
-		BuyRolloverInterest = NewValue;
-	}
 
 	/*==========================================================================*/
 	float s_FundamentalDataResponse::GetSellRolloverInterest()
@@ -1063,11 +1112,6 @@ namespace DTC
 		return SellRolloverInterest;
 	}
 
-	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetSellRolloverInterest(float NewValue)
-	{
-		SellRolloverInterest = NewValue;
-	}
 
 	/*==========================================================================*/
 	float s_FundamentalDataResponse::GetOrderPriceMultiplier()
@@ -1077,63 +1121,6 @@ namespace DTC
 
 		return OrderPriceMultiplier;
 	}
-
-	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetOrderPriceMultiplier(float NewValue)
-	{
-		OrderPriceMultiplier = NewValue;
-	}
-
-	/*==========================================================================*/
-	void s_FundamentalDataResponse::SetDisplayFormatFromTickSize()
-	{
-		if (TickSize == 0.0f && DisplayFormat ==  DISPLAY_FORMAT_UNSET)
-		{
-			DisplayFormat = DISPLAY_FORMAT_DECIMAL_3;
-			return;
-		}
-
-		if (TickSize < 0.00000995f)
-			DisplayFormat = DISPLAY_FORMAT_DECIMAL_6;
-		else if (TickSize < 0.0000995f)
-			DisplayFormat = DISPLAY_FORMAT_DECIMAL_5;
-		else if (TickSize < 0.000995f)
-			DisplayFormat = DISPLAY_FORMAT_DECIMAL_4;
-		else if (TickSize > 0.00249f && TickSize < 0.00251f)
-			DisplayFormat  = DISPLAY_FORMAT_DECIMAL_4;
-		else if (TickSize < 0.00995f)
-		{
-			if (TickSize > 0.00390620f && TickSize < 0.00390630f)  //== 0.00390625)
-				DisplayFormat = DISPLAY_FORMAT_DENOMINATOR_256;
-			else if (TickSize > 0.0078120f && TickSize < 0.0078130f)  // .25/32 = 0.0078125
-				DisplayFormat = DISPLAY_FORMAT_DENOMINATOR_32_QUARTERS;
-			else
-				DisplayFormat = DISPLAY_FORMAT_DECIMAL_3;
-		}
-		else if (TickSize < 0.0995f)
-		{
-			if (TickSize > 0.0249f &&  TickSize < 0.0251f)
-				DisplayFormat = DISPLAY_FORMAT_DECIMAL_3;
-			else if (TickSize > 0.015620f && TickSize < 0.015630f)  // .5/32 = 0.015625
-				DisplayFormat = DISPLAY_FORMAT_DENOMINATOR_32_HALVES;
-			else if (TickSize > 0.03120f && TickSize < 0.03130f)  // 1/32 = 0.03125 
-				DisplayFormat = DISPLAY_FORMAT_DENOMINATOR_32;
-			else if (TickSize > 0.0620f && TickSize < 0.0630f)  //== 0.0625)
-				DisplayFormat = DISPLAY_FORMAT_DENOMINATOR_16;
-			else
-				DisplayFormat  = DISPLAY_FORMAT_DECIMAL_2;
-		}
-		else if (TickSize < 0.995f)
-		{
-			if (TickSize > 0.120 && TickSize < 0.130)  //== 0.125)
-				DisplayFormat = DISPLAY_FORMAT_DENOMINATOR_8;
-			else
-				DisplayFormat = DISPLAY_FORMAT_DECIMAL_1;
-		}
-		else
-			DisplayFormat = DISPLAY_FORMAT_DECIMAL_0;
-	}
-
 
 	/****************************************************************************/
 	// s_MarketDepthFullUpdate20
@@ -2209,6 +2196,56 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_SymbolsForUnderlyingRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+
+	/****************************************************************************/
+	// s_SymbolSearchByDescriptionRequest
+
+	/*==========================================================================*/
+	unsigned __int16 s_SymbolSearchByDescriptionRequest::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_SymbolSearchByDescriptionRequest::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_SymbolSearchByDescriptionRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	char* s_SymbolSearchByDescriptionRequest::GetExchange()
+	{
+		if (Size < offsetof(s_SymbolSearchByDescriptionRequest, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_SymbolSearchByDescriptionRequest::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+
+	/*==========================================================================*/
+	char* s_SymbolSearchByDescriptionRequest::GetDescription()
+	{
+		if (Size < offsetof(s_SymbolSearchByDescriptionRequest, SymbolDescription) + sizeof(SymbolDescription))
+			return "";
+
+		SymbolDescription[sizeof(SymbolDescription) - 1] = '\0';
+
+		return SymbolDescription;
+	}
+
+	/*==========================================================================*/
+	void s_SymbolSearchByDescriptionRequest::SetDescription(const char* NewValue)
+	{
+		strncpy(SymbolDescription, NewValue, sizeof(SymbolDescription) - 1);
+	}
+
 
 	/****************************************************************************/
 	// s_SecurityDefinitionForSymbolRequest
