@@ -20,6 +20,7 @@
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
+
 namespace DTC
 {
 
@@ -272,21 +273,6 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	char* s_LogonResponse::GetServerVersion()
-	{
-		if (Size < offsetof(s_LogonResponse, ServerVersion) + sizeof(ServerVersion))
-			return "";
-
-		ServerVersion[sizeof(ServerVersion) - 1] = '\0';
-
-		return ServerVersion;
-	}
-	/*==========================================================================*/
-	void s_LogonResponse::SetServerVersion(const char * NewValue)
-	{
-		strncpy(ServerVersion, NewValue, sizeof(ServerVersion) - 1);
-	}
-	/*==========================================================================*/
 	char* s_LogonResponse::GetServerName()
 	{
 		if (Size < offsetof(s_LogonResponse, ServerName) + sizeof(ServerName))
@@ -303,22 +289,6 @@ namespace DTC
 		strncpy(ServerName, NewValue, sizeof(ServerName) - 1);
 	}
 
-	/*==========================================================================*/
-	char* s_LogonResponse::GetServiceProviderName()
-	{
-		if (Size < offsetof(s_LogonResponse, ServiceProviderName) + sizeof(ServiceProviderName))
-			return "";
-
-		ServiceProviderName[sizeof(ServiceProviderName) - 1] = '\0';
-
-		return ServiceProviderName;
-	}
-
-	/*==========================================================================*/
-	void s_LogonResponse::SetServiceProviderName(const char* NewValue)
-	{
-		strncpy(ServiceProviderName, NewValue, sizeof(ServiceProviderName) - 1);
-	}
 
 	/*==========================================================================*/
 	unsigned char s_LogonResponse::GetMarketDepthUpdatesBestBidAndAsk()
@@ -346,6 +316,15 @@ namespace DTC
 			return 0;
 
 		return OCOOrdersSupported;
+	}
+
+	/*==========================================================================*/
+	unsigned char s_LogonResponse::GetBracketOrdersSupported()
+	{
+		if (Size < offsetof(s_LogonResponse, BracketOrdersSupported) + sizeof(BracketOrdersSupported))
+			return 0;
+
+		return BracketOrdersSupported;
 	}
 
 	/*==========================================================================*/
@@ -404,6 +383,23 @@ namespace DTC
 		return ResubscribeWhenMarketDataFeedRestored;
 	}
 
+	/*==========================================================================*/
+	unsigned char s_LogonResponse::GetMarketDepthIsSupported()
+	{
+		if (Size < offsetof(s_LogonResponse, MarketDepthIsSupported) + sizeof(MarketDepthIsSupported))
+			return 0;
+
+		return MarketDepthIsSupported;
+	}
+	/*==========================================================================*/
+	unsigned char s_LogonResponse::GetUsePriceOrderIntegerMessages()
+	{
+		if (Size < offsetof(s_LogonResponse, UsePriceOrderIntegerMessages) + sizeof(UsePriceOrderIntegerMessages))
+			return 0;
+
+		return UsePriceOrderIntegerMessages;
+	}
+	
 	/****************************************************************************/
 	// s_LogoffRequest
 
@@ -963,6 +959,206 @@ namespace DTC
 		LastTradeSize = DBL_MAX;
 	}
 
+
+	/****************************************************************************/
+	// s_MarketDataSnapshot_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDataSnapshot_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDataSnapshot_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataSnapshot_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDataSnapshot_Int::GetMarketDataSymbolID()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+
+	/*==========================================================================*/
+	__int32 s_MarketDataSnapshot_Int::GetSettlementPrice()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SettlementPrice) + sizeof(SettlementPrice))
+			return 0;
+
+		return SettlementPrice;
+	}
+
+
+	/*==========================================================================*/
+	__int32 s_MarketDataSnapshot_Int::GetDailyOpen()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyOpen) + sizeof(DailyOpen))
+			return 0;
+
+		return DailyOpen;
+	}
+
+
+	/*==========================================================================*/
+	__int32 s_MarketDataSnapshot_Int::GetDailyHigh()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyHigh) + sizeof(DailyHigh))
+			return 0;
+
+		return DailyHigh;
+	}
+
+
+	/*==========================================================================*/
+	__int32 s_MarketDataSnapshot_Int::GetDailyLow()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyLow) + sizeof(DailyLow))
+			return 0;
+
+		return DailyLow;
+	}
+
+
+	/*==========================================================================*/
+	double s_MarketDataSnapshot_Int::GetDailyVolume()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyVolume) + sizeof(DailyVolume))
+			return 0;
+
+		return DailyVolume;
+	}
+
+
+	/*==========================================================================*/
+	unsigned __int32 s_MarketDataSnapshot_Int::GetDailyNumberOfTrades()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyNumberOfTrades) + sizeof(DailyNumberOfTrades))
+			return 0;
+
+		return DailyNumberOfTrades;
+	}
+
+	/*==========================================================================*/
+	unsigned __int32 s_MarketDataSnapshot_Int::GetSharesOutstanding()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SharesOutstanding) + sizeof(SharesOutstanding))
+			return 0;
+
+		return SharesOutstanding;
+	}
+
+
+	/*==========================================================================*/
+	unsigned __int32 s_MarketDataSnapshot_Int::GetOpenInterest()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, OpenInterest) + sizeof(OpenInterest))
+			return 0;
+
+		return OpenInterest;
+	}
+
+
+	/*==========================================================================*/
+	unsigned __int32 s_MarketDataSnapshot_Int::GetUnitsOutstanding()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, UnitsOutstanding) + sizeof(UnitsOutstanding))
+			return 0;
+
+		return UnitsOutstanding;
+	}
+
+
+	/*==========================================================================*/
+	__int32 s_MarketDataSnapshot_Int::GetBid()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, Bid) + sizeof(Bid))
+			return 0;
+
+		return Bid;
+	}
+	/*==========================================================================*/
+	__int32 s_MarketDataSnapshot_Int::GetAsk()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, Ask) + sizeof(Ask))
+			return 0;
+
+		return Ask;
+	}
+
+	/*==========================================================================*/
+	double s_MarketDataSnapshot_Int::GetAskSize()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, AskSize) + sizeof(AskSize))
+			return 0;
+
+		return AskSize;
+	}
+
+
+	/*==========================================================================*/
+	double s_MarketDataSnapshot_Int::GetBidSize()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, BidSize) + sizeof(BidSize))
+			return 0;
+
+		return BidSize;
+	}
+
+	/*==========================================================================*/
+	__int32 s_MarketDataSnapshot_Int::GetLastTradePrice()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, LastTradePrice) + sizeof(LastTradePrice))
+			return 0;
+
+		return LastTradePrice;
+	}
+
+	/*==========================================================================*/
+	double s_MarketDataSnapshot_Int::GetLastTradeSize()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, LastTradeSize) + sizeof(LastTradeSize))
+			return 0;
+
+		return LastTradeSize;
+	}
+	/*==========================================================================*/
+	double s_MarketDataSnapshot_Int::GetLastTradeDateTimeUnix()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, LastTradeDateTimeUnix) + sizeof(LastTradeDateTimeUnix))
+			return 0;
+
+		return LastTradeDateTimeUnix;
+	}
+
+
+	/*==========================================================================*/
+	void s_MarketDataSnapshot_Int::SetToUnsetValues()
+	{
+		SettlementPrice = INT_MAX;
+		DailyOpen = INT_MAX;
+		DailyHigh = INT_MAX;
+		DailyLow = INT_MAX;
+		DailyVolume = DBL_MAX;
+		DailyNumberOfTrades = UINT_MAX;
+
+		SharesOutstanding = UINT_MAX;
+
+		Bid = INT_MAX;
+		Ask = INT_MAX;
+		AskSize = DBL_MAX;
+		BidSize = DBL_MAX;
+
+		LastTradePrice = INT_MAX;
+		LastTradeSize = DBL_MAX;
+	}
+
+
 	/****************************************************************************/
 	// s_FundamentalDataRequest
 
@@ -1146,6 +1342,9 @@ namespace DTC
 		return MarketDataSymbolID;
 	}
 
+	/****************************************************************************/
+	// s_MarketDepthSnapshotLevel
+
 	/*==========================================================================*/
 	unsigned __int16 s_MarketDepthSnapshotLevel::GetMessageSize()
 	{
@@ -1222,6 +1421,85 @@ namespace DTC
 	}
 
 	/****************************************************************************/
+	// s_MarketDepthSnapshotLevel_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthSnapshotLevel_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthSnapshotLevel_Int::GetMarketDataSymbolID()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	BidOrAskEnum s_MarketDepthSnapshotLevel_Int::GetSide()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, Side) + sizeof(Side))
+			return BID_ASK_UNSET;
+
+		return Side;
+	}
+
+	/*==========================================================================*/
+	__int32 s_MarketDepthSnapshotLevel_Int::GetPrice()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, Price) + sizeof(Price))
+			return 0;
+
+		return Price;
+	}
+
+	/*==========================================================================*/
+	double s_MarketDepthSnapshotLevel_Int::GetVolume()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, Volume) + sizeof(Volume))
+			return 0.0;
+
+		return Volume;
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthSnapshotLevel_Int::GetLevel()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, Level) + sizeof(Level))
+			return 0;
+
+		return Level;
+	}
+
+	/*==========================================================================*/
+	unsigned char s_MarketDepthSnapshotLevel_Int::GetFirstMessageInBatch()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, FirstMessageInBatch) + sizeof(FirstMessageInBatch))
+			return 0;
+
+		return FirstMessageInBatch;
+	}
+
+	/*==========================================================================*/
+	unsigned char s_MarketDepthSnapshotLevel_Int::GetLastMessageInBatch()
+	{
+		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, LastMessageInBatch) + sizeof(LastMessageInBatch))
+			return 0;
+
+		return LastMessageInBatch;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDepthSnapshotLevel_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthSnapshotLevel_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+
+	/****************************************************************************/
 	// s_MarketDepthIncrementalUpdate
 
 	/*==========================================================================*/
@@ -1234,6 +1512,21 @@ namespace DTC
 	void s_MarketDepthIncrementalUpdate::CopyFrom(void* p_SourceData)
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/****************************************************************************/
+	// s_MarketDepthIncrementalUpdate_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthIncrementalUpdate_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDepthIncrementalUpdate_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
 
 	/****************************************************************************/
@@ -1329,6 +1622,40 @@ namespace DTC
 		return SettlementPrice;
 	}
 
+		/****************************************************************************/
+	// s_SettlementIncrementalUpdate_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_SettlementIncrementalUpdate_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_SettlementIncrementalUpdate_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_SettlementIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_SettlementIncrementalUpdate_Int::GetMarketDataSymbolID() const
+	{
+		if (Size < offsetof(s_SettlementIncrementalUpdate_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	__int32 s_SettlementIncrementalUpdate_Int::GetSettlementPrice() const
+	{
+		if (Size < offsetof(s_SettlementIncrementalUpdate_Int, SettlementPrice) + sizeof(SettlementPrice))
+			return 0;
+
+		return SettlementPrice;
+	}
+
+
 	/****************************************************************************/
 	// s_DailyOpenIncrementalUpdate
 
@@ -1363,6 +1690,40 @@ namespace DTC
 	}
 
 	/****************************************************************************/
+	// s_DailyOpenIncrementalUpdate_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_DailyOpenIncrementalUpdate_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_DailyOpenIncrementalUpdate_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_DailyOpenIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_DailyOpenIncrementalUpdate_Int::GetMarketDataSymbolID() const
+	{
+		if (Size < offsetof(s_DailyOpenIncrementalUpdate_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	__int32 s_DailyOpenIncrementalUpdate_Int::GetDailyOpen() const
+	{
+		if (Size < offsetof(s_DailyOpenIncrementalUpdate_Int, DailyOpen) + sizeof(DailyOpen))
+			return 0;
+
+		return DailyOpen;
+	}
+
+
+	/****************************************************************************/
 	// s_TradeIncrementalUpdate
 
 	/*==========================================================================*/
@@ -1376,6 +1737,22 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+
+		/****************************************************************************/
+	// s_TradeIncrementalUpdate_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_TradeIncrementalUpdate_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_TradeIncrementalUpdate_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
 
 	/****************************************************************************/
 	// s_QuoteIncrementalUpdate
@@ -1445,6 +1822,76 @@ namespace DTC
 
 		return QuoteDateTimeUnix;
 	}
+
+	/****************************************************************************/
+	// s_QuoteIncrementalUpdate_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_QuoteIncrementalUpdate_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_QuoteIncrementalUpdate_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_QuoteIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_QuoteIncrementalUpdate_Int::GetMarketDataSymbolID() const
+	{
+		if (Size < offsetof(s_QuoteIncrementalUpdate_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	__int32 s_QuoteIncrementalUpdate_Int::GetBidPrice() const
+	{
+		if (Size < offsetof(s_QuoteIncrementalUpdate_Int, BidPrice) + sizeof(BidPrice))
+			return 0;
+
+		return BidPrice;
+	}
+
+	/*==========================================================================*/
+	float s_QuoteIncrementalUpdate_Int::GetBidSize() const
+	{
+		if (Size < offsetof(s_QuoteIncrementalUpdate_Int, BidSize) + sizeof(BidSize))
+			return 0;
+
+		return BidSize;
+	}
+
+	/*==========================================================================*/
+	__int32 s_QuoteIncrementalUpdate_Int::GetAskPrice() const
+	{
+		if (Size < offsetof(s_QuoteIncrementalUpdate_Int, AskPrice) + sizeof(AskPrice))
+			return 0;
+
+		return AskPrice;
+	}
+
+	/*==========================================================================*/
+	float s_QuoteIncrementalUpdate_Int::GetAskSize() const
+	{
+		if (Size < offsetof(s_QuoteIncrementalUpdate_Int, AskSize) + sizeof(AskSize))
+			return 0;
+
+		return AskSize;
+	}
+
+	/*==========================================================================*/
+	double s_QuoteIncrementalUpdate_Int::GetQuoteDateTimeUnix() const
+	{
+		if (Size < offsetof(s_QuoteIncrementalUpdate_Int, QuoteDateTimeUnix) + sizeof(QuoteDateTimeUnix))
+			return 0;
+
+		return QuoteDateTimeUnix;
+	}
+
 
 	/****************************************************************************/
 	// s_QuoteIncrementalUpdateCompact
@@ -1663,6 +2110,40 @@ namespace DTC
 		return DailyHigh;
 	}
 
+		/****************************************************************************/
+	// s_DailyHighIncrementalUpdate_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_DailyHighIncrementalUpdate_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_DailyHighIncrementalUpdate_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_DailyHighIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_DailyHighIncrementalUpdate_Int::GetMarketDataSymbolID() const
+	{
+		if (Size < offsetof(s_DailyHighIncrementalUpdate_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	__int32 s_DailyHighIncrementalUpdate_Int::GetDailyHigh() const
+	{
+		if (Size < offsetof(s_DailyHighIncrementalUpdate_Int, DailyHigh) + sizeof(DailyHigh))
+			return 0;
+
+		return DailyHigh;
+	}
+
+
 	/****************************************************************************/
 	// s_DailyLowIncrementalUpdate
 
@@ -1696,6 +2177,40 @@ namespace DTC
 		return DailyLow;
 	}
 
+		/****************************************************************************/
+	// s_DailyLowIncrementalUpdate_Int
+
+	/*==========================================================================*/
+	unsigned __int16 s_DailyLowIncrementalUpdate_Int::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_DailyLowIncrementalUpdate_Int::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_DailyLowIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	unsigned __int16 s_DailyLowIncrementalUpdate_Int::GetMarketDataSymbolID() const
+	{
+		if (Size < offsetof(s_DailyLowIncrementalUpdate_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	__int32 s_DailyLowIncrementalUpdate_Int::GetDailyLow() const
+	{
+		if (Size < offsetof(s_DailyLowIncrementalUpdate_Int, DailyLow) + sizeof(DailyLow))
+			return 0;
+
+		return DailyLow;
+	}
+
+
 	/****************************************************************************/
 	// s_SubmitNewSingleOrder
 
@@ -1712,10 +2227,85 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
+	char* s_SubmitNewSingleOrder::GetClientOrderID()
+	{
+		if (Size < offsetof( s_SubmitNewSingleOrder, ClientOrderID) + sizeof(ClientOrderID))
+			return "";
+
+		ClientOrderID[sizeof(ClientOrderID) - 1] = '\0';
+
+		return ClientOrderID;
+	}
+	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::SetClientOrderID(const char* NewValue)
 	{
 		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 	}
+
+
+	/*==========================================================================*/
+	char* s_SubmitNewSingleOrder::GetSymbol()
+	{
+		if (Size < offsetof( s_SubmitNewSingleOrder, Symbol) + sizeof(Symbol))
+			return "";
+
+		Symbol[sizeof(Symbol) - 1] = '\0';
+
+		return Symbol;
+	}
+	/*==========================================================================*/
+	void s_SubmitNewSingleOrder::SetSymbol(const char* NewValue)
+	{
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
+	}
+	/*==========================================================================*/
+	char* s_SubmitNewSingleOrder::GetExchange()
+	{
+		if (Size < offsetof( s_SubmitNewSingleOrder, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+	/*==========================================================================*/
+	void s_SubmitNewSingleOrder::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}	
+	/*==========================================================================*/
+	char* s_SubmitNewSingleOrder::GetTradeAccount()
+	{
+		if (Size < offsetof( s_SubmitNewSingleOrder, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_SubmitNewSingleOrder::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+	}	
+	/*==========================================================================*/
+	char* s_SubmitNewSingleOrder::GetFreeFormText()
+	{
+		if (Size < offsetof( s_SubmitNewSingleOrder, FreeFormText) + sizeof(FreeFormText))
+			return "";
+
+		FreeFormText[sizeof(FreeFormText) - 1] = '\0';
+
+		return FreeFormText;
+		
+	}
+	/*==========================================================================*/
+	void s_SubmitNewSingleOrder::SetFreeFormText(const char* NewValue)
+	{
+		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
+	}
+
+
 	/****************************************************************************/
 	// s_CancelReplaceOrder
 
@@ -1771,6 +2361,23 @@ namespace DTC
 	{
 		strncpy(ClientOrderID_2, NewValue, sizeof(ClientOrderID_2) - 1);
 	}
+
+	/*==========================================================================*/
+	char* s_SubmitNewOCOOrder::GetFreeFormText()
+	{
+		if (Size < offsetof( s_SubmitNewOCOOrder, FreeFormText) + sizeof(FreeFormText))
+			return "";
+
+		FreeFormText[sizeof(FreeFormText) - 1] = '\0';
+
+		return FreeFormText;
+	}
+	/*==========================================================================*/
+	void s_SubmitNewOCOOrder::SetFreeFormText(const char* NewValue)
+	{
+		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
+	}
+
 	/****************************************************************************/
 	// s_OpenOrdersRequest
 
@@ -2471,6 +3078,24 @@ namespace DTC
 	void s_GeneralLogMessage::CopyFrom(void* p_SourceData)
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_GeneralLogMessage), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+
+
+	/*==========================================================================*/
+	char* s_GeneralLogMessage::GetMessageText()
+	{
+		if (Size < offsetof(s_GeneralLogMessage, MessageText) + sizeof(MessageText))
+			return "";
+
+		MessageText[sizeof(MessageText) - 1] = '\0';
+
+		return MessageText;
+	}
+
+	/*==========================================================================*/
+	void s_GeneralLogMessage::SetMessageText(const char* NewValue)
+	{
+		strncpy(MessageText, NewValue, sizeof(MessageText) - 1);
 	}
 
 	/****************************************************************************/
