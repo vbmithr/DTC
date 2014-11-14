@@ -291,7 +291,7 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetMarketDepthUpdatesBestBidAndAsk()
+	byte s_LogonResponse::GetMarketDepthUpdatesBestBidAndAsk()
 	{
 		if (Size < offsetof(s_LogonResponse, MarketDepthUpdatesBestBidAndAsk) + sizeof(MarketDepthUpdatesBestBidAndAsk))
 			return 0;
@@ -300,7 +300,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetTradingIsSupported()
+	byte s_LogonResponse::GetTradingIsSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, TradingIsSupported) + sizeof(TradingIsSupported))
 			return 0;
@@ -310,7 +310,7 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetOCOOrdersSupported()
+	byte s_LogonResponse::GetOCOOrdersSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, OCOOrdersSupported) + sizeof(OCOOrdersSupported))
 			return 0;
@@ -319,7 +319,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetBracketOrdersSupported()
+	byte s_LogonResponse::GetBracketOrdersSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, BracketOrdersSupported) + sizeof(BracketOrdersSupported))
 			return 0;
@@ -328,7 +328,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetOrderCancelReplaceSupported()
+	byte s_LogonResponse::GetOrderCancelReplaceSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, OrderCancelReplaceSupported) + sizeof(OrderCancelReplaceSupported))
 			return 0;
@@ -355,7 +355,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetSecurityDefinitionsSupported()
+	byte s_LogonResponse::GetSecurityDefinitionsSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, SecurityDefinitionsSupported) + sizeof(SecurityDefinitionsSupported))
 			return 0;
@@ -365,7 +365,7 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetHistoricalPriceDataSupported()
+	byte s_LogonResponse::GetHistoricalPriceDataSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, HistoricalPriceDataSupported) + sizeof(HistoricalPriceDataSupported))
 			return 0;
@@ -375,7 +375,7 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetResubscribeWhenMarketDataFeedRestored()
+	byte s_LogonResponse::GetResubscribeWhenMarketDataFeedRestored()
 	{
 		if (Size < offsetof(s_LogonResponse, ResubscribeWhenMarketDataFeedRestored) + sizeof(ResubscribeWhenMarketDataFeedRestored))
 			return 0;
@@ -384,7 +384,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetMarketDepthIsSupported()
+	byte s_LogonResponse::GetMarketDepthIsSupported()
 	{
 		if (Size < offsetof(s_LogonResponse, MarketDepthIsSupported) + sizeof(MarketDepthIsSupported))
 			return 0;
@@ -392,12 +392,20 @@ namespace DTC
 		return MarketDepthIsSupported;
 	}
 	/*==========================================================================*/
-	unsigned char s_LogonResponse::GetUsePriceOrderIntegerMessages()
+	byte s_LogonResponse::GetOneHistoricalPriceDataRequestPerConnection()
 	{
-		if (Size < offsetof(s_LogonResponse, UsePriceOrderIntegerMessages) + sizeof(UsePriceOrderIntegerMessages))
+		if (Size < offsetof(s_LogonResponse, OneHistoricalPriceDataRequestPerConnection) + sizeof(OneHistoricalPriceDataRequestPerConnection))
 			return 0;
 
-		return UsePriceOrderIntegerMessages;
+		return OneHistoricalPriceDataRequestPerConnection;
+	}
+	/*==========================================================================*/
+	byte s_LogonResponse::GetUseIntegerPriceOrderMessages()
+	{
+		if (Size < offsetof(s_LogonResponse, UseIntegerPriceOrderMessages) + sizeof(UseIntegerPriceOrderMessages))
+			return 0;
+
+		return UseIntegerPriceOrderMessages;
 	}
 	
 	/****************************************************************************/
@@ -414,6 +422,22 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_LogoffRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	char * s_LogoffRequest::GetReason()
+	{
+		if (Size < offsetof(s_LogoffRequest, Reason) + sizeof(Reason))
+			return "";
+
+		Reason[sizeof(Reason) - 1] = '\0';
+
+		return Reason;
+	}
+	/*==========================================================================*/
+	void s_LogoffRequest::SetReason(const char * NewValue)
+	{
+		strncpy(Reason, NewValue, sizeof(Reason) - 1);
+	}
+
 
 	/****************************************************************************/
 	// s_Heartbeat
@@ -439,14 +463,25 @@ namespace DTC
 		return DroppedMessages;
 	}
 
+
+	/*==========================================================================*/
+	t_DateTime s_Heartbeat::GetCurrentDateTime()
+	{
+		if (Size < offsetof(s_Heartbeat, CurrentDateTime) + sizeof(CurrentDateTime))
+			return 0;
+
+		return CurrentDateTime;
+	}
+
+
+	/****************************************************************************/
+	// s_DisconnectFromServer
+
 	/*==========================================================================*/
 	unsigned __int16 s_DisconnectFromServer::GetMessageSize()
 	{
 		return Size;
 	}
-
-	/****************************************************************************/
-	// s_DisconnectFromServer
 
 	/*==========================================================================*/
 	void s_DisconnectFromServer::CopyFrom(void* p_SourceData)
@@ -1151,8 +1186,8 @@ namespace DTC
 
 		Bid = INT_MAX;
 		Ask = INT_MAX;
-		AskSize = DBL_MAX;
-		BidSize = DBL_MAX;
+		AskSize = FLT_MAX;
+		BidSize = FLT_MAX;
 
 		LastTradePrice = INT_MAX;
 		LastTradeSize = DBL_MAX;
@@ -1317,6 +1352,15 @@ namespace DTC
 
 		return OrderPriceMultiplier;
 	}
+	/*==========================================================================*/
+	float s_FundamentalDataResponse::GetMarketDataPriceDivisor()
+	{
+		if (Size < offsetof(s_FundamentalDataResponse, MarketDataPriceDivisor) + sizeof(MarketDataPriceDivisor))
+			return 0;
+
+		return MarketDataPriceDivisor;
+	}
+
 
 	/****************************************************************************/
 	// s_MarketDepthFullUpdate20
@@ -1397,7 +1441,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_MarketDepthSnapshotLevel::GetFirstMessageInBatch()
+	byte s_MarketDepthSnapshotLevel::GetFirstMessageInBatch()
 	{
 		if (Size < offsetof(s_MarketDepthSnapshotLevel, FirstMessageInBatch) + sizeof(FirstMessageInBatch))
 			return 0;
@@ -1406,7 +1450,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_MarketDepthSnapshotLevel::GetLastMessageInBatch()
+	byte s_MarketDepthSnapshotLevel::GetLastMessageInBatch()
 	{
 		if (Size < offsetof(s_MarketDepthSnapshotLevel, LastMessageInBatch) + sizeof(LastMessageInBatch))
 			return 0;
@@ -1475,7 +1519,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_MarketDepthSnapshotLevel_Int::GetFirstMessageInBatch()
+	byte s_MarketDepthSnapshotLevel_Int::GetFirstMessageInBatch()
 	{
 		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, FirstMessageInBatch) + sizeof(FirstMessageInBatch))
 			return 0;
@@ -1484,7 +1528,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	unsigned char s_MarketDepthSnapshotLevel_Int::GetLastMessageInBatch()
+	byte s_MarketDepthSnapshotLevel_Int::GetLastMessageInBatch()
 	{
 		if (Size < offsetof(s_MarketDepthSnapshotLevel_Int, LastMessageInBatch) + sizeof(LastMessageInBatch))
 			return 0;
@@ -1513,6 +1557,50 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthIncrementalUpdate::GetMarketDataSymbolID()
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	BidOrAskEnum s_MarketDepthIncrementalUpdate::GetSide()
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate, Side) + sizeof(Side))
+			return BID_ASK_UNSET;
+
+		return Side;
+	}
+	/*==========================================================================*/
+	double s_MarketDepthIncrementalUpdate::GetPrice() 
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate, Price) + sizeof(Price))
+			return 0;
+
+		return Price;
+	}
+
+	/*==========================================================================*/
+	double s_MarketDepthIncrementalUpdate::GetVolume() 
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate, Volume) + sizeof(Volume))
+			return 0;
+
+		return Volume;
+	}
+
+	/*==========================================================================*/
+	MarketDepthIncrementalUpdateTypeEnum s_MarketDepthIncrementalUpdate::GetUpdateType() 
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate, UpdateType) + sizeof(UpdateType))
+			return DEPTH_UNSET;
+
+		return UpdateType;
+	}
+
 
 	/****************************************************************************/
 	// s_MarketDepthIncrementalUpdate_Int
@@ -1528,6 +1616,52 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	unsigned __int16 s_MarketDepthIncrementalUpdate_Int::GetMarketDataSymbolID()
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+
+	/*==========================================================================*/
+	BidOrAskEnum s_MarketDepthIncrementalUpdate_Int::GetSide()
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate_Int, Side) + sizeof(Side))
+			return BID_ASK_UNSET;
+
+		return Side;
+	}
+
+
+	/*==========================================================================*/
+	__int32 s_MarketDepthIncrementalUpdate_Int::GetPrice() 
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate_Int, Price) + sizeof(Price))
+			return 0;
+
+		return Price;
+	}
+
+	/*==========================================================================*/
+	double s_MarketDepthIncrementalUpdate_Int::GetVolume() 
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate_Int, Volume) + sizeof(Volume))
+			return 0;
+
+		return Volume;
+	}
+
+	/*==========================================================================*/
+	MarketDepthIncrementalUpdateTypeEnum s_MarketDepthIncrementalUpdate_Int::GetUpdateType() 
+	{
+		if (Size < offsetof(s_MarketDepthIncrementalUpdate_Int, UpdateType) + sizeof(UpdateType))
+			return DEPTH_UNSET;
+
+		return UpdateType;
+	}
+
 
 	/****************************************************************************/
 	// s_MarketDepthIncrementalUpdateCompact
@@ -1737,6 +1871,50 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdate), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	unsigned __int16 s_TradeIncrementalUpdate::GetMarketDataSymbolID() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
+
+		return MarketDataSymbolID;
+	}
+	/*==========================================================================*/
+	BidOrAskEnum s_TradeIncrementalUpdate::GetTradeAtBidOrAsk() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate, TradeAtBidOrAsk) + sizeof(TradeAtBidOrAsk))
+			return BID_ASK_UNSET;
+
+		return TradeAtBidOrAsk;
+	}
+
+	/*==========================================================================*/
+	double s_TradeIncrementalUpdate::GetPrice() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate, Price) + sizeof(Price))
+			return 0;
+
+		return Price;
+	}
+
+	/*==========================================================================*/
+	double s_TradeIncrementalUpdate::GetTradeVolume() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate, TradeVolume) + sizeof(TradeVolume))
+			return 0;
+
+		return TradeVolume;
+	}
+	/*==========================================================================*/
+
+	double s_TradeIncrementalUpdate::GetTradeDateTimeUnix() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate, TradeDateTimeUnix) + sizeof(TradeDateTimeUnix))
+			return 0;
+
+		return TradeDateTimeUnix;
+	}
+
 
 		/****************************************************************************/
 	// s_TradeIncrementalUpdate_Int
@@ -1752,7 +1930,46 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_TradeIncrementalUpdate_Int), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	unsigned __int16 s_TradeIncrementalUpdate_Int::GetMarketDataSymbolID() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate_Int, MarketDataSymbolID) + sizeof(MarketDataSymbolID))
+			return 0;
 
+		return MarketDataSymbolID;
+	}
+	/*==========================================================================*/
+	BidOrAskEnum s_TradeIncrementalUpdate_Int::GetTradeAtBidOrAsk() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate_Int, TradeAtBidOrAsk) + sizeof(TradeAtBidOrAsk))
+			return BID_ASK_UNSET;
+
+		return TradeAtBidOrAsk;
+	}
+	/*==========================================================================*/
+	__int32 s_TradeIncrementalUpdate_Int::GetPrice() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate_Int, Price) + sizeof(Price))
+			return 0;
+
+		return Price;
+	}
+	/*==========================================================================*/
+	float s_TradeIncrementalUpdate_Int::GetTradeVolume() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate_Int, TradeVolume) + sizeof(TradeVolume))
+			return 0;
+
+		return TradeVolume;
+	}
+	/*==========================================================================*/
+	double s_TradeIncrementalUpdate_Int::GetTradeDateTimeUnix() 
+	{
+		if (Size < offsetof(s_TradeIncrementalUpdate_Int, TradeDateTimeUnix) + sizeof(TradeDateTimeUnix))
+			return 0;
+
+		return TradeDateTimeUnix;
+	}
 
 	/****************************************************************************/
 	// s_QuoteIncrementalUpdate
@@ -1948,6 +2165,12 @@ namespace DTC
 			return 0;
 
 		return QuoteDateTimeUnix;
+	}
+	/*==========================================================================*/
+
+	unsigned __int16 s_QuoteIncrementalUpdateCompact::GetMessageSize()
+	{
+		return Size;
 	}
 
 	/****************************************************************************/
@@ -2288,8 +2511,9 @@ namespace DTC
 	{
 		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}	
+
 	/*==========================================================================*/
-	char* s_SubmitNewSingleOrder::GetFreeFormText()
+		char* s_SubmitNewSingleOrder::GetFreeFormText()
 	{
 		if (Size < offsetof( s_SubmitNewSingleOrder, FreeFormText) + sizeof(FreeFormText))
 			return "";
@@ -2297,14 +2521,112 @@ namespace DTC
 		FreeFormText[sizeof(FreeFormText) - 1] = '\0';
 
 		return FreeFormText;
-		
+
 	}
 	/*==========================================================================*/
-	void s_SubmitNewSingleOrder::SetFreeFormText(const char* NewValue)
+		void s_SubmitNewSingleOrder::SetFreeFormText(const char* NewValue)
 	{
 		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
+	/*==========================================================================*/
+	double s_SubmitNewSingleOrder::GetPrice1()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, Price1) + sizeof(Price1))
+			return 0;
 
+		return Price1;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewSingleOrder::GetPrice2()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, Price2) + sizeof(Price2))
+			return 0;
+
+		return Price2;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewSingleOrder::GetOrderQuantity()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, OrderQuantity) + sizeof(OrderQuantity))
+			return DBL_MAX;
+
+		return OrderQuantity;
+	}
+	/*==========================================================================*/
+	OrderTypeEnum s_SubmitNewSingleOrder::GetOrderType()
+	{			
+		if (Size < offsetof(s_SubmitNewSingleOrder, OrderType) + sizeof(OrderType))
+			return ORDER_TYPE_UNSET;
+
+		return OrderType;	
+	}
+		 
+	/*==========================================================================*/
+	BuySellEnum s_SubmitNewSingleOrder::GetBuySell()
+	{			
+		if (Size < offsetof(s_SubmitNewSingleOrder, BuySell) + sizeof(BuySell))
+			return BUY_SELL_UNSET;
+
+		return BuySell;	
+	}
+	/*==========================================================================*/
+	TimeInForceEnum s_SubmitNewSingleOrder::GetTimeInForce()
+	{			
+		if (Size < offsetof(s_SubmitNewSingleOrder, TimeInForce) + sizeof(TimeInForce))
+			return TIF_UNSET;
+
+		return TimeInForce;	
+	}
+
+	/*==========================================================================*/	 
+	t_DateTime s_SubmitNewSingleOrder::GetGoodTillDateTimeUnix() 
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, GoodTillDateTimeUnix) + sizeof(GoodTillDateTimeUnix))
+			return 0;
+
+		return GoodTillDateTimeUnix;
+	}
+	/*==========================================================================*/
+	byte s_SubmitNewSingleOrder::GetIsAutomatedOrder()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, IsAutomatedOrder) + sizeof(IsAutomatedOrder))
+			return 0;
+
+		return IsAutomatedOrder;
+	}
+	/*==========================================================================*/
+	byte s_SubmitNewSingleOrder::GetIsParentOrder()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, IsParentOrder) + sizeof(IsParentOrder))
+			return 0;
+
+		return IsParentOrder;
+	}
+
+	/*==========================================================================*/
+	__int32 s_SubmitNewSingleOrder::GetPrice1AsInteger()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, Price1AsInteger) + sizeof(Price1AsInteger))
+			return 0;
+
+		return Price1AsInteger;
+	}
+	/*==========================================================================*/
+	__int32 s_SubmitNewSingleOrder::GetPrice2AsInteger()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, Price2AsInteger) + sizeof(Price2AsInteger))
+			return 0;
+
+		return Price2AsInteger;
+	}
+	/*==========================================================================*/
+	float s_SubmitNewSingleOrder::GetDivisor()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, Divisor) + sizeof(Divisor))
+			return 0.0;
+
+		return Divisor;
+	}
 
 	/****************************************************************************/
 	// s_CancelReplaceOrder
@@ -2320,6 +2642,102 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_CancelReplaceOrder), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	char* s_CancelReplaceOrder::GetServerOrderID()
+	{
+		if (Size < offsetof( s_CancelReplaceOrder, ServerOrderID) + sizeof(ServerOrderID))
+			return "";
+
+		ServerOrderID[sizeof(ServerOrderID) - 1] = '\0';
+
+		return ServerOrderID;
+	}
+	/*==========================================================================*/
+	void s_CancelReplaceOrder::SetServerOrderID(const char* NewValue)
+	{
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+	}
+	/*==========================================================================*/
+	char* s_CancelReplaceOrder::GetClientOrderID()
+	{
+		if (Size < offsetof( s_CancelReplaceOrder, ClientOrderID) + sizeof(ClientOrderID))
+			return "";
+
+		ClientOrderID[sizeof(ClientOrderID) - 1] = '\0';
+
+		return ClientOrderID;
+	}
+	/*==========================================================================*/
+	void s_CancelReplaceOrder::SetClientOrderID(const char* NewValue)
+	{
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+	}
+	/*==========================================================================*/
+	/*==========================================================================*/
+	double s_CancelReplaceOrder::GetPrice1()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, Price1) + sizeof(Price1))
+			return 0;
+
+		return Price1;
+	}
+	/*==========================================================================*/
+	double s_CancelReplaceOrder::GetPrice2()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, Price2) + sizeof(Price2))
+			return 0;
+
+		return Price2;
+	}
+	/*==========================================================================*/
+	double s_CancelReplaceOrder::GetOrderQuantity()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, OrderQuantity) + sizeof(OrderQuantity))
+			return DBL_MAX;
+
+		return OrderQuantity;
+	}
+	/*==========================================================================*/
+	char* s_CancelReplaceOrder::GetTradeAccount()
+	{
+		if (Size < offsetof( s_CancelReplaceOrder, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_CancelReplaceOrder::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+	}	
+	/*==========================================================================*/
+	__int32 s_CancelReplaceOrder::GetPrice1AsInteger()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, Price1AsInteger) + sizeof(Price1AsInteger))
+			return 0;
+
+		return Price1AsInteger;
+	}
+	/*==========================================================================*/
+	__int32 s_CancelReplaceOrder::GetPrice2AsInteger()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, Price2AsInteger) + sizeof(Price2AsInteger))
+			return 0;
+
+		return Price2AsInteger;
+	}
+	/*==========================================================================*/
+	float s_CancelReplaceOrder::GetDivisor()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, Divisor) + sizeof(Divisor))
+			return 0.0;
+
+		return Divisor;
+	}
+
+
 
 
 	/****************************************************************************/
@@ -2335,6 +2753,51 @@ namespace DTC
 	void s_CancelOrder::CopyFrom(void* p_SourceData)
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_CancelOrder), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+	/*==========================================================================*/
+	char* s_CancelOrder::GetServerOrderID()
+	{
+		if (Size < offsetof( s_CancelOrder, ServerOrderID) + sizeof(ServerOrderID))
+			return "";
+
+		ServerOrderID[sizeof(ServerOrderID) - 1] = '\0';
+
+		return ServerOrderID;
+	}
+	/*==========================================================================*/
+	void s_CancelOrder::SetServerOrderID(const char* NewValue)
+	{
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+	}
+	/*==========================================================================*/
+	char* s_CancelOrder::GetClientOrderID()
+	{
+		if (Size < offsetof( s_CancelOrder, ClientOrderID) + sizeof(ClientOrderID))
+			return "";
+
+		ClientOrderID[sizeof(ClientOrderID) - 1] = '\0';
+
+		return ClientOrderID;
+	}
+	/*==========================================================================*/
+	void s_CancelOrder::SetClientOrderID(const char* NewValue)
+	{
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+	}
+	/*==========================================================================*/
+	char* s_CancelOrder::GetTradeAccount()
+	{
+		if (Size < offsetof( s_CancelOrder, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_CancelOrder::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 
 	/****************************************************************************/
@@ -2377,7 +2840,233 @@ namespace DTC
 	{
 		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
+	/*==========================================================================*/
+	char* s_SubmitNewOCOOrder::GetClientOrderID_1()
+	{
+		if (Size < offsetof( s_SubmitNewOCOOrder, ClientOrderID_1) + sizeof(ClientOrderID_1))
+			return "";
 
+		ClientOrderID_1[sizeof(ClientOrderID_1) - 1] = '\0';
+
+		return ClientOrderID_1;
+	}
+	/*==========================================================================*/
+	char* s_SubmitNewOCOOrder::GetClientOrderID_2()
+	{
+		if (Size < offsetof( s_SubmitNewOCOOrder, ClientOrderID_2) + sizeof(ClientOrderID_2))
+			return "";
+
+		ClientOrderID_2[sizeof(ClientOrderID_2) - 1] = '\0';
+
+		return ClientOrderID_2;
+	}
+	/*==========================================================================*/
+	char* s_SubmitNewOCOOrder::GetSymbol()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Symbol) + sizeof(Symbol))
+			return "";
+
+		Symbol[sizeof(Symbol) - 1] = '\0';
+
+		return Symbol;
+	}
+
+	/*==========================================================================*/
+	void s_SubmitNewOCOOrder::SetSymbol(const char* NewValue)
+	{
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
+	}
+
+	/*==========================================================================*/
+	char* s_SubmitNewOCOOrder::GetExchange()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+	/*==========================================================================*/
+	void s_SubmitNewOCOOrder::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+	/*==========================================================================*/
+	OrderTypeEnum s_SubmitNewOCOOrder::GetOrderType_1()
+	{			
+		if (Size < offsetof(s_SubmitNewOCOOrder, OrderType_1) + sizeof(OrderType_1))
+			return ORDER_TYPE_UNSET;
+
+		return OrderType_1;	
+	}
+	/*==========================================================================*/
+	OrderTypeEnum s_SubmitNewOCOOrder::GetOrderType_2()
+	{			
+		if (Size < offsetof(s_SubmitNewOCOOrder, OrderType_2) + sizeof(OrderType_2))
+			return ORDER_TYPE_UNSET;
+
+		return OrderType_2;	
+	}
+	/*==========================================================================*/			 
+	BuySellEnum s_SubmitNewOCOOrder::GetBuySell_1()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, BuySell_1) + sizeof(BuySell_1))
+			return (BuySellEnum)0;
+
+		return BuySell_1;
+	}
+	/*==========================================================================*/
+	BuySellEnum s_SubmitNewOCOOrder::GetBuySell_2()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, BuySell_2) + sizeof(BuySell_2))
+			return (BuySellEnum)0;
+
+		return BuySell_2;
+	}
+	/*==========================================================================*/
+	TimeInForceEnum s_SubmitNewOCOOrder::GetTimeInForce()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, TimeInForce) + sizeof(TimeInForce))
+			return (TimeInForceEnum)0;
+
+		return TimeInForce;
+	}
+	/*==========================================================================*/
+	t_DateTime s_SubmitNewOCOOrder::GetGoodTillDateTimeUnix() 
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, GoodTillDateTimeUnix) + sizeof(GoodTillDateTimeUnix))
+			return 0;
+
+		return GoodTillDateTimeUnix;
+	}	
+	/*==========================================================================*/
+	char* s_SubmitNewOCOOrder::GetParentTriggerClientOrderID()
+	{
+		if (Size < offsetof( s_SubmitNewOCOOrder, ParentTriggerClientOrderID) + sizeof(ParentTriggerClientOrderID))
+			return "";
+
+		ParentTriggerClientOrderID[sizeof(ParentTriggerClientOrderID) - 1] = '\0';
+
+		return ParentTriggerClientOrderID;
+	}
+	/*==========================================================================*/
+	void s_SubmitNewOCOOrder::SetParentTriggerClientOrderID(const char* NewValue)
+	{
+		strncpy(ParentTriggerClientOrderID, NewValue, sizeof(ParentTriggerClientOrderID) - 1);
+	}
+	/*==========================================================================*/
+	byte s_SubmitNewOCOOrder::GetIsAutomatedOrder()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, IsAutomatedOrder) + sizeof(IsAutomatedOrder))
+			return 0;
+
+		return IsAutomatedOrder;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewOCOOrder::GetPrice1_1()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price1_1) + sizeof(Price1_1))
+			return 0;
+
+		return Price1_1;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewOCOOrder::GetPrice2_1()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price2_1) + sizeof(Price2_1))
+			return 0;
+
+		return Price2_1;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewOCOOrder::GetPrice1_2()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price1_2) + sizeof(Price1_2))
+			return 0;
+
+		return Price1_2;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewOCOOrder::GetPrice2_2()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price2_2) + sizeof(Price2_2))
+			return 0;
+
+		return Price2_2;
+	}
+
+	/*==========================================================================*/
+	__int32 s_SubmitNewOCOOrder::GetPrice1_1AsInteger()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price1_1AsInteger) + sizeof(Price1_1AsInteger))
+			return 0;
+
+		return Price1_1AsInteger;
+	}
+	/*==========================================================================*/
+	__int32 s_SubmitNewOCOOrder::GetPrice2_1AsInteger()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price2_1AsInteger) + sizeof(Price2_1AsInteger))
+			return 0;
+
+		return Price2_1AsInteger;
+	}
+	/*==========================================================================*/
+	__int32 s_SubmitNewOCOOrder::GetPrice1_2AsInteger()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price1_2AsInteger) + sizeof(Price1_2AsInteger))
+			return 0;
+
+		return Price1_2AsInteger;
+	}
+	/*==========================================================================*/
+	__int32 s_SubmitNewOCOOrder::GetPrice2_2AsInteger()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Price2_2AsInteger) + sizeof(Price2_2AsInteger))
+			return 0;
+
+		return Price2_2AsInteger;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewOCOOrder::GetOrderQuantity_1()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, OrderQuantity_1) + sizeof(OrderQuantity_1))
+			return DBL_MAX;
+
+		return OrderQuantity_1;
+	}
+	/*==========================================================================*/
+	double s_SubmitNewOCOOrder::GetOrderQuantity_2()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, OrderQuantity_2) + sizeof(OrderQuantity_2))
+			return DBL_MAX;
+
+		return OrderQuantity_2;
+	}
+	/*==========================================================================*/
+	char* s_SubmitNewOCOOrder::GetTradeAccount()
+	{
+		if (Size < offsetof( s_SubmitNewOCOOrder, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_SubmitNewOCOOrder::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+	}
+	/*==========================================================================*/
+	float s_SubmitNewOCOOrder::GetDivisor()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, Divisor) + sizeof(Divisor))
+			return 0.0;
+
+		return Divisor;
+	}
 	/****************************************************************************/
 	// s_OpenOrdersRequest
 
@@ -2391,6 +3080,38 @@ namespace DTC
 	void s_OpenOrdersRequest::CopyFrom(void* p_SourceData)
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+	/*==========================================================================*/
+	__int32 s_OpenOrdersRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_OpenOrdersRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	__int32 s_OpenOrdersRequest::GetRequestAllOpenOrders()
+	{
+		if (Size < offsetof(s_OpenOrdersRequest, RequestAllOpenOrders) + sizeof(RequestAllOpenOrders))
+			return 0;
+
+		return RequestAllOpenOrders;
+	}
+
+	/*==========================================================================*/
+	char* s_OpenOrdersRequest::GetServerOrderID()
+	{
+		if (Size < offsetof( s_OpenOrdersRequest, ServerOrderID) + sizeof(ServerOrderID))
+			return "";
+
+		ServerOrderID[sizeof(ServerOrderID) - 1] = '\0';
+
+		return ServerOrderID;
+	}
+	/*==========================================================================*/
+	void s_OpenOrdersRequest::SetServerOrderID(const char* NewValue)
+	{
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 
 	/****************************************************************************/
@@ -2407,6 +3128,53 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_HistoricalOrderFillsRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_HistoricalOrderFillsRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillsRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	__int32 s_HistoricalOrderFillsRequest::GetNumberOfDays()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillsRequest, NumberOfDays) + sizeof(NumberOfDays))
+			return 0;
+
+		return NumberOfDays;
+	}
+
+	/*==========================================================================*/
+	char* s_HistoricalOrderFillsRequest::GetServerOrderID()
+	{
+		if (Size < offsetof( s_HistoricalOrderFillsRequest, ServerOrderID) + sizeof(ServerOrderID))
+			return "";
+
+		ServerOrderID[sizeof(ServerOrderID) - 1] = '\0';
+
+		return ServerOrderID;
+	}
+	/*==========================================================================*/
+	void s_HistoricalOrderFillsRequest::SetServerOrderID(const char* NewValue)
+	{
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+	}
+	/*==========================================================================*/
+	char* s_HistoricalOrderFillsRequest::GetTradeAccount()
+	{
+		if (Size < offsetof( s_HistoricalOrderFillsRequest, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_HistoricalOrderFillsRequest::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+	}
 
 	/****************************************************************************/
 	// s_CurrentPositionsRequest
@@ -2421,6 +3189,30 @@ namespace DTC
 	void s_CurrentPositionsRequest::CopyFrom(void* p_SourceData)
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+	/*==========================================================================*/
+	__int32 s_CurrentPositionsRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_CurrentPositionsRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+
+	/*==========================================================================*/
+	char* s_CurrentPositionsRequest::GetTradeAccount()
+	{
+		if (Size < offsetof( s_CurrentPositionsRequest, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_CurrentPositionsRequest::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 
 	/****************************************************************************/
@@ -2437,6 +3229,31 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_CurrentPositionsRequestReject), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_CurrentPositionsRequestReject::GetRequestID()
+	{
+		if (Size < offsetof(s_CurrentPositionsRequestReject, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+
+	/*==========================================================================*/
+	char* s_CurrentPositionsRequestReject::GetRejectText()
+	{
+		if (Size < offsetof( s_CurrentPositionsRequestReject, RejectText) + sizeof(RejectText))
+			return "";
+
+		RejectText[sizeof(RejectText) - 1] = '\0';
+
+		return RejectText;
+	}
+	/*==========================================================================*/
+	void s_CurrentPositionsRequestReject::SetRejectText(const char* NewValue)
+	{
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
+	}
+
 
 	/****************************************************************************/
 	// s_OrderUpdateReport
@@ -2607,6 +3424,160 @@ namespace DTC
 
 		return LastFillQuantity;
 	}
+	/*==========================================================================*/
+	__int32 s_OrderUpdateReport::GetRequestID()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	__int32 s_OrderUpdateReport::GetTotalNumberMessages()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, TotalNumberMessages) + sizeof(TotalNumberMessages))
+			return 0;
+
+		return TotalNumberMessages;
+	}
+
+	/*==========================================================================*/
+	__int32 s_OrderUpdateReport::GetMessageNumber()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, MessageNumber) + sizeof(MessageNumber))
+			return 0;
+
+		return MessageNumber;
+	}
+	/*==========================================================================*/
+	OrderStatusEnum s_OrderUpdateReport::GetOrderStatus()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, OrderStatus) + sizeof(OrderStatus))
+			return (OrderStatusEnum)0;
+
+		return OrderStatus;
+	}
+	/*==========================================================================*/
+	ExecutionTypeEnum s_OrderUpdateReport::GetExecutionType()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, ExecutionType) + sizeof(ExecutionType))
+			return (ExecutionTypeEnum)0;
+
+		return ExecutionType;
+	}
+	/*==========================================================================*/
+	OrderTypeEnum s_OrderUpdateReport::GetOrderType()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, OrderType) + sizeof(OrderType))
+			return (OrderTypeEnum)0;
+
+		return OrderType;
+	}
+	/*==========================================================================*/
+	BuySellEnum s_OrderUpdateReport::GetBuySell()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, BuySell) + sizeof(BuySell))
+			return (BuySellEnum)0;
+
+		return BuySell;
+	}
+	/*==========================================================================*/
+	double s_OrderUpdateReport::GetPrice1()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, Price1) + sizeof(Price1))
+			return DBL_MAX;
+
+		return Price1;
+	}
+	/*==========================================================================*/
+	double s_OrderUpdateReport::GetPrice2()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, Price2) + sizeof(Price2))
+			return DBL_MAX;
+
+		return Price2;
+	}
+
+	/*==========================================================================*/
+	TimeInForceEnum s_OrderUpdateReport::GetTimeInForce()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, TimeInForce) + sizeof(TimeInForce))
+			return (TimeInForceEnum)0;
+
+		return TimeInForce;
+	}
+	/*==========================================================================*/
+	t_DateTime s_OrderUpdateReport::GetGoodTillDateTimeUnix() 
+	{
+		if (Size < offsetof(s_OrderUpdateReport, GoodTillDateTimeUnix) + sizeof(GoodTillDateTimeUnix))
+			return 0;
+
+		return GoodTillDateTimeUnix;
+	}
+
+	/*==========================================================================*/
+	double s_OrderUpdateReport::GetAverageFillPrice()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, AverageFillPrice) + sizeof(AverageFillPrice))
+			return DBL_MAX;
+
+		return AverageFillPrice;
+	}
+	/*==========================================================================*/
+	double s_OrderUpdateReport::GetLastFillPrice()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, LastFillPrice) + sizeof(LastFillPrice))
+			return DBL_MAX;
+
+		return LastFillPrice;
+	}
+	/*==========================================================================*/
+	t_DateTime s_OrderUpdateReport::GetLastFillDateTimeUnix() 
+	{
+		if (Size < offsetof(s_OrderUpdateReport, LastFillDateTimeUnix) + sizeof(LastFillDateTimeUnix))
+			return 0;
+
+		return LastFillDateTimeUnix;
+	}
+	/*==========================================================================*/
+	char* s_OrderUpdateReport::GetUniqueFillExecutionID()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, UniqueFillExecutionID) + sizeof(UniqueFillExecutionID))
+			return "";
+
+		UniqueFillExecutionID[sizeof(UniqueFillExecutionID) - 1] = '\0';
+
+		return UniqueFillExecutionID;
+	}
+	/*==========================================================================*/
+	char* s_OrderUpdateReport::GetTradeAccount()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	char* s_OrderUpdateReport::GetInfoText()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, InfoText) + sizeof(InfoText))
+			return "";
+
+		InfoText[sizeof(InfoText) - 1] = '\0';
+
+		return InfoText;
+	}
+	/*==========================================================================*/	
+	byte s_OrderUpdateReport::GetNoneOrders()
+	{
+		if (Size < offsetof(s_OrderUpdateReport, NoneOrders) + sizeof(NoneOrders))
+			return 0;
+
+		return NoneOrders;
+	}
+
 
 	/****************************************************************************/
 	// s_OpenOrdersRequestReject
@@ -2622,6 +3593,30 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_OpenOrdersRequestReject), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_OpenOrdersRequestReject::GetRequestID()
+	{
+		if (Size < offsetof(s_OpenOrdersRequestReject, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	void s_OpenOrdersRequestReject::SetRejectText(const char* NewValue)
+	{
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
+	}
+	/*==========================================================================*/
+	char* s_OpenOrdersRequestReject::GetRejectText()
+	{
+		if (Size < offsetof(s_OpenOrdersRequestReject, RejectText) + sizeof(RejectText))
+			return "";
+
+		RejectText[sizeof(RejectText) - 1] = '\0';
+
+		return RejectText;
+	}
+
 
 	/****************************************************************************/
 	// s_HistoricalOrderFillReport
@@ -2637,6 +3632,162 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_HistoricalOrderFillReport), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_HistoricalOrderFillReport::GetRequestID()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	char* s_HistoricalOrderFillReport::GetSymbol()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, Symbol) + sizeof(Symbol))
+			return "";
+
+		Symbol[sizeof(Symbol) - 1] = '\0';
+
+		return Symbol;
+	}
+
+	/*==========================================================================*/
+	void s_HistoricalOrderFillReport::SetSymbol(const char* NewValue)
+	{
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
+	}
+
+	/*==========================================================================*/
+	char* s_HistoricalOrderFillReport::GetExchange()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_HistoricalOrderFillReport::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+	/*==========================================================================*/
+	__int32 s_HistoricalOrderFillReport::GetMessageNumber()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, MessageNumber) + sizeof(MessageNumber))
+			return 0;
+
+		return MessageNumber;
+	}
+	/*==========================================================================*/
+	__int32 s_HistoricalOrderFillReport::GetTotalNumberMessages()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, TotalNumberMessages) + sizeof(TotalNumberMessages))
+			return 0;
+
+		return TotalNumberMessages;
+	}
+	/*==========================================================================*/
+	char* s_HistoricalOrderFillReport::GetServerOrderID()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, ServerOrderID) + sizeof(ServerOrderID))
+			return "";
+
+		ServerOrderID[sizeof(ServerOrderID) - 1] = '\0';
+
+		return ServerOrderID;
+	}
+
+	/*==========================================================================*/
+	void s_HistoricalOrderFillReport::SetServerOrderID(const char* NewValue)
+	{
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+	}
+
+	/*==========================================================================*/
+	char* s_HistoricalOrderFillReport::GetTradeAccount()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_HistoricalOrderFillReport::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+	}
+	/*==========================================================================*/
+	char* s_HistoricalOrderFillReport::GetUniqueFillExecutionID()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, UniqueFillExecutionID) + sizeof(UniqueFillExecutionID))
+			return "";
+
+		UniqueFillExecutionID[sizeof(UniqueFillExecutionID) - 1] = '\0';
+
+		return UniqueFillExecutionID;
+	}
+	/*==========================================================================*/
+	void s_HistoricalOrderFillReport::SetUniqueFillExecutionID(const char* NewValue)
+	{
+		strncpy(UniqueFillExecutionID, NewValue, sizeof(UniqueFillExecutionID) - 1);
+	}
+	/*==========================================================================*/
+	double s_HistoricalOrderFillReport::GetFillPrice()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, FillPrice) + sizeof(FillPrice))
+			return 0;
+
+		return FillPrice;
+	}
+	/*==========================================================================*/
+	double s_HistoricalOrderFillReport::GetFillQuantity()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, FillQuantity) + sizeof(FillQuantity))
+			return 0;
+
+		return FillQuantity;
+	}
+
+	/*==========================================================================*/
+	t_DateTime s_HistoricalOrderFillReport::GetFillDateTimeUnix() 
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, FillDateTimeUnix) + sizeof(FillDateTimeUnix))
+			return 0;
+
+		return FillDateTimeUnix;
+	}
+
+	/*==========================================================================*/
+	BuySellEnum s_HistoricalOrderFillReport::GetBuySell()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, BuySell) + sizeof(BuySell))
+			return (BuySellEnum)0;
+
+		return BuySell;
+	}
+
+	/*==========================================================================*/
+	OpenCloseTradeEnum s_HistoricalOrderFillReport::GetOpenClose()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, OpenClose) + sizeof(OpenClose))
+			return (OpenCloseTradeEnum)0;
+
+		return OpenClose;
+	}
+	/*==========================================================================*/	
+	byte s_HistoricalOrderFillReport::GetNoneOrderFills()
+	{
+		if (Size < offsetof(s_HistoricalOrderFillReport, NoneOrderFills) + sizeof(NoneOrderFills))
+			return 0;
+
+		return NoneOrderFills;
+	}
+
 
 	/****************************************************************************/
 	// s_PositionReport
@@ -2664,6 +3815,114 @@ namespace DTC
 	{
 		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
+	/*==========================================================================*/
+	__int32 s_PositionReport::GetRequestID()
+	{
+		if (Size < offsetof(s_PositionReport, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	char* s_PositionReport::GetSymbol()
+	{
+		if (Size < offsetof(s_PositionReport, Symbol) + sizeof(Symbol))
+			return "";
+
+		Symbol[sizeof(Symbol) - 1] = '\0';
+
+		return Symbol;
+	}
+	/*==========================================================================*/
+	char* s_PositionReport::GetExchange()
+	{
+		if (Size < offsetof(s_PositionReport, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_PositionReport::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+	/*==========================================================================*/
+	__int32 s_PositionReport::GetMessageNumber()
+	{
+		if (Size < offsetof(s_PositionReport, MessageNumber) + sizeof(MessageNumber))
+			return 0;
+
+		return MessageNumber;
+	}
+	/*==========================================================================*/
+	__int32 s_PositionReport::GetTotalNumberMessages()
+	{
+		if (Size < offsetof(s_PositionReport, TotalNumberMessages) + sizeof(TotalNumberMessages))
+			return 0;
+
+		return TotalNumberMessages;
+	}	
+	/*==========================================================================*/
+	char* s_PositionReport::GetTradeAccount()
+	{
+		if (Size < offsetof(s_PositionReport, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	void s_PositionReport::SetPositionIdentifier(const char* NewValue)
+	{
+		strncpy(PositionIdentifier, NewValue, sizeof(PositionIdentifier) - 1);
+	}
+	/*==========================================================================*/
+	char* s_PositionReport::GetPositionIdentifier()
+	{
+		if (Size < offsetof(s_PositionReport, PositionIdentifier) + sizeof(PositionIdentifier))
+			return "";
+
+		PositionIdentifier[sizeof(PositionIdentifier) - 1] = '\0';
+
+		return PositionIdentifier;
+	}
+	/*==========================================================================*/
+	double s_PositionReport::GetPositionQuantity()
+	{
+		if (Size < offsetof(s_PositionReport, PositionQuantity) + sizeof(PositionQuantity))
+			return 0;
+
+		return PositionQuantity;
+	}/*==========================================================================*/
+	double s_PositionReport::GetAveragePrice()
+	{
+		if (Size < offsetof(s_PositionReport, AveragePrice) + sizeof(AveragePrice))
+			return 0;
+
+		return AveragePrice;
+	}
+	/*==========================================================================*/	
+	byte s_PositionReport::GetNonePositions()
+	{
+		if (Size < offsetof(s_PositionReport, NonePositions) + sizeof(NonePositions))
+			return 0;
+
+		return NonePositions;
+	}
+	/*==========================================================================*/	
+	byte s_PositionReport::GetUnsolicited()
+	{
+		if (Size < offsetof(s_PositionReport, Unsolicited) + sizeof(Unsolicited))
+			return 0;
+
+		return Unsolicited;
+	}
+
+
 
 	/****************************************************************************/
 	// s_AccountsRequest
@@ -2694,6 +3953,38 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_AccountListResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_AccountListResponse::GetMessageNumber()
+	{
+		if (Size < offsetof(s_AccountListResponse, MessageNumber) + sizeof(MessageNumber))
+			return 0;
+
+		return MessageNumber;
+	}
+	/*==========================================================================*/
+	__int32 s_AccountListResponse::GetTotalNumberMessages()
+	{
+		if (Size < offsetof(s_AccountListResponse, TotalNumberMessages) + sizeof(TotalNumberMessages))
+			return 0;
+
+		return TotalNumberMessages;
+	}		
+	/*==========================================================================*/
+	void s_AccountListResponse::SetTradeAccount(const char* NewValue)
+	{
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+	}
+	/*==========================================================================*/
+	char* s_AccountListResponse::GetTradeAccount()
+	{
+		if (Size < offsetof(s_AccountListResponse, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';
+
+		return TradeAccount;
+	}
+
 
 	/****************************************************************************/
 	// s_ExchangeListRequest
@@ -2709,6 +4000,15 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_ExchangeListRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_ExchangeListRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_ExchangeListRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+
 
 	/****************************************************************************/
 	// s_ExchangeListResponse
@@ -2726,7 +4026,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	char* s_ExchangeListResponse::GetExchangeText()
+	char* s_ExchangeListResponse::GetExchange()
 	{
 		if (Size < offsetof(s_ExchangeListResponse, Exchange) + sizeof(Exchange))
 			return "";
@@ -2737,13 +4037,13 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_ExchangeListResponse::SetExchangeText(const char* NewValue)
+	void s_ExchangeListResponse::SetExchange(const char* NewValue)
 	{
 		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/*==========================================================================*/
-	char* s_ExchangeListResponse::GetExchangeDescriptionText()
+	char* s_ExchangeListResponse::GetExchangeDescription()
 	{
 		if (Size < offsetof(s_ExchangeListResponse, ExchangeDescription) + sizeof(ExchangeDescription))
 			return "";
@@ -2754,10 +4054,27 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_ExchangeListResponse::SetExchangeDescriptionText(const char* NewValue)
+	void s_ExchangeListResponse::SetExchangeDescription(const char* NewValue)
 	{
 		strncpy(ExchangeDescription, NewValue, sizeof(ExchangeDescription) - 1);
 	}
+	/*==========================================================================*/
+	__int32 s_ExchangeListResponse::GetRequestID()
+	{
+		if (Size < offsetof(s_ExchangeListResponse, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	byte s_ExchangeListResponse::GetFinalMessage()
+	{
+		if (Size < offsetof(s_ExchangeListResponse, FinalMessage) + sizeof(FinalMessage))
+			return 0;
+
+		return FinalMessage;
+	}
+
 
 	/****************************************************************************/
 	// s_SymbolsForExchangeRequest
@@ -2773,6 +4090,41 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_SymbolsForExchangeRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_SymbolsForExchangeRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_SymbolsForExchangeRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+
+	/*==========================================================================*/
+	char* s_SymbolsForExchangeRequest::GetExchange()
+	{
+		if (Size < offsetof(s_SymbolsForExchangeRequest, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_SymbolsForExchangeRequest::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+
+	/*==========================================================================*/
+	SecurityTypeEnum s_SymbolsForExchangeRequest::GetSecurityType()
+	{
+		if (Size < offsetof(s_SymbolsForExchangeRequest, SecurityType) + sizeof(SecurityType))
+			return (SecurityTypeEnum)0;
+
+		return SecurityType;
+	}
+
 
 	/****************************************************************************/
 	// s_UnderlyingSymbolsForExchangeRequest
@@ -2787,6 +4139,39 @@ namespace DTC
 	void s_UnderlyingSymbolsForExchangeRequest::CopyFrom(void* p_SourceData)
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_UnderlyingSymbolsForExchangeRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+	/*==========================================================================*/
+	__int32 s_UnderlyingSymbolsForExchangeRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_UnderlyingSymbolsForExchangeRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+
+	/*==========================================================================*/
+	char* s_UnderlyingSymbolsForExchangeRequest::GetExchange()
+	{
+		if (Size < offsetof(s_UnderlyingSymbolsForExchangeRequest, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+
+	/*==========================================================================*/
+	void s_UnderlyingSymbolsForExchangeRequest::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+	/*==========================================================================*/
+	SecurityTypeEnum s_UnderlyingSymbolsForExchangeRequest::GetSecurityType()
+	{
+		if (Size < offsetof(s_UnderlyingSymbolsForExchangeRequest, SecurityType) + sizeof(SecurityType))
+			return (SecurityTypeEnum)0;
+
+		return SecurityType;
 	}
 
 	/****************************************************************************/
@@ -2803,6 +4188,55 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_SymbolsForUnderlyingRequest), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_SymbolsForUnderlyingRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_SymbolsForUnderlyingRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	char* s_SymbolsForUnderlyingRequest::GetExchange()
+	{
+		if (Size < offsetof(s_SymbolsForUnderlyingRequest, Exchange) + sizeof(Exchange))
+			return "";
+
+		Exchange[sizeof(Exchange) - 1] = '\0';
+
+		return Exchange;
+	}
+	/*==========================================================================*/
+	void s_SymbolsForUnderlyingRequest::SetExchange(const char* NewValue)
+	{
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
+	}
+	/*==========================================================================*/
+	void s_SymbolsForUnderlyingRequest::SetUnderlyingSymbol(const char* NewValue)
+	{
+		strncpy(UnderlyingSymbol, NewValue, sizeof(UnderlyingSymbol) - 1);
+	}
+	/*==========================================================================*/
+	char* s_SymbolsForUnderlyingRequest::GetUnderlyingSymbol()
+	{
+		if (Size < offsetof(s_SymbolsForUnderlyingRequest, UnderlyingSymbol) + sizeof(UnderlyingSymbol))
+			return "";
+
+		UnderlyingSymbol[sizeof(UnderlyingSymbol) - 1] = '\0';
+
+		return UnderlyingSymbol;
+	}
+
+
+	/*==========================================================================*/
+	SecurityTypeEnum s_SymbolsForUnderlyingRequest::GetSecurityType()
+	{
+		if (Size < offsetof(s_SymbolsForUnderlyingRequest, SecurityType) + sizeof(SecurityType))
+			return (SecurityTypeEnum)0;
+
+		return SecurityType;
+	}
+
 
 	/****************************************************************************/
 	// s_SymbolSearchByDescriptionRequest
@@ -2837,7 +4271,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	char* s_SymbolSearchByDescriptionRequest::GetDescription()
+	char* s_SymbolSearchByDescriptionRequest::GetSymbolDescription()
 	{
 		if (Size < offsetof(s_SymbolSearchByDescriptionRequest, SymbolDescription) + sizeof(SymbolDescription))
 			return "";
@@ -2848,9 +4282,25 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_SymbolSearchByDescriptionRequest::SetDescription(const char* NewValue)
+	void s_SymbolSearchByDescriptionRequest::SetSymbolDescription(const char* NewValue)
 	{
 		strncpy(SymbolDescription, NewValue, sizeof(SymbolDescription) - 1);
+	}
+	/*==========================================================================*/
+	__int32 s_SymbolSearchByDescriptionRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_SymbolSearchByDescriptionRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	SecurityTypeEnum s_SymbolSearchByDescriptionRequest::GetSecurityType()
+	{
+		if (Size < offsetof(s_SymbolSearchByDescriptionRequest, SecurityType) + sizeof(SecurityType))
+			return (SecurityTypeEnum)0;
+
+		return SecurityType;
 	}
 
 
@@ -2902,6 +4352,23 @@ namespace DTC
 	{
 		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
+	/*==========================================================================*/
+	__int32 s_SecurityDefinitionForSymbolRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_SecurityDefinitionForSymbolRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+	/*==========================================================================*/
+	SecurityTypeEnum s_SecurityDefinitionForSymbolRequest::GetSecurityType()
+	{
+		if (Size < offsetof(s_SecurityDefinitionForSymbolRequest, SecurityType) + sizeof(SecurityType))
+			return (SecurityTypeEnum)0;
+
+		return SecurityType;
+	}
+
 
 	/****************************************************************************/
 	// s_SecurityDefinitionResponse
@@ -3015,7 +4482,7 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	char s_SecurityDefinitionResponse::GetFinalMessage() const
+	byte s_SecurityDefinitionResponse::GetFinalMessage() const
 	{
 		if (Size < offsetof(s_SecurityDefinitionResponse, FinalMessage) + sizeof(FinalMessage))
 			return 0;
@@ -3049,6 +4516,43 @@ namespace DTC
 	{
 		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
+	/*==========================================================================*/
+	char* s_AccountBalanceUpdate::GetAccountCurrency()
+	{
+		if (Size < offsetof(s_AccountBalanceUpdate, AccountCurrency) + sizeof(AccountCurrency))
+			return "";
+
+		AccountCurrency[sizeof(AccountCurrency) - 1] = '\0';  // Ensure that the null terminator exists
+
+		return AccountCurrency;
+	}
+	/*==========================================================================*/
+	char* s_AccountBalanceUpdate::GetTradeAccount()
+	{
+		if (Size < offsetof(s_AccountBalanceUpdate, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';  // Ensure that the null terminator exists
+
+		return TradeAccount;
+	}
+	/*==========================================================================*/
+	double s_AccountBalanceUpdate::GetCurrentCashBalance()
+	{
+		if (Size < offsetof(s_AccountBalanceUpdate, CurrentCashBalance) + sizeof(CurrentCashBalance))
+			return 0;
+
+		return CurrentCashBalance;
+	}
+	/*==========================================================================*/
+	double s_AccountBalanceUpdate::GetCurrentBalanceAvailableForNewPositions()
+	{
+		if (Size < offsetof(s_AccountBalanceUpdate, CurrentBalanceAvailableForNewPositions) + sizeof(CurrentBalanceAvailableForNewPositions))
+			return 0;
+
+		return CurrentBalanceAvailableForNewPositions;
+	}
+
 
 	/****************************************************************************/
 	// s_UserMessage
@@ -3064,6 +4568,31 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_UserMessage), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	void s_UserMessage::SetUserMessage(const char* NewValue)
+	{
+		strncpy(UserMessage, NewValue, sizeof(UserMessage) - 1);
+	}
+	/*==========================================================================*/
+	char* s_UserMessage::GetUserMessage()
+	{
+		if (Size < offsetof(s_UserMessage, UserMessage) + sizeof(UserMessage))
+			return "";
+
+		UserMessage[sizeof(UserMessage) - 1] = '\0';  // Ensure that the null terminator exists
+
+		return UserMessage;
+	}
+
+	/*==========================================================================*/
+	byte s_UserMessage::GetPopupMessage()
+	{
+		if (Size < offsetof(s_UserMessage, PopupMessage) + sizeof(PopupMessage))
+			return 0;
+
+		return PopupMessage;
+	}
+
 
 	/****************************************************************************/
 	// s_GeneralLogMessage
@@ -3146,6 +4675,71 @@ namespace DTC
 	{
 		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
+	/*==========================================================================*/
+	__int32 s_HistoricalPriceDataRequest::GetRequestIdentifier()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, RequestIdentifier) + sizeof(RequestIdentifier))
+			return 0;
+
+		return RequestIdentifier;
+	}
+	/*==========================================================================*/
+	unsigned __int32 s_HistoricalPriceDataRequest::GetMaximumDaysToReturn()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, MaximumDaysToReturn) + sizeof(MaximumDaysToReturn))
+			return 0;
+
+		return MaximumDaysToReturn;
+	}
+	/*==========================================================================*/
+	t_DateTime s_HistoricalPriceDataRequest::GetEndDateTime() 
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, EndDateTime) + sizeof(EndDateTime))
+			return 0;
+
+		return EndDateTime;
+	}
+	/*==========================================================================*/
+	t_DateTime s_HistoricalPriceDataRequest::GetStartDateTime() 
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, StartDateTime) + sizeof(StartDateTime))
+			return 0;
+
+		return StartDateTime;
+	}
+	/*==========================================================================*/
+	HistoricalDataIntervalEnum s_HistoricalPriceDataRequest::GetDataInterval()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, DataInterval) + sizeof(DataInterval))
+			return (HistoricalDataIntervalEnum)0;
+
+		return DataInterval;
+	}
+	/*==========================================================================*/
+	byte s_HistoricalPriceDataRequest::GetUseZLibCompression()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, UseZLibCompression) + sizeof(UseZLibCompression))
+			return 0;
+
+		return UseZLibCompression;
+	}
+	/*==========================================================================*/
+	byte s_HistoricalPriceDataRequest::GetDividendAdjustedStockData()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, DividendAdjustedStockData) + sizeof(DividendAdjustedStockData))
+			return 0;
+
+		return DividendAdjustedStockData;
+	}
+	/*==========================================================================*/
+	byte s_HistoricalPriceDataRequest::GetDelayedData()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRequest, DelayedData) + sizeof(DelayedData))
+			return 0;
+
+		return DelayedData;
+	}
+
 
 	/****************************************************************************/
 	// s_HistoricalPriceDataHeaderResponse
@@ -3160,6 +4754,38 @@ namespace DTC
 	void s_HistoricalPriceDataHeaderResponse::CopyFrom(void* p_SourceData)
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataHeaderResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
+	}
+	/*==========================================================================*/
+	__int32 s_HistoricalPriceDataHeaderResponse::GetRequestIdentifier()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataHeaderResponse, RequestIdentifier) + sizeof(RequestIdentifier))
+			return 0;
+
+		return RequestIdentifier;
+	}
+	/*==========================================================================*/
+	HistoricalDataIntervalEnum s_HistoricalPriceDataHeaderResponse::GetDataInterval()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataHeaderResponse, DataInterval) + sizeof(DataInterval))
+			return (HistoricalDataIntervalEnum)0;
+
+		return DataInterval;
+	}
+	/*==========================================================================*/
+	byte s_HistoricalPriceDataHeaderResponse::GetRecordsUseZLibCompression()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataHeaderResponse, RecordsUseZLibCompression) + sizeof(RecordsUseZLibCompression))
+			return 0;
+
+		return RecordsUseZLibCompression;
+	}
+	/*==========================================================================*/
+	byte s_HistoricalPriceDataHeaderResponse::GetNoRecordsToReturn()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataHeaderResponse, NoRecordsToReturn) + sizeof(NoRecordsToReturn))
+			return 0;
+
+		return NoRecordsToReturn;
 	}
 
 	/****************************************************************************/
@@ -3193,6 +4819,15 @@ namespace DTC
 	{
 		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
+	/*==========================================================================*/
+	__int32 s_HistoricalPriceDataReject::GetRequestIdentifier()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataReject, RequestIdentifier) + sizeof(RequestIdentifier))
+			return 0;
+
+		return RequestIdentifier;
+	}
+
 
 
 	/****************************************************************************/
@@ -3209,6 +4844,87 @@ namespace DTC
 	{
 		memcpy(this, p_SourceData, min(sizeof(s_HistoricalPriceDataRecordResponse), *static_cast<unsigned __int16*>( p_SourceData) ));
 	}
+	/*==========================================================================*/
+	__int32 s_HistoricalPriceDataRecordResponse::GetRequestIdentifier()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, RequestIdentifier) + sizeof(RequestIdentifier))
+			return 0;
+
+		return RequestIdentifier;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataRecordResponse::GetOpen()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, Open) + sizeof(Open))
+			return 0;
+
+		return Open;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataRecordResponse::GetHigh()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, High) + sizeof(High))
+			return 0;
+
+		return High;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataRecordResponse::GetLow()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, Low) + sizeof(Low))
+			return 0;
+
+		return Low;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataRecordResponse::GetLast()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, Last) + sizeof(Last))
+			return 0;
+
+		return Last;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataRecordResponse::GetVolume()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, Volume) + sizeof(Volume))
+			return 0;
+
+		return Volume;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataRecordResponse::GetBidVolume()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, BidVolume) + sizeof(BidVolume))
+			return 0;
+
+		return BidVolume;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataRecordResponse::GetAskVolume()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, AskVolume) + sizeof(AskVolume))
+			return 0;
+
+		return AskVolume;
+	}
+	/*==========================================================================*/
+	t_DateTime s_HistoricalPriceDataRecordResponse::GetStartingDateTime() 
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, StartingDateTime) + sizeof(StartingDateTime))
+			return 0;
+
+		return StartingDateTime;
+	}
+	/*==========================================================================*/
+	byte s_HistoricalPriceDataRecordResponse::GetFinalRecord()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataRecordResponse, FinalRecord) + sizeof(FinalRecord))
+			return 0;
+
+		return FinalRecord;
+	}
+
 
 	/****************************************************************************/
 	// s_HistoricalPriceDataTickRecordResponse
@@ -3232,6 +4948,55 @@ namespace DTC
 		Type=HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE;
 		Size=sizeof(s_HistoricalPriceDataTickRecordResponse);
 	}
+	/*==========================================================================*/
+	__int32 s_HistoricalPriceDataTickRecordResponse::GetRequestIdentifier()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataTickRecordResponse, RequestIdentifier) + sizeof(RequestIdentifier))
+			return 0;
+
+		return RequestIdentifier;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataTickRecordResponse::GetTradeDateTimeWithMilliseconds()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataTickRecordResponse, TradeDateTimeWithMilliseconds) + sizeof(TradeDateTimeWithMilliseconds))
+			return 0;
+
+		return TradeDateTimeWithMilliseconds;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataTickRecordResponse::GetTradePrice()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataTickRecordResponse, TradePrice) + sizeof(TradePrice))
+			return 0;
+
+		return TradePrice;
+	}
+	/*==========================================================================*/
+	double s_HistoricalPriceDataTickRecordResponse::GetTradeVolume()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataTickRecordResponse, TradeVolume) + sizeof(TradeVolume))
+			return 0;
+
+		return TradeVolume;
+	}
+	/*==========================================================================*/
+	BidOrAskEnum s_HistoricalPriceDataTickRecordResponse::GetBidOrAsk()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataTickRecordResponse, BidOrAsk) + sizeof(BidOrAsk))
+			return BID_ASK_UNSET;
+
+		return BidOrAsk;
+	}
+	/*==========================================================================*/
+	byte s_HistoricalPriceDataTickRecordResponse::GetFinalRecord()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataTickRecordResponse, FinalRecord) + sizeof(FinalRecord))
+			return 0;
+
+		return FinalRecord;
+	}
+
 
 
 	/*==========================================================================*/
