@@ -20,6 +20,81 @@
 namespace DTC
 {
 
+	/****************************************************************************/
+	// s_EncodingRequest
+
+	/*============================================================================
+	Will get the size of the message received over the network
+	----------------------------------------------------------------------------*/
+	uint16_t s_EncodingRequest::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*============================================================================
+	Performs a safe copy of data into this structure instance from the given
+	data pointer.
+	----------------------------------------------------------------------------*/
+	void s_EncodingRequest::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_EncodingRequest), *static_cast<uint16_t*>( p_SourceData)  ));
+	}
+
+	/*==========================================================================*/
+	int32_t s_EncodingRequest::GetProtocolVersion()
+	{
+		if (Size < offsetof(s_EncodingRequest, ProtocolVersion) + sizeof(ProtocolVersion))
+			return 0;
+
+		return ProtocolVersion;
+	}
+
+	/*==========================================================================*/
+	EncodingEnum s_EncodingRequest::GetEncoding()
+	{
+		if (Size < offsetof(s_EncodingRequest, ProtocolVersion) + sizeof(ProtocolVersion))
+			return (EncodingEnum)0;
+
+		return Encoding;
+	}
+
+	/****************************************************************************/
+	// s_EncodingResponse
+
+	/*============================================================================
+	Will get the size of the message received over the network
+	----------------------------------------------------------------------------*/
+	uint16_t s_EncodingResponse::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*============================================================================
+	Performs a safe copy of data into this structure instance from the given
+	data pointer.
+	----------------------------------------------------------------------------*/
+	void s_EncodingResponse::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_EncodingResponse), *static_cast<uint16_t*>( p_SourceData)  ));
+	}
+
+	/*==========================================================================*/
+	int32_t s_EncodingResponse::GetProtocolVersion()
+	{
+		if (Size < offsetof(s_EncodingResponse, ProtocolVersion) + sizeof(ProtocolVersion))
+			return 0;
+
+		return ProtocolVersion;
+	}
+
+	/*==========================================================================*/
+	EncodingEnum s_EncodingResponse::GetEncoding()
+	{
+		if (Size < offsetof(s_EncodingResponse, ProtocolVersion) + sizeof(ProtocolVersion))
+			return (EncodingEnum)0;
+
+		return Encoding;
+	}
 
 	/****************************************************************************/
 	// s_LogonRequest
@@ -119,16 +194,14 @@ namespace DTC
 		return Integer_2;
 	}
 
-
 	/*==========================================================================*/
-	int32_t s_LogonRequest::GetInHeartbeatIntervalInSeconds()
+	int32_t s_LogonRequest::GetHeartbeatIntervalInSeconds()
 	{
 		if (Size < offsetof(s_LogonRequest, HeartbeatIntervalInSeconds) + sizeof(HeartbeatIntervalInSeconds))
 			return 0;
 
 		return HeartbeatIntervalInSeconds;
 	}
-
 
 	/*==========================================================================*/
 	TradeModeEnum s_LogonRequest::GetTradeMode()
@@ -138,7 +211,6 @@ namespace DTC
 
 		return TradeMode;
 	}
-
 
 	/*==========================================================================*/
 	const char* s_LogonRequest::GetTradeAccount()
@@ -1295,12 +1367,12 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	DisplayFormatEnum s_FundamentalDataResponse::GetDisplayFormat()
+	PriceDisplayFormatEnum s_FundamentalDataResponse::GetPriceDisplayFormat()
 	{
-		if (Size < offsetof(s_FundamentalDataResponse, DisplayFormat) + sizeof(DisplayFormat))
-			return (DisplayFormatEnum)0;
+		if (Size < offsetof(s_FundamentalDataResponse, PriceDisplayFormat) + sizeof(PriceDisplayFormat))
+			return (PriceDisplayFormatEnum)0;
 
-		return DisplayFormat;
+		return PriceDisplayFormat;
 	}
 
 
@@ -1435,6 +1507,31 @@ namespace DTC
 
 		return SymbolID;
 	}
+
+	/****************************************************************************/
+	// s_MarketDepthFullUpdate10
+
+	/*==========================================================================*/
+	uint16_t s_MarketDepthFullUpdate10::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDepthFullUpdate10::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDepthFullUpdate10), *static_cast<uint16_t*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	uint16_t s_MarketDepthFullUpdate10::GetSymbolID()
+	{
+		if (Size < offsetof(s_MarketDepthFullUpdate10, SymbolID) + sizeof(SymbolID))
+			return 0;
+
+		return SymbolID;
+	}
+
 
 	/****************************************************************************/
 	// s_MarketDepthSnapshotLevel
@@ -3444,7 +3541,7 @@ namespace DTC
 		return TimeInForce;
 	}
 	/*==========================================================================*/
-	t_DateTime s_SubmitNewOCOOrderInt::GetGoodTillDateTimeUnix() 
+	t_DateTime s_SubmitNewOCOOrderInt::GetGoodTillDateTime() 
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrderInt, GoodTillDateTime) + sizeof(GoodTillDateTime))
 			return 0;
@@ -4978,10 +5075,10 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	DisplayFormatEnum s_SecurityDefinitionResponse::GetPriceDisplayFormat() const
+	PriceDisplayFormatEnum s_SecurityDefinitionResponse::GetPriceDisplayFormat() const
 	{
 		if (Size < offsetof(s_SecurityDefinitionResponse, PriceDisplayFormat) + sizeof(PriceDisplayFormat))
-			return DISPLAY_FORMAT_UNSET;
+			return PRICE_DISPLAY_FORMAT_UNSET;
 
 		return PriceDisplayFormat;
 	}
@@ -5013,13 +5110,107 @@ namespace DTC
 		return OrderIntPriceMultiplier;
 	}
 	/*==========================================================================*/
-	float s_SecurityDefinitionResponse::GetMarketDataPriceDivisor()
+	float s_SecurityDefinitionResponse::GetMarketDataIntPriceDivisor()
 	{
 		if (Size < offsetof(s_SecurityDefinitionResponse, MarketDataIntPriceDivisor) + sizeof(MarketDataIntPriceDivisor))
 			return 0;
 
 		return MarketDataIntPriceDivisor;
 	}
+
+	/*==========================================================================*/
+	const char* s_SecurityDefinitionResponse::GetUnderlyingSymbol()
+	{
+		if (Size < offsetof(s_SecurityDefinitionResponse, UnderlyingSymbol) + sizeof(UnderlyingSymbol))
+			return "";
+
+		UnderlyingSymbol[sizeof(UnderlyingSymbol) - 1] = '\0';  // Ensure that the null terminator exists
+
+		return UnderlyingSymbol;
+	}
+
+	/*==========================================================================*/
+	void s_SecurityDefinitionResponse::SetUnderlyingSymbol(const char* NewValue)
+	{
+		strncpy_s(UnderlyingSymbol, NewValue, sizeof(UnderlyingSymbol) - 1);
+	}
+
+	/****************************************************************************/
+	// s_AccountBalanceRequest
+
+	/*==========================================================================*/
+	uint16_t s_AccountBalanceRequest::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_AccountBalanceRequest::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_AccountBalanceRequest), *static_cast<uint16_t*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	int32_t s_AccountBalanceRequest::GetRequestID()
+	{
+		return RequestID;
+	}
+
+	/*==========================================================================*/
+	void s_AccountBalanceRequest::SetTradeAccount(const char* NewValue)
+	{
+		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+	}
+
+	/*==========================================================================*/
+	const char* s_AccountBalanceRequest::GetTradeAccount()
+	{
+		if (Size < offsetof(s_AccountBalanceRequest, TradeAccount) + sizeof(TradeAccount))
+			return "";
+
+		TradeAccount[sizeof(TradeAccount) - 1] = '\0';  // Ensure that the null terminator exists
+
+		return TradeAccount;
+	}
+
+	/****************************************************************************/
+	// s_AccountBalanceReject
+
+	/*==========================================================================*/
+	uint16_t s_AccountBalanceReject::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_AccountBalanceReject::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_AccountBalanceReject), *static_cast<uint16_t*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	uint32_t s_AccountBalanceReject::GetRequestID()
+	{
+		return RequestID;
+	}
+
+	/*==========================================================================*/
+	void s_AccountBalanceReject::SetRejectText(const char* NewValue)
+	{
+		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+	}
+
+	/*==========================================================================*/
+	const char* s_AccountBalanceReject::GetRejectText()
+	{
+		if (Size < offsetof(s_AccountBalanceReject, RejectText) + sizeof(RejectText))
+			return "";
+
+		RejectText[sizeof(RejectText) - 1] = '\0';  // Ensure that the null terminator exists
+
+		return RejectText;
+	}
+
 
 	/****************************************************************************/
 	// s_AccountBalanceUpdate
@@ -5067,6 +5258,13 @@ namespace DTC
 
 		return TradeAccount;
 	}
+
+	/*==========================================================================*/
+	int32_t s_AccountBalanceUpdate::GetRequestID()
+	{
+		return RequestID;
+	}
+
 	/*==========================================================================*/
 	double s_AccountBalanceUpdate::GetCashBalance()
 	{
