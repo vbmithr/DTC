@@ -170,6 +170,8 @@ namespace DTC
 	enum EncodingEnum : int32_t
 	{ BINARY_ENCODING = 0
 	, BINARY_WITH_VARIABLE_LENGTH_STRINGS = 1
+	, JSON_ENCODING = 2
+	, JSON_COMPACT_ENCODING = 3
 	};
 
 	/*==========================================================================*/
@@ -742,7 +744,7 @@ namespace DTC
 		int32_t LastTradePrice;
 		int32_t LastTradeVolume;
 		t_DateTimeWithMilliseconds LastTradeDateTime;
-
+		t_DateTimeWithMilliseconds BidAskDateTime;
 
 		s_MarketDataSnapshot_Int()
 		{
@@ -771,6 +773,7 @@ namespace DTC
 		int32_t GetLastTradePrice();
 		int32_t GetLastTradeVolume();
 		t_DateTimeWithMilliseconds GetLastTradeDateTime();
+		t_DateTimeWithMilliseconds GetBidAskDateTime();
 		void SetToUnsetValues();
 	};
 
@@ -862,6 +865,12 @@ namespace DTC
 		float GetStrikePrice();
 	};
 
+	struct s_DepthEntry
+	{
+		double Price;
+		float Quantity;
+	};
+
 	/*==========================================================================*/
 	struct s_MarketDepthFullUpdate20
 	{
@@ -872,11 +881,8 @@ namespace DTC
 
 		uint16_t SymbolID;
 
-		struct 
-		{
-			double Price;
-			float Quantity;
-		} BidDepth[NUM_DEPTH_LEVELS], AskDepth[NUM_DEPTH_LEVELS];
+		s_DepthEntry BidDepth[NUM_DEPTH_LEVELS];
+		s_DepthEntry AskDepth[NUM_DEPTH_LEVELS];
 
 
 		s_MarketDepthFullUpdate20()
@@ -902,11 +908,8 @@ namespace DTC
 
 		uint16_t SymbolID;
 
-		struct 
-		{
-			double Price;
-			float Quantity;
-		} BidDepth[NUM_DEPTH_LEVELS], AskDepth[NUM_DEPTH_LEVELS];
+		s_DepthEntry BidDepth[NUM_DEPTH_LEVELS];
+		s_DepthEntry AskDepth[NUM_DEPTH_LEVELS];
 
 
 		s_MarketDepthFullUpdate10()

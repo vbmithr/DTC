@@ -1222,8 +1222,14 @@ namespace DTC
 
 		return LastTradeDateTime;
 	}
+	/*==========================================================================*/
+	t_DateTimeWithMilliseconds s_MarketDataSnapshot_Int::GetBidAskDateTime()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, BidAskDateTime) + sizeof(BidAskDateTime))
+			return 0;
 
-
+		return BidAskDateTime;
+	}
 	/*==========================================================================*/
 	void s_MarketDataSnapshot_Int::SetToUnsetValues()
 	{
