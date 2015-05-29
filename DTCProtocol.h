@@ -2545,6 +2545,7 @@ namespace DTC
 			memset(this, 0,sizeof(s_SecurityDefinitionResponse));
 			Type=SECURITY_DEFINITION_RESPONSE;
 			Size=sizeof(s_SecurityDefinitionResponse);
+			PriceDisplayFormat = PRICE_DISPLAY_FORMAT_UNSET;
 		}
 		
 		uint16_t GetMessageSize();
