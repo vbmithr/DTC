@@ -2980,6 +2980,8 @@ namespace DTC
 		uint16_t Size;
 		uint16_t Type;
 
+		int32_t RequestID;
+
 		double CashBalance;
 
 		double BalanceAvailableForNewPositions;
@@ -2989,8 +2991,6 @@ namespace DTC
 		char TradeAccount[TRADE_ACCOUNT_LENGTH];
 		double SecuritiesValue;  // Not including cash
 		double MarginRequirement;
-
-		int32_t RequestID;
 
 		s_AccountBalanceUpdate()
 		{
