@@ -500,12 +500,16 @@ namespace DTC_VLS
 		double Price2;
 
 		double Quantity;
+		int8_t Price1IsSet;
+		int8_t Price2IsSet;
 
 		s_CancelReplaceOrder()
 		{
 			memset(this, 0,sizeof(s_CancelReplaceOrder));
 			Type=DTC::CANCEL_REPLACE_ORDER;
 			Size=sizeof(s_CancelReplaceOrder);
+			Price1IsSet = 1;
+			Price2IsSet = 1;
 		}
 		
 		uint16_t GetMessageSize();
@@ -516,6 +520,8 @@ namespace DTC_VLS
 		double GetPrice1();
 		double GetPrice2();
 		double GetQuantity();
+		int8_t GetPrice1IsSet();
+		int8_t GetPrice2IsSet();
 	};
 
 	/*==========================================================================*/
@@ -530,14 +536,18 @@ namespace DTC_VLS
 		int32_t Price1;
 		int32_t Price2;
 		float Divisor;
-
 		double Quantity;
+		int8_t Price1IsSet;
+		int8_t Price2IsSet;
 
 		s_CancelReplaceOrderInt()
 		{
 			memset(this, 0,sizeof(s_CancelReplaceOrderInt));
 			Type=DTC::CANCEL_REPLACE_ORDER_INT;
 			Size=sizeof(s_CancelReplaceOrderInt);
+			Divisor = 1.0f;
+			Price1IsSet = 1;
+			Price2IsSet = 1;
 		}
 		
 		uint16_t GetMessageSize();
@@ -549,6 +559,8 @@ namespace DTC_VLS
 		int32_t GetPrice2();
 		float GetDivisor();
 		double GetQuantity();
+		int8_t GetPrice1IsSet();
+		int8_t GetPrice2IsSet();
 	};
 
 	/*==========================================================================*/
@@ -1354,6 +1366,8 @@ namespace DTC_VLS
 		uint16_t Size;
 		uint16_t Type;
 
+		int32_t RequestID;
+
 		double CashBalance;
 
 		double BalanceAvailableForNewPositions;
@@ -1363,7 +1377,6 @@ namespace DTC_VLS
 		vls_t TradeAccount;
 		double SecuritiesValue;  // Not including cash
 		double MarginRequirement;
-		int32_t RequestID;
 
 		s_AccountBalanceUpdate()
 		{
@@ -1373,11 +1386,11 @@ namespace DTC_VLS
 		}
 		
 		uint16_t GetMessageSize();
+		int32_t GetRequestID();
 		void AddAccountCurrency(unsigned int StringLength) { AddVariableLengthStringField(Size, AccountCurrency, StringLength); }
 		const char* GetAccountCurrency() const { return GetVariableLengthStringField(Size, AccountCurrency, offsetof(s_AccountBalanceUpdate, AccountCurrency)); }
 		void AddTradeAccount(unsigned int StringLength) { AddVariableLengthStringField(Size, TradeAccount, StringLength); }
 		const char* GetTradeAccount() const { return GetVariableLengthStringField(Size, TradeAccount, offsetof(s_AccountBalanceUpdate, TradeAccount)); }
-		int32_t GetRequestID();
 		double GetCashBalance();
 		double GetBalanceAvailableForNewPositions();
 		double GetSecuritiesValue();
@@ -1458,11 +1471,11 @@ namespace DTC_VLS
 		}
 		
 		uint16_t GetMessageSize();
+		int32_t GetRequestID();
 		void AddSymbol(unsigned int StringLength) { AddVariableLengthStringField(Size, Symbol, StringLength); }
 		const char* GetSymbol() const { return GetVariableLengthStringField(Size, Symbol, offsetof(s_HistoricalPriceDataRequest, Symbol)); }
 		void AddExchange(unsigned int StringLength) { AddVariableLengthStringField(Size, Exchange, StringLength); }
 		const char* GetExchange() const { return GetVariableLengthStringField(Size, Exchange, offsetof(s_HistoricalPriceDataRequest, Exchange)); }
-		int32_t GetRequestID();
 		DTC::HistoricalDataIntervalEnum GetRecordInterval();
 		DTC::t_DateTime GetStartDateTime();
 		DTC::t_DateTime GetEndDateTime();

@@ -730,10 +730,27 @@ namespace DTC_VLS
 	double s_CancelReplaceOrder::GetQuantity()
 	{
 		if (Size < offsetof(s_CancelReplaceOrder, Quantity) + sizeof(Quantity))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity;
 	}
+	/*==========================================================================*/
+	int8_t s_CancelReplaceOrder::GetPrice1IsSet()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, Price1IsSet) + sizeof(Price1IsSet))
+			return 1;
+
+		return Price1IsSet;
+	}
+	/*==========================================================================*/
+	int8_t s_CancelReplaceOrder::GetPrice2IsSet()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, Price2IsSet) + sizeof(Price2IsSet))
+			return 1;
+
+		return Price2IsSet;
+	}
+
 
 	/****************************************************************************/
 	// s_CancelReplaceOrderInt
@@ -766,7 +783,7 @@ namespace DTC_VLS
 	float s_CancelReplaceOrderInt::GetDivisor()
 	{
 		if (Size < offsetof(s_CancelReplaceOrderInt, Divisor) + sizeof(Divisor))
-			return 0.0;
+			return 1.0f;
 
 		return Divisor;
 	}
@@ -775,9 +792,25 @@ namespace DTC_VLS
 	double s_CancelReplaceOrderInt::GetQuantity()
 	{
 		if (Size < offsetof(s_CancelReplaceOrderInt, Quantity) + sizeof(Quantity))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity;
+	}
+	/*==========================================================================*/
+	int8_t s_CancelReplaceOrderInt::GetPrice1IsSet()
+	{
+		if (Size < offsetof(s_CancelReplaceOrderInt, Price1IsSet) + sizeof(Price1IsSet))
+			return 1;
+
+		return Price1IsSet;
+	}
+	/*==========================================================================*/
+	int8_t s_CancelReplaceOrderInt::GetPrice2IsSet()
+	{
+		if (Size < offsetof(s_CancelReplaceOrderInt, Price2IsSet) + sizeof(Price2IsSet))
+			return 1;
+
+		return Price2IsSet;
 	}
 
 

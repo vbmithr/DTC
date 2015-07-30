@@ -26,7 +26,7 @@ namespace DTC
 #pragma pack(8)
 
 	// DTC protocol version
-	const int32_t CURRENT_VERSION = 5;
+	const int32_t CURRENT_VERSION = 6;
 
 	// Text string lengths. 
 	const int32_t USERNAME_PASSWORD_LENGTH = 32;
@@ -1693,14 +1693,17 @@ namespace DTC
 
 		double Price1;
 		double Price2;
-
 		double Quantity;
+		int8_t Price1IsSet;
+		int8_t Price2IsSet;
 
 		s_CancelReplaceOrder()
 		{
 			memset(this, 0,sizeof(s_CancelReplaceOrder));
 			Type=CANCEL_REPLACE_ORDER;
 			Size=sizeof(s_CancelReplaceOrder);
+			Price1IsSet = 1;
+			Price2IsSet = 1;
 		}
 		
 		uint16_t GetMessageSize();
@@ -1712,6 +1715,9 @@ namespace DTC
 		double GetPrice1();
 		double GetPrice2();
 		double GetQuantity();
+		int8_t GetPrice1IsSet();
+		int8_t GetPrice2IsSet();
+
 	};
 
 	/*==========================================================================*/
@@ -1726,14 +1732,19 @@ namespace DTC
 		int32_t Price1;
 		int32_t Price2;
 		float Divisor;
-
 		double Quantity;
+		int8_t Price1IsSet;
+		int8_t Price2IsSet;
 
 		s_CancelReplaceOrderInt()
 		{
 			memset(this, 0,sizeof(s_CancelReplaceOrderInt));
 			Type=CANCEL_REPLACE_ORDER_INT;
 			Size=sizeof(s_CancelReplaceOrderInt);
+			Divisor = 1.0f;
+			Price1IsSet = 1;
+			Price2IsSet = 1;
+
 		}
 
 		uint16_t GetMessageSize();
@@ -1746,6 +1757,8 @@ namespace DTC
 		int32_t GetPrice2();
 		float GetDivisor();
 		double GetQuantity();
+		int8_t GetPrice1IsSet();
+		int8_t GetPrice2IsSet();
 	};
 
 	/*==========================================================================*/
@@ -2625,6 +2638,8 @@ namespace DTC
 		uint16_t Size;
 		uint16_t Type;
 
+		int32_t RequestID;
+
 		double CashBalance;
 
 		double BalanceAvailableForNewPositions;
@@ -2635,7 +2650,6 @@ namespace DTC
 		double SecuritiesValue;  // Not including cash
 		double MarginRequirement;
 
-		int32_t RequestID;
 
 		s_AccountBalanceUpdate()
 		{
