@@ -479,9 +479,11 @@ namespace DTC_VLS
 
 		vls_t FreeFormText;
 
+		DTC::OpenCloseTradeEnum OpenOrClose;
+
 		s_SubmitNewSingleOrder()
 		{
-			memset(this, 0,sizeof(s_SubmitNewSingleOrder));
+			memset(this, 0, sizeof(s_SubmitNewSingleOrder));
 			Size = sizeof(s_SubmitNewSingleOrder);
 			Type = DTC::SUBMIT_NEW_SINGLE_ORDER;
 			BaseSize = Size;
@@ -550,6 +552,8 @@ namespace DTC_VLS
 		{
 			AddVariableLengthStringField(Size, FreeFormText, StringLength);
 		}
+
+		DTC::OpenCloseTradeEnum GetOpenOrClose();
 	};
 
 	/*==========================================================================*/
@@ -571,7 +575,7 @@ namespace DTC_VLS
 		int64_t Price1;
 		int64_t Price2;
 		float Divisor;
-		double Quantity;
+		int64_t Quantity;
 
 		DTC::TimeInForceEnum TimeInForce;
 		DTC::t_DateTime GoodTillDateTime;
@@ -581,9 +585,11 @@ namespace DTC_VLS
 
 		vls_t FreeFormText;
 
+		DTC::OpenCloseTradeEnum OpenOrClose;
+
 		s_SubmitNewSingleOrderInt()
 		{
-			memset(this, 0,sizeof(s_SubmitNewSingleOrderInt));
+			memset(this, 0, sizeof(s_SubmitNewSingleOrderInt));
 			Size = sizeof(s_SubmitNewSingleOrderInt);
 			Type = DTC::SUBMIT_NEW_SINGLE_ORDER_INT;
 			BaseSize = Size;
@@ -637,7 +643,7 @@ namespace DTC_VLS
 		int64_t GetPrice1();
 		int64_t GetPrice2();
 		float GetDivisor();
-		double GetQuantity();	
+		int64_t GetQuantity();	
 		DTC::TimeInForceEnum GetTimeInForce();	
 		DTC::t_DateTime GetGoodTillDateTime();
 		uint8_t GetIsAutomatedOrder();	
@@ -652,6 +658,8 @@ namespace DTC_VLS
 		{
 			AddVariableLengthStringField(Size, FreeFormText, StringLength);
 		}
+
+		DTC::OpenCloseTradeEnum GetOpenOrClose();
 	};
 
 	/*==========================================================================*/
@@ -668,12 +676,13 @@ namespace DTC_VLS
 		double Price2;
 
 		double Quantity;
+
 		int8_t Price1IsSet;
 		int8_t Price2IsSet;
 
 		s_CancelReplaceOrder()
 		{
-			memset(this, 0,sizeof(s_CancelReplaceOrder));
+			memset(this, 0, sizeof(s_CancelReplaceOrder));
 			Size = sizeof(s_CancelReplaceOrder);
 			Type = DTC::CANCEL_REPLACE_ORDER;
 			BaseSize = Size;
@@ -724,13 +733,13 @@ namespace DTC_VLS
 		int64_t Price1;
 		int64_t Price2;
 		float Divisor;
-		double Quantity;
+		int64_t Quantity;
 		int8_t Price1IsSet;
 		int8_t Price2IsSet;
 
 		s_CancelReplaceOrderInt()
 		{
-			memset(this, 0,sizeof(s_CancelReplaceOrderInt));
+			memset(this, 0, sizeof(s_CancelReplaceOrderInt));
 			Size = sizeof(s_CancelReplaceOrderInt);
 			Type = DTC::CANCEL_REPLACE_ORDER_INT;
 			BaseSize = Size;
@@ -765,7 +774,7 @@ namespace DTC_VLS
 		int64_t GetPrice1();
 		int64_t GetPrice2();
 		float GetDivisor();
-		double GetQuantity();
+		int64_t GetQuantity();
 		int8_t GetPrice1IsSet();
 		int8_t GetPrice2IsSet();
 	};
@@ -782,7 +791,7 @@ namespace DTC_VLS
 
 		s_CancelOrder()
 		{
-			memset(this, 0,sizeof(s_CancelOrder));
+			memset(this, 0, sizeof(s_CancelOrder));
 			Size = sizeof(s_CancelOrder);
 			Type = DTC::CANCEL_ORDER;
 			BaseSize = Size;
@@ -847,9 +856,11 @@ namespace DTC_VLS
 
 		vls_t FreeFormText;
 
+		DTC::OpenCloseTradeEnum OpenOrClose;
+
 		s_SubmitNewOCOOrder()
 		{
-			memset(this, 0,sizeof(s_SubmitNewOCOOrder));
+			memset(this, 0, sizeof(s_SubmitNewOCOOrder));
 			Size = sizeof(s_SubmitNewOCOOrder);
 			Type = DTC::SUBMIT_NEW_OCO_ORDER;
 			BaseSize = Size;
@@ -941,6 +952,7 @@ namespace DTC_VLS
 		double GetPrice2_2();
 		double GetQuantity_1();
 		double GetQuantity_2();
+		DTC::OpenCloseTradeEnum GetOpenOrClose();
 	};
 
 	/*==========================================================================*/
@@ -958,14 +970,14 @@ namespace DTC_VLS
 		DTC::BuySellEnum BuySell_1;
 		int64_t Price1_1;
 		int64_t Price2_1;
-		double Quantity_1;
+		int64_t Quantity_1;
 
 		vls_t ClientOrderID_2;
 		DTC::OrderTypeEnum OrderType_2;
 		DTC::BuySellEnum BuySell_2;
 		int64_t Price1_2;
 		int64_t Price2_2;
-		double Quantity_2;
+		int64_t Quantity_2;
 
 		DTC::TimeInForceEnum TimeInForce;
 		DTC::t_DateTime GoodTillDateTime;
@@ -980,9 +992,11 @@ namespace DTC_VLS
 
 		float Divisor;
 
+		DTC::OpenCloseTradeEnum OpenOrClose;
+
 		s_SubmitNewOCOOrderInt()
 		{
-			memset(this, 0,sizeof(s_SubmitNewOCOOrderInt));
+			memset(this, 0, sizeof(s_SubmitNewOCOOrderInt));
 			Size = sizeof(s_SubmitNewOCOOrderInt);
 			Type = DTC::SUBMIT_NEW_OCO_ORDER_INT;
 			BaseSize = Size;
@@ -1072,9 +1086,10 @@ namespace DTC_VLS
 		int64_t GetPrice2_1();
 		int64_t GetPrice1_2();
 		int64_t GetPrice2_2();
-		double GetQuantity_1();
-		double GetQuantity_2();
+		int64_t GetQuantity_1();
+		int64_t GetQuantity_2();
 		float GetDivisor();
+		DTC::OpenCloseTradeEnum GetOpenOrClose();
 	};
 
 	/*==========================================================================*/
@@ -1657,6 +1672,7 @@ namespace DTC_VLS
 		uint8_t GetUnsolicited();
 	};
 
+
 	/*==========================================================================*/
 	struct s_TradeAccountResponse
 	{
@@ -1670,9 +1686,11 @@ namespace DTC_VLS
 
 		vls_t TradeAccount;
 
+		int32_t RequestID;
+
 		s_TradeAccountResponse()
 		{
-			memset(this, 0,sizeof(s_TradeAccountResponse));
+			memset(this, 0, sizeof(s_TradeAccountResponse));
 			Size = sizeof(s_TradeAccountResponse);
 			Type = DTC::TRADE_ACCOUNT_RESPONSE;
 			BaseSize = Size;
@@ -1692,6 +1710,8 @@ namespace DTC_VLS
 		{
 			return GetVariableLengthStringField(Size, BaseSize, TradeAccount, offsetof(s_TradeAccountResponse, TradeAccount));
 		}
+
+		int32_t GetRequestID();
 	};
 
 	/*==========================================================================*/

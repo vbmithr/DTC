@@ -413,7 +413,7 @@ namespace DTC_VLS
 	double s_SubmitNewSingleOrder::GetPrice1()
 	{
 		if (BaseSize < offsetof(s_SubmitNewSingleOrder, Price1) + sizeof(Price1))
-			return 0;
+			return 0.0;
 
 		return Price1;
 	}
@@ -422,7 +422,7 @@ namespace DTC_VLS
 	double s_SubmitNewSingleOrder::GetPrice2()
 	{
 		if (BaseSize < offsetof(s_SubmitNewSingleOrder, Price2) + sizeof(Price2))
-			return 0;
+			return 0.0;
 
 		return Price2;
 	}
@@ -431,7 +431,7 @@ namespace DTC_VLS
 	double s_SubmitNewSingleOrder::GetQuantity()
 	{
 		if (BaseSize < offsetof(s_SubmitNewSingleOrder, Quantity) + sizeof(Quantity))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity;
 	}
@@ -453,6 +453,7 @@ namespace DTC_VLS
 
 		return GoodTillDateTime;
 	}
+
 	/*==========================================================================*/
 	uint8_t s_SubmitNewSingleOrder::GetIsAutomatedOrder()
 	{
@@ -461,6 +462,7 @@ namespace DTC_VLS
 
 		return IsAutomatedOrder;
 	}
+
 	/*==========================================================================*/
 	uint8_t s_SubmitNewSingleOrder::GetIsParentOrder()
 	{
@@ -470,6 +472,14 @@ namespace DTC_VLS
 		return IsParentOrder;
 	}
 
+	/*==========================================================================*/
+	DTC::OpenCloseTradeEnum s_SubmitNewSingleOrder::GetOpenOrClose()
+	{
+		if (BaseSize < offsetof(s_SubmitNewSingleOrder, OpenOrClose) + sizeof(OpenOrClose))
+			return DTC::TRADE_UNSET;
+
+		return OpenOrClose;
+	}
 
 	/****************************************************************************/
 	// s_SubmitNewSingleOrderInt
@@ -532,10 +542,10 @@ namespace DTC_VLS
 	}
 
 	/*==========================================================================*/
-	double s_SubmitNewSingleOrderInt::GetQuantity()
+	int64_t s_SubmitNewSingleOrderInt::GetQuantity()
 	{
 		if (BaseSize < offsetof(s_SubmitNewSingleOrderInt, Quantity) + sizeof(Quantity))
-			return DBL_MAX;
+			return 0;
 
 		return Quantity;
 	}
@@ -576,6 +586,14 @@ namespace DTC_VLS
 		return IsParentOrder;
 	}
 
+	/*==========================================================================*/
+	DTC::OpenCloseTradeEnum s_SubmitNewSingleOrderInt::GetOpenOrClose()
+	{
+		if (BaseSize < offsetof(s_SubmitNewSingleOrderInt, OpenOrClose) + sizeof(OpenOrClose))
+			return DTC::TRADE_UNSET;
+
+		return OpenOrClose;
+	}
 
 	/****************************************************************************/
 	// s_CancelReplaceOrder
@@ -596,7 +614,7 @@ namespace DTC_VLS
 	double s_CancelReplaceOrder::GetPrice1()
 	{
 		if (BaseSize < offsetof(s_CancelReplaceOrder, Price1) + sizeof(Price1))
-			return 0;
+			return 0.0;
 
 		return Price1;
 	}
@@ -605,7 +623,7 @@ namespace DTC_VLS
 	double s_CancelReplaceOrder::GetPrice2()
 	{
 		if (BaseSize < offsetof(s_CancelReplaceOrder, Price2) + sizeof(Price2))
-			return 0;
+			return 0.0;
 
 		return Price2;
 	}
@@ -679,13 +697,14 @@ namespace DTC_VLS
 	}
 
 	/*==========================================================================*/
-	double s_CancelReplaceOrderInt::GetQuantity()
+	int64_t s_CancelReplaceOrderInt::GetQuantity()
 	{
 		if (BaseSize < offsetof(s_CancelReplaceOrderInt, Quantity) + sizeof(Quantity))
-			return 0.0;
+			return 0;
 
 		return Quantity;
 	}
+
 	/*==========================================================================*/
 	int8_t s_CancelReplaceOrderInt::GetPrice1IsSet()
 	{
@@ -694,6 +713,7 @@ namespace DTC_VLS
 
 		return Price1IsSet;
 	}
+
 	/*==========================================================================*/
 	int8_t s_CancelReplaceOrderInt::GetPrice2IsSet()
 	{
@@ -802,7 +822,7 @@ namespace DTC_VLS
 	double s_SubmitNewOCOOrder::GetPrice1_1()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrder, Price1_1) + sizeof(Price1_1))
-			return 0;
+			return 0.0;
 
 		return Price1_1;
 	}
@@ -811,7 +831,7 @@ namespace DTC_VLS
 	double s_SubmitNewOCOOrder::GetPrice2_1()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrder, Price2_1) + sizeof(Price2_1))
-			return 0;
+			return 0.0;
 
 		return Price2_1;
 	}
@@ -820,7 +840,7 @@ namespace DTC_VLS
 	double s_SubmitNewOCOOrder::GetPrice1_2()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrder, Price1_2) + sizeof(Price1_2))
-			return 0;
+			return 0.0;
 
 		return Price1_2;
 	}
@@ -829,7 +849,7 @@ namespace DTC_VLS
 	double s_SubmitNewOCOOrder::GetPrice2_2()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrder, Price2_2) + sizeof(Price2_2))
-			return 0;
+			return 0.0;
 
 		return Price2_2;
 	}
@@ -838,7 +858,7 @@ namespace DTC_VLS
 	double s_SubmitNewOCOOrder::GetQuantity_1()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrder, Quantity_1) + sizeof(Quantity_1))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity_1;
 	}
@@ -847,11 +867,19 @@ namespace DTC_VLS
 	double s_SubmitNewOCOOrder::GetQuantity_2()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrder, Quantity_2) + sizeof(Quantity_2))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity_2;
 	}
 
+	/*==========================================================================*/
+	DTC::OpenCloseTradeEnum s_SubmitNewOCOOrder::GetOpenOrClose()
+	{
+		if (BaseSize < offsetof(s_SubmitNewOCOOrder, OpenOrClose) + sizeof(OpenOrClose))
+			return DTC::TRADE_UNSET;
+
+		return OpenOrClose;
+	}
 
 	/****************************************************************************/
 	// s_SubmitNewOCOOrderInt
@@ -968,19 +996,19 @@ namespace DTC_VLS
 	}
 
 	/*==========================================================================*/
-	double s_SubmitNewOCOOrderInt::GetQuantity_1()
+	int64_t s_SubmitNewOCOOrderInt::GetQuantity_1()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrderInt, Quantity_1) + sizeof(Quantity_1))
-			return DBL_MAX;
+			return 0;
 
 		return Quantity_1;
 	}
 
 	/*==========================================================================*/
-	double s_SubmitNewOCOOrderInt::GetQuantity_2()
+	int64_t s_SubmitNewOCOOrderInt::GetQuantity_2()
 	{
 		if (BaseSize < offsetof(s_SubmitNewOCOOrderInt, Quantity_2) + sizeof(Quantity_2))
-			return DBL_MAX;
+			return 0;
 
 		return Quantity_2;
 	}
@@ -994,6 +1022,14 @@ namespace DTC_VLS
 		return Divisor;
 	}
 
+	/*==========================================================================*/
+	DTC::OpenCloseTradeEnum s_SubmitNewOCOOrderInt::GetOpenOrClose()
+	{
+		if (BaseSize < offsetof(s_SubmitNewOCOOrderInt, OpenOrClose) + sizeof(OpenOrClose))
+			return DTC::TRADE_UNSET;
+
+		return OpenOrClose;
+	}
 
 	/****************************************************************************/
 	// s_OpenOrdersRequest
@@ -1500,9 +1536,8 @@ namespace DTC_VLS
 	}
 
 
-
 	/****************************************************************************/
-	// s_AccountListResponse
+	// s_TradeAccountResponse
 
 	/*==========================================================================*/
 	uint16_t s_TradeAccountResponse::GetMessageSize()
@@ -1523,7 +1558,7 @@ namespace DTC_VLS
 			return 0;
 
 		return TotalNumberMessages;
-	}		
+	}	
 
 	/*==========================================================================*/
 	int32_t s_TradeAccountResponse::GetMessageNumber()
@@ -1532,6 +1567,15 @@ namespace DTC_VLS
 			return 0;
 
 		return MessageNumber;
+	}
+
+	/*==========================================================================*/
+	int32_t s_TradeAccountResponse::GetRequestID()
+	{
+		if (BaseSize < offsetof(s_TradeAccountResponse, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
 	}
 
 

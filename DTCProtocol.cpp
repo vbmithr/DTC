@@ -866,62 +866,62 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	double s_MarketDataSnapshot::GetDailySettlementPrice()
+	double s_MarketDataSnapshot::GetSessionSettlementPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot, DailySettlementPrice) + sizeof(DailySettlementPrice))
+		if (Size < offsetof(s_MarketDataSnapshot, SessionSettlementPrice) + sizeof(SessionSettlementPrice))
 			return 0;
 
-		return DailySettlementPrice;
+		return SessionSettlementPrice;
 	}
 
 
 	/*==========================================================================*/
-	double s_MarketDataSnapshot::GetDailyOpenPrice()
+	double s_MarketDataSnapshot::GetSessionOpenPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot, DailyOpenPrice) + sizeof(DailyOpenPrice))
+		if (Size < offsetof(s_MarketDataSnapshot, SessionOpenPrice) + sizeof(SessionOpenPrice))
 			return 0;
 
-		return DailyOpenPrice;
+		return SessionOpenPrice;
 	}
 
 
 	/*==========================================================================*/
-	double s_MarketDataSnapshot::GetDailyHighPrice()
+	double s_MarketDataSnapshot::GetSessionHighPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot, DailyHighPrice) + sizeof(DailyHighPrice))
+		if (Size < offsetof(s_MarketDataSnapshot, SessionHighPrice) + sizeof(SessionHighPrice))
 			return 0;
 
-		return DailyHighPrice;
+		return SessionHighPrice;
 	}
 
 
 	/*==========================================================================*/
-	double s_MarketDataSnapshot::GetDailyLowPrice()
+	double s_MarketDataSnapshot::GetSessionLowPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot, DailyLowPrice) + sizeof(DailyLowPrice))
+		if (Size < offsetof(s_MarketDataSnapshot, SessionLowPrice) + sizeof(SessionLowPrice))
 			return 0;
 
-		return DailyLowPrice;
+		return SessionLowPrice;
 	}
 
 
 	/*==========================================================================*/
-	double s_MarketDataSnapshot::GetDailyVolume()
+	double s_MarketDataSnapshot::GetSessionVolume()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot, DailyVolume) + sizeof(DailyVolume))
+		if (Size < offsetof(s_MarketDataSnapshot, SessionVolume) + sizeof(SessionVolume))
 			return 0;
 
-		return DailyVolume;
+		return SessionVolume;
 	}
 
 
 	/*==========================================================================*/
-	uint32_t s_MarketDataSnapshot::GetDailyNumTrades()
+	uint32_t s_MarketDataSnapshot::GetSessionNumTrades()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot, DailyNumTrades) + sizeof(DailyNumTrades))
+		if (Size < offsetof(s_MarketDataSnapshot, SessionNumTrades) + sizeof(SessionNumTrades))
 			return 0;
 
-		return DailyNumTrades;
+		return SessionNumTrades;
 	}
 
 	/*==========================================================================*/
@@ -1009,12 +1009,12 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataSnapshot::SetToUnsetValues()
 	{
-		DailySettlementPrice = DBL_MAX;
-		DailyOpenPrice = DBL_MAX;
-		DailyHighPrice = DBL_MAX;
-		DailyLowPrice = DBL_MAX;
-		DailyVolume = DBL_MAX;
-		DailyNumTrades = UINT_MAX;
+		SessionSettlementPrice = DBL_MAX;
+		SessionOpenPrice = DBL_MAX;
+		SessionHighPrice = DBL_MAX;
+		SessionLowPrice = DBL_MAX;
+		SessionVolume = DBL_MAX;
+		SessionNumTrades = UINT_MAX;
 
 		OpenInterest = UINT_MAX;
 
@@ -1054,62 +1054,62 @@ namespace DTC
 
 
 	/*==========================================================================*/
-	int32_t s_MarketDataSnapshot_Int::GetDailySettlementPrice()
+	int32_t s_MarketDataSnapshot_Int::GetSessionSettlementPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot_Int, DailySettlementPrice) + sizeof(DailySettlementPrice))
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SessionSettlementPrice) + sizeof(SessionSettlementPrice))
 			return 0;
 
-		return DailySettlementPrice;
+		return SessionSettlementPrice;
 	}
 
 
 	/*==========================================================================*/
-	int32_t s_MarketDataSnapshot_Int::GetDailyOpenPrice()
+	int32_t s_MarketDataSnapshot_Int::GetSessionOpenPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyOpenPrice) + sizeof(DailyOpenPrice))
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SessionOpenPrice) + sizeof(SessionOpenPrice))
 			return 0;
 
-		return DailyOpenPrice;
+		return SessionOpenPrice;
 	}
 
 
 	/*==========================================================================*/
-	int32_t s_MarketDataSnapshot_Int::GetDailyHighPrice()
+	int32_t s_MarketDataSnapshot_Int::GetSessionHighPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyHighPrice) + sizeof(DailyHighPrice))
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SessionHighPrice) + sizeof(SessionHighPrice))
 			return 0;
 
-		return DailyHighPrice;
+		return SessionHighPrice;
 	}
 
 
 	/*==========================================================================*/
-	int32_t s_MarketDataSnapshot_Int::GetDailyLowPrice()
+	int32_t s_MarketDataSnapshot_Int::GetSessionLowPrice()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyLowPrice) + sizeof(DailyLowPrice))
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SessionLowPrice) + sizeof(SessionLowPrice))
 			return 0;
 
-		return DailyLowPrice;
+		return SessionLowPrice;
 	}
 
 
 	/*==========================================================================*/
-	int32_t s_MarketDataSnapshot_Int::GetDailyVolume()
+	int32_t s_MarketDataSnapshot_Int::GetSessionVolume()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyVolume) + sizeof(DailyVolume))
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SessionVolume) + sizeof(SessionVolume))
 			return 0;
 
-		return DailyVolume;
+		return SessionVolume;
 	}
 
 
 	/*==========================================================================*/
-	uint32_t s_MarketDataSnapshot_Int::GetDailyNumTrades()
+	uint32_t s_MarketDataSnapshot_Int::GetSessionNumTrades()
 	{
-		if (Size < offsetof(s_MarketDataSnapshot_Int, DailyNumTrades) + sizeof(DailyNumTrades))
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SessionNumTrades) + sizeof(SessionNumTrades))
 			return 0;
 
-		return DailyNumTrades;
+		return SessionNumTrades;
 	}
 
 	/*==========================================================================*/
@@ -1193,12 +1193,12 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataSnapshot_Int::SetToUnsetValues()
 	{
-		DailySettlementPrice = INT_MAX;
-		DailyOpenPrice = INT_MAX;
-		DailyHighPrice = INT_MAX;
-		DailyLowPrice = INT_MAX;
-		DailyVolume = INT_MAX;
-		DailyNumTrades = UINT_MAX;
+		SessionSettlementPrice = INT_MAX;
+		SessionOpenPrice = INT_MAX;
+		SessionHighPrice = INT_MAX;
+		SessionLowPrice = INT_MAX;
+		SessionVolume = INT_MAX;
+		SessionNumTrades = UINT_MAX;
 
 		OpenInterest = UINT_MAX;
 
@@ -1603,30 +1603,30 @@ namespace DTC
 	// s_SettlementIncrementalUpdate
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailySettlement::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionSettlement::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailySettlement::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionSettlement::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailySettlement), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionSettlement), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailySettlement::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionSettlement::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailySettlement, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionSettlement, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	double s_MarketDataUpdateDailySettlement::GetPrice() const
+	double s_MarketDataUpdateSessionSettlement::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailySettlement, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionSettlement, Price) + sizeof(Price))
 			return 0;
 
 		return Price;
@@ -1636,30 +1636,30 @@ namespace DTC
 	// s_SettlementIncrementalUpdate_Int
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailySettlement_Int::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionSettlement_Int::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailySettlement_Int::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionSettlement_Int::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailySettlement_Int), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionSettlement_Int), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailySettlement_Int::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionSettlement_Int::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailySettlement_Int, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionSettlement_Int, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	int32_t s_MarketDataUpdateDailySettlement_Int::GetPrice() const
+	int32_t s_MarketDataUpdateSessionSettlement_Int::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailySettlement_Int, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionSettlement_Int, Price) + sizeof(Price))
 			return 0;
 
 		return Price;
@@ -1667,66 +1667,66 @@ namespace DTC
 
 
 	/****************************************************************************/
-	// s_DailyOpenIncrementalUpdate
+	// s_MarketDataUpdateSessionOpen
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyOpen::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionOpen::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailyOpen::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionOpen::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailyOpen), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionOpen), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyOpen::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionOpen::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyOpen, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionOpen, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	double s_MarketDataUpdateDailyOpen::GetPrice() const
+	double s_MarketDataUpdateSessionOpen::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyOpen, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionOpen, Price) + sizeof(Price))
 			return 0;
 
 		return Price;
 	}
 
 	/****************************************************************************/
-	// s_DailyOpenIncrementalUpdate_Int
+	// s_MarketDataUpdateSessionOpen_Int
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyOpen_Int::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionOpen_Int::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailyOpen_Int::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionOpen_Int::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailyOpen_Int), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionOpen_Int), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyOpen_Int::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionOpen_Int::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyOpen_Int, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionOpen_Int, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	int32_t s_MarketDataUpdateDailyOpen_Int::GetPrice() const
+	int32_t s_MarketDataUpdateSessionOpen_Int::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyOpen_Int, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionOpen_Int, Price) + sizeof(Price))
 			return 0;
 
 		return Price;
@@ -2110,33 +2110,33 @@ namespace DTC
 	}
 
 	/****************************************************************************/
-	// s_DailyVolumeIncrementalUpdate
+	// s_MarketDataUpdateSessionVolume
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyVolume::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionVolume::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailyVolume::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionVolume::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailyVolume), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionVolume), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyVolume::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionVolume::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyVolume, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionVolume, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	double s_MarketDataUpdateDailyVolume::GetVolume() const
+	double s_MarketDataUpdateSessionVolume::GetVolume() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyVolume, Volume) + sizeof(Volume))
+		if (Size < offsetof(s_MarketDataUpdateSessionVolume, Volume) + sizeof(Volume))
 			return 0.0;
 
 		return Volume;
@@ -2161,7 +2161,7 @@ namespace DTC
 	/*==========================================================================*/
 	uint16_t s_MarketDataUpdateOpenInterest::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyVolume, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionVolume, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
@@ -2177,66 +2177,66 @@ namespace DTC
 	}
 
 	/****************************************************************************/
-	// s_DailyHighIncrementalUpdate
+	// s_MarketDataUpdateSessionHigh
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyHigh::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionHigh::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailyHigh::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionHigh::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailyHigh), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionHigh), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyHigh::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionHigh::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyHigh, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionHigh, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	double s_MarketDataUpdateDailyHigh::GetPrice() const
+	double s_MarketDataUpdateSessionHigh::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyHigh, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionHigh, Price) + sizeof(Price))
 			return 0.0;
 
 		return Price;
 	}
 
 		/****************************************************************************/
-	// s_DailyHighIncrementalUpdate_Int
+	// s_MarketDataUpdateSessionHigh_Int
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyHigh_Int::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionHigh_Int::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailyHigh_Int::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionHigh_Int::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailyHigh_Int), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionHigh_Int), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyHigh_Int::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionHigh_Int::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyHigh_Int, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionHigh_Int, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	int32_t s_MarketDataUpdateDailyHigh_Int::GetPrice() const
+	int32_t s_MarketDataUpdateSessionHigh_Int::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyHigh_Int, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionHigh_Int, Price) + sizeof(Price))
 			return 0;
 
 		return Price;
@@ -2244,66 +2244,66 @@ namespace DTC
 
 
 	/****************************************************************************/
-	// s_DailyLowIncrementalUpdate
+	// s_MarketDataUpdateSessionLow
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyLow::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionLow::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailyLow::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionLow::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailyLow), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionLow), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyLow::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionLow::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyLow, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionLow, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	double s_MarketDataUpdateDailyLow::GetPrice() const
+	double s_MarketDataUpdateSessionLow::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyLow, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionLow, Price) + sizeof(Price))
 			return 0.0;
 
 		return Price;
 	}
 
-		/****************************************************************************/
-	// s_DailyLowIncrementalUpdate_Int
+	/****************************************************************************/
+	// s_MarketDataUpdateSessionLow_Int
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyLow_Int::GetMessageSize()
+	uint16_t s_MarketDataUpdateSessionLow_Int::GetMessageSize()
 	{
 		return Size;
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataUpdateDailyLow_Int::CopyFrom(void* p_SourceData)
+	void s_MarketDataUpdateSessionLow_Int::CopyFrom(void* p_SourceData)
 	{
-		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateDailyLow_Int), *static_cast<uint16_t*>( p_SourceData) ));
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionLow_Int), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
 	/*==========================================================================*/
-	uint16_t s_MarketDataUpdateDailyLow_Int::GetSymbolID() const
+	uint16_t s_MarketDataUpdateSessionLow_Int::GetSymbolID() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyLow_Int, SymbolID) + sizeof(SymbolID))
+		if (Size < offsetof(s_MarketDataUpdateSessionLow_Int, SymbolID) + sizeof(SymbolID))
 			return 0;
 
 		return SymbolID;
 	}
 
 	/*==========================================================================*/
-	int32_t s_MarketDataUpdateDailyLow_Int::GetPrice() const
+	int32_t s_MarketDataUpdateSessionLow_Int::GetPrice() const
 	{
-		if (Size < offsetof(s_MarketDataUpdateDailyLow_Int, Price) + sizeof(Price))
+		if (Size < offsetof(s_MarketDataUpdateSessionLow_Int, Price) + sizeof(Price))
 			return 0;
 
 		return Price;
@@ -2457,7 +2457,7 @@ namespace DTC
 	double s_SubmitNewSingleOrder::GetPrice1()
 	{
 		if (Size < offsetof(s_SubmitNewSingleOrder, Price1) + sizeof(Price1))
-			return 0;
+			return 0.0;
 
 		return Price1;
 	}
@@ -2465,7 +2465,7 @@ namespace DTC
 	double s_SubmitNewSingleOrder::GetPrice2()
 	{
 		if (Size < offsetof(s_SubmitNewSingleOrder, Price2) + sizeof(Price2))
-			return 0;
+			return 0.0;
 
 		return Price2;
 	}
@@ -2473,7 +2473,7 @@ namespace DTC
 	double s_SubmitNewSingleOrder::GetQuantity()
 	{
 		if (Size < offsetof(s_SubmitNewSingleOrder, Quantity) + sizeof(Quantity))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity;
 	}
@@ -2523,13 +2523,21 @@ namespace DTC
 		return FreeFormText;
 
 	}
+
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::SetFreeFormText(const char* NewValue)
 	{
 		strncpy_s(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
 
+	/*==========================================================================*/
+	OpenCloseTradeEnum s_SubmitNewSingleOrder::GetOpenOrClose()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrder, OpenOrClose) + sizeof(OpenOrClose))
+			return TRADE_UNSET;
 
+		return OpenOrClose;
+	}
 
 
 	/****************************************************************************/
@@ -2651,10 +2659,10 @@ namespace DTC
 		return Divisor;
 	}
 	/*==========================================================================*/
-	double s_SubmitNewSingleOrderInt::GetQuantity()
+	int64_t s_SubmitNewSingleOrderInt::GetQuantity()
 	{
 		if (Size < offsetof(s_SubmitNewSingleOrderInt, Quantity) + sizeof(Quantity))
-			return DBL_MAX;
+			return 0;
 
 		return Quantity;
 	}
@@ -2704,12 +2712,21 @@ namespace DTC
 		return FreeFormText;
 
 	}
+
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrderInt::SetFreeFormText(const char* NewValue)
 	{
 		strncpy_s(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
 
+	/*==========================================================================*/
+	OpenCloseTradeEnum s_SubmitNewSingleOrderInt::GetOpenOrClose()
+	{
+		if (Size < offsetof(s_SubmitNewSingleOrderInt, OpenOrClose) + sizeof(OpenOrClose))
+			return TRADE_UNSET;
+
+		return OpenOrClose;
+	}
 
 	/****************************************************************************/
 	// s_CancelReplaceOrder
@@ -2759,7 +2776,7 @@ namespace DTC
 	double s_CancelReplaceOrder::GetPrice1()
 	{
 		if (Size < offsetof(s_CancelReplaceOrder, Price1) + sizeof(Price1))
-			return 0;
+			return 0.0;
 
 		return Price1;
 	}
@@ -2767,7 +2784,7 @@ namespace DTC
 	double s_CancelReplaceOrder::GetPrice2()
 	{
 		if (Size < offsetof(s_CancelReplaceOrder, Price2) + sizeof(Price2))
-			return 0;
+			return 0.0;
 
 		return Price2;
 	}
@@ -2775,7 +2792,7 @@ namespace DTC
 	double s_CancelReplaceOrder::GetQuantity()
 	{
 		if (Size < offsetof(s_CancelReplaceOrder, Quantity) + sizeof(Quantity))
-			return 0;
+			return 0.0;
 
 		return Quantity;
 	}
@@ -2865,7 +2882,7 @@ namespace DTC
 		return Divisor;
 	}
 	/*==========================================================================*/
-	double s_CancelReplaceOrderInt::GetQuantity()
+	int64_t s_CancelReplaceOrderInt::GetQuantity()
 	{
 		if (Size < offsetof(s_CancelReplaceOrderInt, Quantity) + sizeof(Quantity))
 			return 0;
@@ -3104,7 +3121,7 @@ namespace DTC
 	double s_SubmitNewOCOOrder::GetPrice1_1()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrder, Price1_1) + sizeof(Price1_1))
-			return 0;
+			return 0.0;
 
 		return Price1_1;
 	}
@@ -3112,7 +3129,7 @@ namespace DTC
 	double s_SubmitNewOCOOrder::GetPrice2_1()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrder, Price2_1) + sizeof(Price2_1))
-			return 0;
+			return 0.0;
 
 		return Price2_1;
 	}
@@ -3120,7 +3137,7 @@ namespace DTC
 	double s_SubmitNewOCOOrder::GetPrice1_2()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrder, Price1_2) + sizeof(Price1_2))
-			return 0;
+			return 0.0;
 
 		return Price1_2;
 	}
@@ -3128,7 +3145,7 @@ namespace DTC
 	double s_SubmitNewOCOOrder::GetPrice2_2()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrder, Price2_2) + sizeof(Price2_2))
-			return 0;
+			return 0.0;
 
 		return Price2_2;
 	}
@@ -3137,7 +3154,7 @@ namespace DTC
 	double s_SubmitNewOCOOrder::GetQuantity_1()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrder, Quantity_1) + sizeof(Quantity_1))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity_1;
 	}
@@ -3145,7 +3162,7 @@ namespace DTC
 	double s_SubmitNewOCOOrder::GetQuantity_2()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrder, Quantity_2) + sizeof(Quantity_2))
-			return DBL_MAX;
+			return 0.0;
 
 		return Quantity_2;
 	}
@@ -3164,8 +3181,14 @@ namespace DTC
 	{
 		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
+	/*==========================================================================*/
+	OpenCloseTradeEnum s_SubmitNewOCOOrder::GetOpenOrClose()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, OpenOrClose) + sizeof(OpenOrClose))
+			return TRADE_UNSET;
 
-
+		return OpenOrClose;
+	}
 
 
 	/****************************************************************************/
@@ -3364,23 +3387,24 @@ namespace DTC
 		return Price2_2;
 	}
 
-
 	/*==========================================================================*/
-	double s_SubmitNewOCOOrderInt::GetQuantity_1()
+	int64_t s_SubmitNewOCOOrderInt::GetQuantity_1()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrderInt, Quantity_1) + sizeof(Quantity_1))
-			return DBL_MAX;
+			return 0;
 
 		return Quantity_1;
 	}
+
 	/*==========================================================================*/
-	double s_SubmitNewOCOOrderInt::GetQuantity_2()
+	int64_t s_SubmitNewOCOOrderInt::GetQuantity_2()
 	{
 		if (Size < offsetof(s_SubmitNewOCOOrderInt, Quantity_2) + sizeof(Quantity_2))
-			return DBL_MAX;
+			return 0;
 
 		return Quantity_2;
 	}
+
 	/*==========================================================================*/
 	const char* s_SubmitNewOCOOrderInt::GetTradeAccount()
 	{
@@ -3404,7 +3428,14 @@ namespace DTC
 
 		return Divisor;
 	}
+	/*==========================================================================*/
+	OpenCloseTradeEnum s_SubmitNewOCOOrderInt::GetOpenOrClose()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrderInt, OpenOrClose) + sizeof(OpenOrClose))
+			return TRADE_UNSET;
 
+		return OpenOrClose;
+	}
 
 
 
@@ -4310,6 +4341,15 @@ namespace DTC
 		memcpy(this, p_SourceData, min(sizeof(s_TradeAccountsRequest), *static_cast<uint16_t*>( p_SourceData) ));
 	}
 
+	/*==========================================================================*/
+	int32_t s_TradeAccountsRequest::GetRequestID()
+	{
+		if (Size < offsetof(s_TradeAccountsRequest, RequestID) + sizeof(RequestID))
+			return 0;
+
+		return RequestID;
+	}
+
 	/****************************************************************************/
 	// s_AccountListResponse
 
@@ -4355,7 +4395,14 @@ namespace DTC
 
 		return TradeAccount;
 	}
+	/*==========================================================================*/
+	int32_t s_TradeAccountResponse::GetRequestID()
+	{
+		if (Size < offsetof(s_TradeAccountResponse, RequestID) + sizeof(RequestID))
+			return 0;
 
+		return RequestID;
+	}
 
 	/****************************************************************************/
 	// s_ExchangeListRequest
