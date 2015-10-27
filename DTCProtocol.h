@@ -112,6 +112,7 @@ namespace DTC
 	const uint16_t ORDER_UPDATE = 301;
 
 	const uint16_t HISTORICAL_ORDER_FILLS_REQUEST = 303;
+	const uint16_t HISTORICAL_ORDER_FILLS_REJECT = 308;
 	const uint16_t HISTORICAL_ORDER_FILL_RESPONSE = 304;
 
 	const uint16_t CURRENT_POSITIONS_REQUEST = 305;
@@ -154,6 +155,7 @@ namespace DTC
 	const uint16_t HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE = 804;
 	const uint16_t HISTORICAL_PRICE_DATA_RECORD_RESPONSE_INT = 805;
 	const uint16_t HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE_INT = 806;
+	const uint16_t HISTORICAL_PRICE_DATA_RESPONSE_TRAILER = 807;
 
 	/*==========================================================================*/
 	//Standard UNIX Date-Time value
@@ -215,6 +217,7 @@ namespace DTC
 	, ORDER_STATUS_FILLED = 7
 	, ORDER_STATUS_CANCELED = 8
 	, ORDER_STATUS_REJECTED = 9
+	, ORDER_STATUS_PARTIALLY_FILLED = 10
 	};
 
 	/*==========================================================================*/
@@ -354,6 +357,13 @@ namespace DTC
 	, INTERVAL_1_DAY = 86400
 	, INTERVAL_1_WEEK = 604800
 	};
+	enum HistoricalPriceDataRejectReasonCodeEnum : int16_t
+	{ HPDR_UNSET = 0
+	, HPDR_UNABLE_TO_SERVE_DATA_RETRY_LATER = 1
+	, HPDR_UNABLE_TO_SERVE_DATA_DO_NOT_RETRY = 2
+	, HPDR_DATA_REQUEST_OUTSIDE_BOUNDS_OF_AVAILABLE_DATA = 3
+	, HPDR_GENERAL_REJECT_ERROR = 4
+	};
 
 	/*==========================================================================*/
 	struct s_EncodingRequest
@@ -363,6 +373,8 @@ namespace DTC
 		int32_t ProtocolVersion;
 		EncodingEnum Encoding;
 
+		char ProtocolType[4];
+
 		s_EncodingRequest()
 		{
 			memset(this, 0,sizeof(s_EncodingRequest));
@@ -370,12 +382,15 @@ namespace DTC
 			Size=sizeof(s_EncodingRequest);
 			ProtocolVersion = CURRENT_VERSION;
 			Encoding = BINARY_ENCODING;
+			SetProtocolType("DTC");
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);		
 		int32_t GetProtocolVersion();
 		EncodingEnum GetEncoding();
+		const char* GetProtocolType();
+		void SetProtocolType(const char* NewValue);
 	};
 
 	/*==========================================================================*/
@@ -386,6 +401,8 @@ namespace DTC
 		int32_t ProtocolVersion;
 		EncodingEnum Encoding;
 
+		char ProtocolType[4];
+
 		s_EncodingResponse()
 		{
 			memset(this, 0,sizeof(s_EncodingResponse));
@@ -393,12 +410,15 @@ namespace DTC
 			Size=sizeof(s_EncodingResponse);
 			ProtocolVersion = CURRENT_VERSION;
 			Encoding = BINARY_ENCODING;
+			SetProtocolType("DTC");
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
 		int32_t GetProtocolVersion();
 		EncodingEnum GetEncoding();
+		const char* GetProtocolType();
+		void SetProtocolType(const char* NewValue);
 	};
 
 	/*==========================================================================*/
@@ -470,6 +490,8 @@ namespace DTC
 		uint8_t OneHistoricalPriceDataRequestPerConnection;
 		uint8_t BracketOrdersSupported;
 		uint8_t UseIntegerPriceOrderMessages;
+		uint8_t UsesMultiplePositionsPerSymbolAndTradeAccount;
+		uint8_t MarketDataSupported;
 
 		s_LogonResponse()
 		{
@@ -479,32 +501,35 @@ namespace DTC
 			ProtocolVersion = CURRENT_VERSION;
 			OrderCancelReplaceSupported = 1;
 			MarketDepthIsSupported = 1;
+			MarketDataSupported = 1;
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
-		int32_t GetProtocolVersion();
-		LogonStatusEnum GetResult();
+		int32_t GetProtocolVersion() const;
+		LogonStatusEnum GetResult() const;
 		const char* GetResultText();
 		void SetResultText(const char* NewValue);
 		const char* GetReconnectAddress();
 		void SetReconnectAddress(const char* NewValue);
-		int32_t GetInteger_1();
+		int32_t GetInteger_1() const;
 		const char* GetServerName();
 		void SetServerName(const char* NewValue);		
-		uint8_t GetMarketDepthUpdatesBestBidAndAsk();
-		uint8_t GetTradingIsSupported();
-		uint8_t GetOCOOrdersSupported();
-		uint8_t GetOrderCancelReplaceSupported();
+		uint8_t GetMarketDepthUpdatesBestBidAndAsk() const;
+		uint8_t GetTradingIsSupported() const;
+		uint8_t GetOCOOrdersSupported() const;
+		uint8_t GetOrderCancelReplaceSupported() const;
 		const char* GetSymbolExchangeDelimiter();
 		void SetSymbolExchangeDelimiter(const char* NewValue);
-		uint8_t GetSecurityDefinitionsSupported();
-		uint8_t GetHistoricalPriceDataSupported();
-		uint8_t GetResubscribeWhenMarketDataFeedAvailable();
-		uint8_t GetMarketDepthIsSupported();
-		uint8_t GetOneHistoricalPriceDataRequestPerConnection();
-		uint8_t GetUseIntegerPriceOrderMessages();
-		uint8_t GetBracketOrdersSupported();
+		uint8_t GetSecurityDefinitionsSupported() const;
+		uint8_t GetHistoricalPriceDataSupported() const;
+		uint8_t GetResubscribeWhenMarketDataFeedAvailable() const;
+		uint8_t GetMarketDepthIsSupported() const;
+		uint8_t GetOneHistoricalPriceDataRequestPerConnection() const;
+		uint8_t GetUseIntegerPriceOrderMessages() const;
+		uint8_t GetBracketOrdersSupported() const;
+		uint8_t GetUsesMultiplePositionsPerSymbolAndTradeAccount() const;
+		uint8_t GetMarketDataSupported() const;
 	};
 
 	/*==========================================================================*/
@@ -1270,6 +1295,8 @@ namespace DTC
 		}
 
 		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
 		float GetBidPrice() const;
 		float GetBidQuantity() const;
 		float GetAskPrice() const;
@@ -1919,6 +1946,30 @@ namespace DTC
 	};
 
 	/*==========================================================================*/
+	struct s_HistoricalOrderFillsReject
+	{
+		uint16_t Size;
+		uint16_t Type;
+
+		int32_t RequestID;
+		char RejectText[TEXT_DESCRIPTION_LENGTH];
+
+		s_HistoricalOrderFillsReject()
+		{
+			memset(this, 0,sizeof(s_HistoricalOrderFillsReject));
+			Type = HISTORICAL_ORDER_FILLS_REJECT;
+			Size = sizeof(s_HistoricalOrderFillsReject);
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		int32_t GetRequestID();
+		void SetRejectText(const char* NewValue);
+		const char* GetRejectText();
+	};
+
+
+	/*==========================================================================*/
 	struct s_CurrentPositionsRequest
 	{
 		uint16_t Size;
@@ -2008,7 +2059,7 @@ namespace DTC
 		double LastFillPrice;
 		t_DateTime LastFillDateTime;
 		double LastFillQuantity;
-		char UniqueFillExecutionID[64];
+		char LastFillExecutionID[64];
 
 		char TradeAccount[TRADE_ACCOUNT_LENGTH];
 		char InfoText[TEXT_DESCRIPTION_LENGTH];
@@ -2016,6 +2067,10 @@ namespace DTC
 		uint8_t NoOrders;
 		char ParentServerOrderID[ORDER_ID_LENGTH];
 		char OCOLinkedOrderServerOrderID[ORDER_ID_LENGTH];
+
+		OpenCloseTradeEnum OpenOrClose;
+
+		char PreviousClientOrderID[ORDER_ID_LENGTH];
 
 		s_OrderUpdate()
 		{
@@ -2051,7 +2106,7 @@ namespace DTC
 		void SetClientOrderID(const char* NewValue);
 		const char* GetExchangeOrderID();
 		void SetExchangeOrderID(const char* NewValue);
-		void SetUniqueFillExecutionID(const char* NewValue);
+		void SetLastFillExecutionID(const char* NewValue);
 		double GetOrderQuantity();
 		double GetFilledQuantity();
 		double GetRemainingQuantity();
@@ -2071,7 +2126,7 @@ namespace DTC
 		double GetAverageFillPrice();
 		double GetLastFillPrice();	
 		t_DateTime GetLastFillDateTime();	
-		const char* GetUniqueFillExecutionID();
+		const char* GetLastFillExecutionID();
 
 		const char* GetTradeAccount();
 		void SetTradeAccount(const char* NewValue);
@@ -2082,6 +2137,11 @@ namespace DTC
 		void SetParentServerOrderID(const char* NewValue);
 		const char* GetOCOLinkedOrderServerOrderID();
 		void SetOCOLinkedOrderServerOrderID(const char* NewValue);
+
+		OpenCloseTradeEnum GetOpenOrClose();
+
+		const char* GetPreviousClientOrderID();
+		void SetPreviousClientOrderID(const char* NewValue);
 	};
 	
 	/*==========================================================================*/
@@ -2116,7 +2176,6 @@ namespace DTC
 		int32_t RequestID; 
 
 		int32_t TotalNumberMessages;
-
 		int32_t MessageNumber;
 
 		char Symbol[SYMBOL_LENGTH];
@@ -2181,7 +2240,7 @@ namespace DTC
 		double Quantity;
 		double AveragePrice;
 
-		char PositionIdentifier [ORDER_ID_LENGTH];
+		char PositionIdentifier[ORDER_ID_LENGTH];
 
 		char TradeAccount[TRADE_ACCOUNT_LENGTH];
 		uint8_t NoPositions;
@@ -2481,7 +2540,7 @@ namespace DTC
 		uint8_t IsFinalMessage;
 
 		float FloatToIntPriceMultiplier;
-		float IntegerToFloatPriceDivisor;
+		float IntToFloatPriceDivisor;
 
 		char UnderlyingSymbol[UNDERLYING_SYMBOL_LENGTH];
 		
@@ -2501,6 +2560,8 @@ namespace DTC
 		float EarningsPerShare;
 		uint32_t SharesOutstanding;
 
+		float IntToFloatQuantityDivisor;
+
 		s_SecurityDefinitionResponse()
 		{
 			memset(this, 0,sizeof(s_SecurityDefinitionResponse));
@@ -2508,6 +2569,9 @@ namespace DTC
 			Size = sizeof(s_SecurityDefinitionResponse);
 			PriceDisplayFormat = PRICE_DISPLAY_FORMAT_UNSET;
 			PutOrCall = PC_UNSET;
+
+			FloatToIntPriceMultiplier = 1.0;
+			IntToFloatPriceDivisor = 1.0;
 		}
 		
 		uint16_t GetMessageSize();
@@ -2526,7 +2590,7 @@ namespace DTC
 		float GetCurrencyValuePerIncrement() const;
 		uint8_t GetIsFinalMessage() const;
 		float GetFloatToIntPriceMultiplier();
-		float GetIntegerToFloatPriceDivisor();
+		float GetIntToFloatPriceDivisor();
 		const char* GetUnderlyingSymbol();
 		void SetUnderlyingSymbol(const char* NewValue);
 
@@ -2539,6 +2603,7 @@ namespace DTC
 		float GetSellRolloverInterest() const;
 		float GetEarningsPerShare() const;
 		uint32_t GetSharesOutstanding() const;
+		float GetIntToFloatQuantityDivisor() const;
 	};
 
 	
@@ -2632,9 +2697,13 @@ namespace DTC
 		char AccountCurrency[8];
 
 		char TradeAccount[TRADE_ACCOUNT_LENGTH];
-		double SecuritiesValue;  // Not including cash
+		double SecuritiesValue; 
 		double MarginRequirement;
 
+		int32_t TotalNumberMessages;
+		int32_t MessageNumber;
+		uint8_t NoAccountBalances;
+		uint8_t Unsolicited;
 
 		s_AccountBalanceUpdate()
 		{
@@ -2647,14 +2716,19 @@ namespace DTC
 		void CopyFrom(void * p_SourceData);
 
 		int32_t GetRequestID();
-		double GetCashBalance();
-		double GetBalanceAvailableForNewPositions();
+		double GetCashBalance() const;
+		double GetBalanceAvailableForNewPositions() const;
 		void SetAccountCurrency(const char* NewValue);
 		const char* GetAccountCurrency();
 		void SetTradeAccount(const char* NewValue);
 		const char* GetTradeAccount();
-		double GetSecuritiesValue();
-		double GetMarginRequirement();
+		double GetSecuritiesValue() const;
+		double GetMarginRequirement() const;
+
+		int32_t GetTotalNumberMessages() const;
+		int32_t GetMessageNumber() const;
+		uint8_t GetNoAccountBalances() const;
+		uint8_t GetUnsolicited() const;
 	};
 
 	/*==========================================================================*/
@@ -2763,7 +2837,7 @@ namespace DTC
 		
 		uint8_t NoRecordsToReturn;
 
-		float IntPriceDivisor;
+		float IntToFloatPriceDivisor;
 
 		s_HistoricalPriceDataResponseHeader()
 		{
@@ -2779,7 +2853,7 @@ namespace DTC
 		HistoricalDataIntervalEnum GetRecordInterval();
 		uint8_t GetUseZLibCompression();
 		uint8_t GetNoRecordsToReturn();
-		float GetIntPriceDivisor();
+		float GetIntToFloatPriceDivisor();
 	};
 
 	/*==========================================================================*/
@@ -2791,6 +2865,8 @@ namespace DTC
 		int32_t RequestID;
 
 		char RejectText[TEXT_DESCRIPTION_LENGTH];
+
+		HistoricalPriceDataRejectReasonCodeEnum RejectReasonCode;
 
 		s_HistoricalPriceDataReject()
 		{
@@ -2805,6 +2881,7 @@ namespace DTC
 		int32_t GetRequestID();
 		void SetRejectText(const char* NewValue);
 		const char* GetRejectText();
+		HistoricalPriceDataRejectReasonCodeEnum GetRejectReasonCode();
 	};
 
 	/*==========================================================================*/
@@ -2985,6 +3062,30 @@ namespace DTC
 		int32_t GetVolume();
 		uint8_t GetIsFinalRecord();
 	};
+
+	/*==========================================================================*/
+	struct s_HistoricalPriceDataResponseTrailer
+	{
+		uint16_t Size;
+		uint16_t Type;
+
+		int32_t RequestID;
+		t_DateTimeWithMilliseconds FinalRecordLastDateTime;
+
+		s_HistoricalPriceDataResponseTrailer()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataResponseTrailer));
+			Type = HISTORICAL_PRICE_DATA_RESPONSE_TRAILER;
+			Size = sizeof(s_HistoricalPriceDataResponseTrailer);
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+
+		int32_t GetRequestID();
+		t_DateTimeWithMilliseconds GetFinalRecordLastDateTime();
+	};
+
 
 
 #pragma pack()

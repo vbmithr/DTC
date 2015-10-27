@@ -18,6 +18,14 @@ namespace DTC_VLS
 	// see DTCProtocol.h for constants and enum values
 
 	/*==========================================================================*/
+	enum TradeModeEnum : int8_t
+	{ TRADE_MODE_UNSET = 0
+	, TRADE_MODE_DEMO = 1
+	, TRADE_MODE_SIMULATED = 2
+	, TRADE_MODE_LIVE = 3
+	};
+
+	/*==========================================================================*/
 	struct s_VariableLengthStringField
 	{
 		uint16_t Offset;
@@ -74,6 +82,7 @@ namespace DTC_VLS
 		int32_t Integer_2;
 		int32_t HeartbeatIntervalInSeconds; 
 		DTC::TradeModeEnum TradeMode;
+		//TradeModeEnum TradeMode;
 		vls_t TradeAccount; 
 		vls_t HardwareIdentifier;
 		vls_t ClientName;
@@ -180,6 +189,8 @@ namespace DTC_VLS
 		uint8_t OneHistoricalPriceDataRequestPerConnection;
 		uint8_t BracketOrdersSupported;
 		uint8_t UseIntegerPriceOrderMessages;
+		uint8_t UsesMultiplePositionsPerSymbolAndTradeAccount;
+		uint8_t MarketDataSupported;
 
 		s_LogonResponse()
 		{
@@ -194,20 +205,22 @@ namespace DTC_VLS
 
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
-		int32_t GetProtocolVersion();
-		DTC::LogonStatusEnum GetResult();
-		int32_t GetInteger_1();
-		uint8_t GetMarketDepthUpdatesBestBidAndAsk();
-		uint8_t GetTradingIsSupported();
-		uint8_t GetOCOOrdersSupported();
-		uint8_t GetOrderCancelReplaceSupported();
-		uint8_t GetSecurityDefinitionsSupported();
-		uint8_t GetHistoricalPriceDataSupported();
-		uint8_t GetResubscribeWhenMarketDataFeedAvailable();
-		uint8_t GetMarketDepthIsSupported();
-		uint8_t GetOneHistoricalPriceDataRequestPerConnection();
-		uint8_t GetUseIntegerPriceOrderMessages();
-		uint8_t GetBracketOrdersSupported();
+		int32_t GetProtocolVersion() const;
+		DTC::LogonStatusEnum GetResult() const;
+		int32_t GetInteger_1() const;
+		uint8_t GetMarketDepthUpdatesBestBidAndAsk() const;
+		uint8_t GetTradingIsSupported() const;
+		uint8_t GetOCOOrdersSupported() const;
+		uint8_t GetOrderCancelReplaceSupported() const;
+		uint8_t GetSecurityDefinitionsSupported() const;
+		uint8_t GetHistoricalPriceDataSupported() const;
+		uint8_t GetResubscribeWhenMarketDataFeedAvailable() const;
+		uint8_t GetMarketDepthIsSupported() const;
+		uint8_t GetOneHistoricalPriceDataRequestPerConnection() const;
+		uint8_t GetUseIntegerPriceOrderMessages() const;
+		uint8_t GetBracketOrdersSupported() const;
+		uint8_t GetUsesMultiplePositionsPerSymbolAndTradeAccount() const;
+		uint8_t GetMarketDataSupported() const;
 
 		const char* GetResultText() const
 		{
@@ -1181,6 +1194,39 @@ namespace DTC_VLS
 	};
 
 	/*==========================================================================*/
+	struct s_HistoricalOrderFillsReject
+	{
+		uint16_t Size;
+		uint16_t Type;
+		uint16_t BaseSize;
+
+		int32_t RequestID;
+		vls_t RejectText;
+
+		s_HistoricalOrderFillsReject()
+		{
+			memset(this, 0,sizeof(s_HistoricalOrderFillsReject));
+			Size = sizeof(s_HistoricalOrderFillsReject);
+			Type = DTC::HISTORICAL_ORDER_FILLS_REJECT;
+			BaseSize = Size;
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		int32_t GetRequestID();
+
+		void AddRejectText(unsigned int StringLength)
+		{
+			AddVariableLengthStringField(Size, RejectText, StringLength);
+		}
+
+		const char* GetRejectText() const
+		{
+			return GetVariableLengthStringField(Size, BaseSize, RejectText, offsetof(s_HistoricalOrderFillsReject, RejectText));
+		}
+	};
+
+	/*==========================================================================*/
 	struct s_CurrentPositionsRequest
 	{
 		uint16_t Size;
@@ -1291,7 +1337,7 @@ namespace DTC_VLS
 		double LastFillPrice;
 		DTC::t_DateTime LastFillDateTime;
 		double LastFillQuantity;
-		vls_t UniqueFillExecutionID;
+		vls_t LastFillExecutionID;
 
 		vls_t TradeAccount;
 		vls_t InfoText;
@@ -1299,6 +1345,10 @@ namespace DTC_VLS
 		uint8_t NoOrders;
 		vls_t ParentServerOrderID;
 		vls_t OCOLinkedOrderServerOrderID;
+
+		DTC::OpenCloseTradeEnum OpenOrClose;
+
+		vls_t PreviousClientOrderID;
 
 		s_OrderUpdate()
 		{
@@ -1383,14 +1433,14 @@ namespace DTC_VLS
 			AddVariableLengthStringField(Size, ExchangeOrderID, StringLength);
 		}
 
-		void AddUniqueFillExecutionID(unsigned int StringLength)
+		void AddLastFillExecutionID(unsigned int StringLength)
 		{
-			AddVariableLengthStringField(Size, UniqueFillExecutionID, StringLength);
+			AddVariableLengthStringField(Size, LastFillExecutionID, StringLength);
 		}
 
-		const char* GetUniqueFillExecutionID() const
+		const char* GetLastFillExecutionID() const
 		{
-			return GetVariableLengthStringField(Size, BaseSize, UniqueFillExecutionID, offsetof(s_OrderUpdate, UniqueFillExecutionID));
+			return GetVariableLengthStringField(Size, BaseSize, LastFillExecutionID, offsetof(s_OrderUpdate, LastFillExecutionID));
 		}
 
 		const char* GetTradeAccount() const
@@ -1433,6 +1483,16 @@ namespace DTC_VLS
 			AddVariableLengthStringField(Size, OCOLinkedOrderServerOrderID, StringLength);
 		}
 
+		const char* GetPreviousClientOrderID() const
+		{
+			return GetVariableLengthStringField(Size, BaseSize, PreviousClientOrderID, offsetof(s_OrderUpdate, PreviousClientOrderID));
+		}
+
+		void AddPreviousClientOrderID(unsigned int StringLength)
+		{
+			AddVariableLengthStringField(Size, PreviousClientOrderID, StringLength);
+		}
+
 		double GetOrderQuantity();
 		double GetFilledQuantity();
 		double GetRemainingQuantity();
@@ -1452,6 +1512,7 @@ namespace DTC_VLS
 		double GetLastFillPrice();	
 		DTC::t_DateTime GetLastFillDateTime();	
 		uint8_t GetNoOrders();
+		DTC::OpenCloseTradeEnum GetOpenOrClose();
 	};
 	
 	/*==========================================================================*/
@@ -1998,7 +2059,7 @@ namespace DTC_VLS
 		uint8_t IsFinalMessage;
 
 		float FloatToIntPriceMultiplier;
-		float IntegerToFloatPriceDivisor;
+		float IntToFloatPriceDivisor;
 		vls_t UnderlyingSymbol;
 
 		uint8_t UpdatesBidAskOnly;
@@ -2017,6 +2078,7 @@ namespace DTC_VLS
 		float EarningsPerShare;
 		uint32_t SharesOutstanding;
 
+		float IntToFloatQuantityDivisor;
 
 		s_SecurityDefinitionResponse()
 		{
@@ -2024,6 +2086,9 @@ namespace DTC_VLS
 			Size = sizeof(s_SecurityDefinitionResponse);
 			Type = DTC::SECURITY_DEFINITION_RESPONSE;
 			BaseSize = Size;
+
+			FloatToIntPriceMultiplier = 1.0;
+			IntToFloatPriceDivisor = 1.0;
 		}
 		
 		uint16_t GetMessageSize();
@@ -2066,7 +2131,7 @@ namespace DTC_VLS
 		float GetCurrencyValuePerIncrement() const;
 		uint8_t GetIsFinalMessage() const;
 		float GetFloatToIntPriceMultiplier();
-		float GetIntegerToFloatPriceDivisor();
+		float GetIntToFloatPriceDivisor();
 
 		void AddUnderlyingSymbol(unsigned int StringLength)
 		{
@@ -2087,6 +2152,7 @@ namespace DTC_VLS
 		float GetSellRolloverInterest() const;
 		float GetEarningsPerShare() const;
 		uint32_t GetSharesOutstanding() const;
+		float GetIntToFloatQuantityDivisor() const;
 	};
 
 
@@ -2208,6 +2274,11 @@ namespace DTC_VLS
 		double SecuritiesValue;  // Not including cash
 		double MarginRequirement;
 
+		int32_t TotalNumberMessages;
+		int32_t MessageNumber;
+		uint8_t NoAccountBalances;
+		uint8_t Unsolicited;
+
 		s_AccountBalanceUpdate()
 		{
 			memset(this, 0,sizeof(s_AccountBalanceUpdate));
@@ -2240,10 +2311,15 @@ namespace DTC_VLS
 			return GetVariableLengthStringField(Size, BaseSize, TradeAccount, offsetof(s_AccountBalanceUpdate, TradeAccount));
 		}
 
-		double GetCashBalance();
-		double GetBalanceAvailableForNewPositions();
-		double GetSecuritiesValue();
-		double GetMarginRequirement();
+		double GetCashBalance() const;
+		double GetBalanceAvailableForNewPositions() const;
+		double GetSecuritiesValue() const;
+		double GetMarginRequirement() const;
+
+		int32_t GetTotalNumberMessages() const;
+		int32_t GetMessageNumber() const;
+		uint8_t GetNoAccountBalances() const;
+		uint8_t GetUnsolicited() const;
 	};
 
 	/*==========================================================================*/
@@ -2387,6 +2463,8 @@ namespace DTC_VLS
 
 		vls_t RejectText;
 
+		DTC::HistoricalPriceDataRejectReasonCodeEnum RejectReasonCode;
+
 		s_HistoricalPriceDataReject()
 		{
 			memset(this, 0,sizeof(s_HistoricalPriceDataReject));
@@ -2398,6 +2476,7 @@ namespace DTC_VLS
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
 		int32_t GetRequestID();
+		DTC::HistoricalPriceDataRejectReasonCodeEnum GetRejectReasonCode();
 
 		void AddRejectText(unsigned int StringLength)
 		{
