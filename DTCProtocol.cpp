@@ -1057,6 +1057,15 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataSnapshot::GetSessionSettlementDateTime()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot, SessionSettlementDateTime) + sizeof(SessionSettlementDateTime))
+			return 0;
+
+		return SessionSettlementDateTime;
+	}
+
+	/*==========================================================================*/
 	void s_MarketDataSnapshot::SetToUnsetValues()
 	{
 		SessionSettlementPrice = DBL_MAX;
@@ -1239,6 +1248,14 @@ namespace DTC
 			return 0;
 
 		return BidAskDateTime;
+	}
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataSnapshot_Int::GetSessionSettlementDateTime()
+	{
+		if (Size < offsetof(s_MarketDataSnapshot_Int, SessionSettlementDateTime) + sizeof(SessionSettlementDateTime))
+			return 0;
+
+		return SessionSettlementDateTime;
 	}
 	/*==========================================================================*/
 	void s_MarketDataSnapshot_Int::SetToUnsetValues()
@@ -1527,6 +1544,16 @@ namespace DTC
 		return UpdateType;
 	}
 
+	/*==========================================================================*/
+	t_DateTimeWithMilliseconds s_MarketDepthUpdateLevel::GetDateTime()
+	{
+		if (Size < offsetof(s_MarketDepthUpdateLevel, DateTime) + sizeof(DateTime))
+			return 0.0;
+
+		return DateTime;
+	}
+
+
 
 	/****************************************************************************/
 	// s_MarketDepthIncrementalUpdate_Int
@@ -1586,6 +1613,15 @@ namespace DTC
 			return DEPTH_UNSET;
 
 		return UpdateType;
+	}
+
+	/*==========================================================================*/
+	t_DateTimeWithMilliseconds s_MarketDepthUpdateLevel_Int::GetDateTime()
+	{
+		if (Size < offsetof(s_MarketDepthUpdateLevel_Int, DateTime) + sizeof(DateTime))
+			return 0.0;
+
+		return DateTime;
 	}
 
 
@@ -1649,6 +1685,15 @@ namespace DTC
 		return UpdateType;
 	}
 
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDepthUpdateLevelCompact::GetDateTime() const
+	{
+		if (Size < offsetof(s_MarketDepthUpdateLevelCompact, DateTime) + sizeof(DateTime))
+			return 0;
+
+		return DateTime;
+	}
+
 	/****************************************************************************/
 	// s_SettlementIncrementalUpdate
 
@@ -1680,6 +1725,15 @@ namespace DTC
 			return 0;
 
 		return Price;
+	}
+
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionSettlement::GetDateTime() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionSettlement, DateTime) + sizeof(DateTime))
+			return 0;
+
+		return DateTime;
 	}
 
 		/****************************************************************************/
@@ -1780,6 +1834,39 @@ namespace DTC
 			return 0;
 
 		return Price;
+	}
+
+	/****************************************************************************/
+	// s_MarketDataUpdateSessionNumTrades
+
+	/*==========================================================================*/
+	uint16_t s_MarketDataUpdateSessionNumTrades::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDataUpdateSessionNumTrades::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateSessionNumTrades), *static_cast<uint16_t*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	uint16_t s_MarketDataUpdateSessionNumTrades::GetSymbolID() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionNumTrades, SymbolID) + sizeof(SymbolID))
+			return 0;
+
+		return SymbolID;
+	}
+
+	/*==========================================================================*/
+	int32_t s_MarketDataUpdateSessionNumTrades::GetNumTrades() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionNumTrades, NumTrades) + sizeof(NumTrades))
+			return 0;
+
+		return NumTrades;
 	}
 
 
@@ -5157,6 +5244,24 @@ namespace DTC
 		return IntToFloatQuantityDivisor;
 	}
 
+	/*==========================================================================*/
+	uint8_t s_SecurityDefinitionResponse::GetHasMarketDepthData() const
+	{
+		if (Size < offsetof(s_SecurityDefinitionResponse, HasMarketDepthData) + sizeof(HasMarketDepthData))
+			return 1;
+
+		return HasMarketDepthData;
+	}
+
+	/*==========================================================================*/
+	float s_SecurityDefinitionResponse::GetDisplayPriceMultiplier() const
+	{
+		if (Size < offsetof(s_SecurityDefinitionResponse, DisplayPriceMultiplier) + sizeof(DisplayPriceMultiplier))
+			return 1.0;
+
+		return DisplayPriceMultiplier;
+	}
+
 	/****************************************************************************/
 	// s_SecurityDefinitionReject
 
@@ -5670,6 +5775,15 @@ namespace DTC
 			return HPDR_UNSET;
 
 		return RejectReasonCode;
+	}
+
+	/*==========================================================================*/
+	uint16_t s_HistoricalPriceDataReject::GetRetryTimeInSeconds()
+	{
+		if (Size < offsetof(s_HistoricalPriceDataReject, RetryTimeInSeconds) + sizeof(RetryTimeInSeconds))
+			return 0;
+
+		return RetryTimeInSeconds;
 	}
 
 	/*==========================================================================*/

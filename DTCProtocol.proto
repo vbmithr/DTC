@@ -63,6 +63,7 @@ enum DTCMessageType {
 	MARKET_DATA_UPDATE_OPEN_INTEREST = 124;
 	MARKET_DATA_UPDATE_DAILY_SETTLEMENT = 119;
 	MARKET_DATA_UPDATE_DAILY_SETTLEMENT_INT = 131;
+	MARKET_DATA_UPDATE_SESSION_NUM_TRADES = 135;
 
 	MARKET_DEPTH_REQUEST = 102;
 	MARKET_DEPTH_REJECT = 121;
@@ -473,6 +474,7 @@ message MarketDataSnapshot
 	optional double LastTradeVolume = 14;
 	optional double LastTradeDateTime = 15;
 	optional double BidAskDateTime = 16;
+	optional uint32 SessionSettlementDateTime = 17;
 }
 
 //============================================================================
@@ -495,6 +497,7 @@ message MarketDataSnapshot_Int
 	optional int32 LastTradeVolume = 14;
 	optional double LastTradeDateTime = 15;
 	optional double BidAskDateTime = 16;
+	optional uint32 SessionSettlementDateTime = 17;
 }
 
 //============================================================================
@@ -557,6 +560,8 @@ message MarketDepthUpdateLevel
 	optional double Quantity = 4;
 
 	optional MarketDepthUpdateTypeEnum UpdateType = 5;
+
+	optional double DateTime = 6;
 }
 
 //============================================================================
@@ -568,6 +573,8 @@ message MarketDepthUpdateLevel_Int
 	optional int32 Quantity = 4;
 
 	optional MarketDepthUpdateTypeEnum UpdateType = 5;
+
+	optional double DateTime = 6;
 }
 
 //============================================================================
@@ -579,6 +586,8 @@ message MarketDepthUpdateLevelCompact
 	optional float Quantity = 4;
 
 	optional MarketDepthUpdateTypeEnum UpdateType = 5;
+
+	optional uint32 DateTime = 6;
 }
 
 //============================================================================
@@ -586,6 +595,7 @@ message MarketDataUpdateSessionSettlement
 {
 	optional uint32 SymbolID = 1;
 	optional double Price = 2;
+	optional uint32 DateTime = 3;
 }
 
 //============================================================================
@@ -607,6 +617,13 @@ message MarketDataUpdateSessionOpen_Int
 {
 	optional uint32 SymbolID = 1;
 	optional int32 Price = 2;
+}
+
+//============================================================================
+message MarketDataUpdateSessionNumTrades
+{
+	optional uint32 SymbolID = 1;
+	optional int32 NumTrades = 2;
 }
 
 //============================================================================
@@ -1175,6 +1192,10 @@ message SecurityDefinitionResponse
 	optional uint32 SharesOutstanding = 21;
 
 	optional float IntToFloatQuantityDivisor = 22;
+
+	optional uint32 HasMarketDepthData = 23;
+
+	optional float DisplayPriceMultiplier = 24;
 }
 
 
@@ -1270,6 +1291,8 @@ message HistoricalPriceDataReject
 	optional string RejectText = 2;
 
 	optional HistoricalPriceDataRejectReasonCodeEnum RejectReasonCode = 3;
+
+	optional uint32 RetryTimeInSeconds = 4;
 }
 
 //============================================================================

@@ -2080,6 +2080,10 @@ namespace DTC_VLS
 
 		float IntToFloatQuantityDivisor;
 
+		uint8_t HasMarketDepthData;
+
+		float DisplayPriceMultiplier;
+
 		s_SecurityDefinitionResponse()
 		{
 			memset(this, 0,sizeof(s_SecurityDefinitionResponse));
@@ -2089,6 +2093,8 @@ namespace DTC_VLS
 
 			FloatToIntPriceMultiplier = 1.0;
 			IntToFloatPriceDivisor = 1.0;
+			HasMarketDepthData = 1;
+			DisplayPriceMultiplier = 1.0;
 		}
 		
 		uint16_t GetMessageSize();
@@ -2153,6 +2159,8 @@ namespace DTC_VLS
 		float GetEarningsPerShare() const;
 		uint32_t GetSharesOutstanding() const;
 		float GetIntToFloatQuantityDivisor() const;
+		uint8_t GetHasMarketDepthData() const;
+		float GetDisplayPriceMultiplier() const;
 	};
 
 
@@ -2464,6 +2472,7 @@ namespace DTC_VLS
 		vls_t RejectText;
 
 		DTC::HistoricalPriceDataRejectReasonCodeEnum RejectReasonCode;
+		uint16_t RetryTimeInSeconds;
 
 		s_HistoricalPriceDataReject()
 		{
@@ -2477,6 +2486,7 @@ namespace DTC_VLS
 		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 		DTC::HistoricalPriceDataRejectReasonCodeEnum GetRejectReasonCode();
+		uint16_t GetRetryTimeInSeconds();
 
 		void AddRejectText(unsigned int StringLength)
 		{

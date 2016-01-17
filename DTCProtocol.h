@@ -79,6 +79,7 @@ namespace DTC
 	const uint16_t MARKET_DATA_UPDATE_OPEN_INTEREST = 124;
 	const uint16_t MARKET_DATA_UPDATE_SESSION_SETTLEMENT = 119;
 	const uint16_t MARKET_DATA_UPDATE_SESSION_SETTLEMENT_INT = 131;
+	const uint16_t MARKET_DATA_UPDATE_SESSION_NUM_TRADES = 135;
 
 	const uint16_t MARKET_DEPTH_REQUEST = 102;
 	const uint16_t MARKET_DEPTH_REJECT = 121;
@@ -175,6 +176,30 @@ namespace DTC
 	, JSON_COMPACT_ENCODING = 3
 	, PROTOCOL_BUFFERS = 4
 	};
+
+	inline const char* GetEncodingName(EncodingEnum Encoding)
+	{
+		switch (Encoding)
+		{
+			case BINARY_ENCODING:
+			return "Binary";
+
+			case BINARY_WITH_VARIABLE_LENGTH_STRINGS:
+			return "Binary VLS";
+
+			case JSON_ENCODING:
+			return "JSON";
+
+			case JSON_COMPACT_ENCODING:
+			return "JSON Compact";
+
+			case PROTOCOL_BUFFERS:
+			return "Protocol Buffers";
+
+			default:
+			return "Unknown";
+		}
+	}
 
 	/*==========================================================================*/
 	enum LogonStatusEnum : int32_t
@@ -320,7 +345,7 @@ namespace DTC
 	/*==========================================================================*/
 	enum SecurityTypeEnum : int32_t
 	{ SECURITY_TYPE_UNSET = 0
-	, SECURITY_TYPE_FUTURE = 1
+	, SECURITY_TYPE_FUTURES = 1
 	, SECURITY_TYPE_STOCK = 2
 	, SECURITY_TYPE_FOREX = 3 // Bitcoins also go into this category
 	, SECURITY_TYPE_INDEX = 4
@@ -357,9 +382,10 @@ namespace DTC
 	, INTERVAL_1_DAY = 86400
 	, INTERVAL_1_WEEK = 604800
 	};
+
 	enum HistoricalPriceDataRejectReasonCodeEnum : int16_t
 	{ HPDR_UNSET = 0
-	, HPDR_UNABLE_TO_SERVE_DATA_RETRY_LATER = 1
+	, HPDR_UNABLE_TO_SERVE_DATA_RETRY_IN_SPECIFIED_SECONDS = 1
 	, HPDR_UNABLE_TO_SERVE_DATA_DO_NOT_RETRY = 2
 	, HPDR_DATA_REQUEST_OUTSIDE_BOUNDS_OF_AVAILABLE_DATA = 3
 	, HPDR_GENERAL_REJECT_ERROR = 4
@@ -720,6 +746,7 @@ namespace DTC
 		double LastTradeVolume;
 		t_DateTimeWithMilliseconds LastTradeDateTime;
 		t_DateTimeWithMilliseconds BidAskDateTime;
+		t_DateTime4Byte SessionSettlementDateTime;
 
 		s_MarketDataSnapshot()
 		{
@@ -746,6 +773,7 @@ namespace DTC
 		double GetLastTradeVolume();
 		t_DateTimeWithMilliseconds GetLastTradeDateTime();
 		t_DateTimeWithMilliseconds GetBidAskDateTime();
+		t_DateTime4Byte GetSessionSettlementDateTime();
 		void SetToUnsetValues();
 	};
 
@@ -771,6 +799,7 @@ namespace DTC
 		int32_t LastTradeVolume;
 		t_DateTimeWithMilliseconds LastTradeDateTime;
 		t_DateTimeWithMilliseconds BidAskDateTime;
+		t_DateTime4Byte SessionSettlementDateTime;
 
 		s_MarketDataSnapshot_Int()
 		{
@@ -798,6 +827,7 @@ namespace DTC
 		int32_t GetLastTradeVolume();
 		t_DateTimeWithMilliseconds GetLastTradeDateTime();
 		t_DateTimeWithMilliseconds GetBidAskDateTime();
+		t_DateTime4Byte GetSessionSettlementDateTime();
 		void SetToUnsetValues();
 	};
 
@@ -941,16 +971,14 @@ namespace DTC
 		AtBidOrAskEnum Side;
 		double Price;
 		double Quantity;
-
 		MarketDepthUpdateTypeEnum UpdateType;
+		t_DateTimeWithMilliseconds DateTime;
 
 		s_MarketDepthUpdateLevel()
 		{
-
-			memset(this, 0,sizeof(s_MarketDepthUpdateLevel));
-			Type=MARKET_DEPTH_UPDATE_LEVEL;
-			Size=sizeof(s_MarketDepthUpdateLevel);
-
+			memset(this, 0, sizeof(s_MarketDepthUpdateLevel));
+			Type = MARKET_DEPTH_UPDATE_LEVEL;
+			Size = sizeof(s_MarketDepthUpdateLevel);
 		}
 		
 		uint16_t GetMessageSize();
@@ -960,6 +988,7 @@ namespace DTC
 		double GetPrice();
 		double GetQuantity();
 		MarketDepthUpdateTypeEnum GetUpdateType();
+		t_DateTimeWithMilliseconds GetDateTime();
 	};
 
 	/*==========================================================================*/
@@ -972,16 +1001,14 @@ namespace DTC
 		AtBidOrAskEnum Side;
 		int32_t Price;
 		int32_t Quantity;
-
 		MarketDepthUpdateTypeEnum UpdateType;
+		t_DateTimeWithMilliseconds DateTime;
 
 		s_MarketDepthUpdateLevel_Int()
 		{
-
-			memset(this, 0,sizeof(s_MarketDepthUpdateLevel_Int));
-			Type=MARKET_DEPTH_UPDATE_LEVEL_INT;
-			Size=sizeof(s_MarketDepthUpdateLevel_Int);
-
+			memset(this, 0, sizeof(s_MarketDepthUpdateLevel_Int));
+			Type = MARKET_DEPTH_UPDATE_LEVEL_INT;
+			Size = sizeof(s_MarketDepthUpdateLevel_Int);
 		}
 		
 		uint16_t GetMessageSize();
@@ -990,7 +1017,8 @@ namespace DTC
 		AtBidOrAskEnum GetSide();
 		int32_t GetPrice();
 		int32_t GetQuantity();
-		MarketDepthUpdateTypeEnum GetUpdateType();        
+		MarketDepthUpdateTypeEnum GetUpdateType();
+		t_DateTimeWithMilliseconds GetDateTime();
 	};
 
 	/*==========================================================================*/
@@ -1003,24 +1031,25 @@ namespace DTC
 		AtBidOrAskEnum Side;
 		float Price;
 		float Quantity;
-
 		MarketDepthUpdateTypeEnum UpdateType;
+		t_DateTime4Byte DateTime;
 
 		s_MarketDepthUpdateLevelCompact()
 		{
-			memset(this, 0,sizeof(s_MarketDepthUpdateLevelCompact));
-			Type=MARKET_DEPTH_UPDATE_LEVEL_COMPACT;
-			Size=sizeof(s_MarketDepthUpdateLevelCompact);
+			memset(this, 0, sizeof(s_MarketDepthUpdateLevelCompact));
+			Type = MARKET_DEPTH_UPDATE_LEVEL_COMPACT;
+			Size = sizeof(s_MarketDepthUpdateLevelCompact);
 		}
 
 		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
+		void CopyFrom(void* p_SourceData);
 
 		uint16_t GetSymbolID() const;
 		AtBidOrAskEnum GetSide() const;
 		float GetPrice() const;
 		float GetQuantity() const;
 		MarketDepthUpdateTypeEnum GetUpdateType() const;
+		t_DateTime4Byte GetDateTime() const;
 	};
 
 	/*==========================================================================*/
@@ -1031,6 +1060,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		double Price;
+		t_DateTime4Byte DateTime;
 
 		s_MarketDataUpdateSessionSettlement()
 		{
@@ -1044,6 +1074,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
+		t_DateTime4Byte GetDateTime() const;
 	};
 
 	/*==========================================================================*/
@@ -1113,6 +1144,29 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
+	};
+
+	/*==========================================================================*/
+	struct s_MarketDataUpdateSessionNumTrades
+	{
+		uint16_t Size;
+		uint16_t Type;
+
+		uint16_t SymbolID;
+		int32_t NumTrades;
+
+		s_MarketDataUpdateSessionNumTrades()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionNumTrades));
+			Type = MARKET_DATA_UPDATE_SESSION_NUM_TRADES;
+			Size = sizeof(s_MarketDataUpdateSessionNumTrades);
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void* p_SourceData);
+
+		uint16_t GetSymbolID() const;
+		int32_t GetNumTrades() const;
 	};
 
 	/*==========================================================================*/
@@ -2562,6 +2616,10 @@ namespace DTC
 
 		float IntToFloatQuantityDivisor;
 
+		uint8_t HasMarketDepthData;
+
+		float DisplayPriceMultiplier;
+
 		s_SecurityDefinitionResponse()
 		{
 			memset(this, 0,sizeof(s_SecurityDefinitionResponse));
@@ -2572,6 +2630,8 @@ namespace DTC
 
 			FloatToIntPriceMultiplier = 1.0;
 			IntToFloatPriceDivisor = 1.0;
+			HasMarketDepthData = 1;
+			DisplayPriceMultiplier = 1.0;
 		}
 		
 		uint16_t GetMessageSize();
@@ -2604,6 +2664,8 @@ namespace DTC
 		float GetEarningsPerShare() const;
 		uint32_t GetSharesOutstanding() const;
 		float GetIntToFloatQuantityDivisor() const;
+		uint8_t GetHasMarketDepthData() const;
+		float GetDisplayPriceMultiplier() const;
 	};
 
 	
@@ -2867,6 +2929,7 @@ namespace DTC
 		char RejectText[TEXT_DESCRIPTION_LENGTH];
 
 		HistoricalPriceDataRejectReasonCodeEnum RejectReasonCode;
+		uint16_t RetryTimeInSeconds;
 
 		s_HistoricalPriceDataReject()
 		{
@@ -2882,6 +2945,7 @@ namespace DTC
 		void SetRejectText(const char* NewValue);
 		const char* GetRejectText();
 		HistoricalPriceDataRejectReasonCodeEnum GetRejectReasonCode();
+		uint16_t GetRetryTimeInSeconds();
 	};
 
 	/*==========================================================================*/

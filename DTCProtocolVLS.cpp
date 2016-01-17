@@ -1999,11 +1999,28 @@ namespace DTC_VLS
 	float s_SecurityDefinitionResponse::GetIntToFloatQuantityDivisor() const
 	{
 		if (BaseSize < offsetof(s_SecurityDefinitionResponse, IntToFloatQuantityDivisor) + sizeof(IntToFloatQuantityDivisor))
-			return 0;
+			return 0.0;
 
 		return IntToFloatQuantityDivisor;
 	}
 
+	/*==========================================================================*/
+	uint8_t s_SecurityDefinitionResponse::GetHasMarketDepthData() const
+	{
+		if (BaseSize < offsetof(s_SecurityDefinitionResponse, HasMarketDepthData) + sizeof(HasMarketDepthData))
+			return 1;
+
+		return HasMarketDepthData;
+	}
+
+	/*==========================================================================*/
+	float s_SecurityDefinitionResponse::GetDisplayPriceMultiplier() const
+	{
+		if (BaseSize < offsetof(s_SecurityDefinitionResponse, DisplayPriceMultiplier) + sizeof(DisplayPriceMultiplier))
+			return 1.0;
+
+		return DisplayPriceMultiplier;
+	}
 
 	/****************************************************************************/
 	// s_SecurityDefinitionReject
@@ -2337,6 +2354,15 @@ namespace DTC_VLS
 			return DTC::HPDR_UNSET;
 
 		return RejectReasonCode;
+	}
+
+	/*==========================================================================*/
+	uint16_t s_HistoricalPriceDataReject::GetRetryTimeInSeconds()
+	{
+		if (BaseSize < offsetof(s_HistoricalPriceDataReject, RetryTimeInSeconds) + sizeof(RetryTimeInSeconds))
+			return 0;
+
+		return RetryTimeInSeconds;
 	}
 
 	/*==========================================================================*/
