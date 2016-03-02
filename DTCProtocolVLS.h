@@ -89,16 +89,23 @@ namespace DTC_VLS
 
 		s_LogonRequest()
 		{
-			memset(this, 0,sizeof(s_LogonRequest));
-			Size = sizeof(s_LogonRequest);
-			Type = DTC::LOGON_REQUEST;
-			BaseSize = Size;
-			ProtocolVersion = DTC::CURRENT_VERSION;
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_LogonRequest));
+			Size = sizeof(s_LogonRequest);
+			Type = DTC::LOGON_REQUEST;
+			BaseSize = Size;
+
+			ProtocolVersion = DTC::CURRENT_VERSION;
+		}
+
 		int32_t GetProtocolVersion();
+
 		const char* GetUsername() const
 		{
 			return GetVariableLengthStringField(Size, BaseSize, Username, offsetof(s_LogonRequest, Username));
@@ -194,17 +201,23 @@ namespace DTC_VLS
 
 		s_LogonResponse()
 		{
-			memset(this, 0,sizeof(s_LogonResponse));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_LogonResponse));
 			Size = sizeof(s_LogonResponse);
 			Type = DTC::LOGON_RESPONSE;
 			BaseSize = Size;
+
 			ProtocolVersion = DTC::CURRENT_VERSION;
 			OrderCancelReplaceSupported = 1;
 			MarketDepthIsSupported = 1;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetProtocolVersion() const;
 		DTC::LogonStatusEnum GetResult() const;
 		int32_t GetInteger_1() const;
@@ -274,14 +287,18 @@ namespace DTC_VLS
 
 		s_Logoff()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_Logoff));
 			Size = sizeof(s_Logoff);
 			Type = DTC::LOGOFF;
 			BaseSize = Size;
 		}
-
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetReason() const
 		{
@@ -310,15 +327,21 @@ namespace DTC_VLS
 
 		s_MarketDataRequest()
 		{
-			memset(this, 0,sizeof(s_MarketDataRequest));
-			Size = sizeof(s_MarketDataRequest);
-			Type = DTC::MARKET_DATA_REQUEST;
-			BaseSize = Size;
-			RequestAction=DTC::SUBSCRIBE;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataRequest));
+			Size = sizeof(s_MarketDataRequest);
+			Type = DTC::MARKET_DATA_REQUEST;
+			BaseSize = Size;
+
+			RequestAction = DTC::SUBSCRIBE;
+		}
+
 		DTC::RequestActionEnum GetRequestAction();
 		uint16_t GetSymbolID();
 
@@ -357,17 +380,22 @@ namespace DTC_VLS
 
 		s_MarketDepthRequest()
 		{
-			memset(this, 0,sizeof(s_MarketDepthRequest));
-			Size = sizeof(s_MarketDepthRequest);
-			Type = DTC::MARKET_DEPTH_REQUEST;
-			BaseSize = Size;
-
-			RequestAction=DTC::SUBSCRIBE;
-			NumLevels= 10;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthRequest));
+			Size = sizeof(s_MarketDepthRequest);
+			Type = DTC::MARKET_DEPTH_REQUEST;
+			BaseSize = Size;
+
+			RequestAction = DTC::SUBSCRIBE;
+			NumLevels = 10;
+		}
+
 		DTC::RequestActionEnum GetRequestAction();
 		uint16_t GetSymbolID();
 
@@ -405,14 +433,19 @@ namespace DTC_VLS
 
 		s_MarketDataReject()
 		{
-			memset(this, 0,sizeof(s_MarketDataReject));
-			Size = sizeof(s_MarketDataReject);
-			Type = DTC::MARKET_DATA_REJECT;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataReject));
+			Size = sizeof(s_MarketDataReject);
+			Type = DTC::MARKET_DATA_REJECT;
+			BaseSize = Size;
+		}
+
 		uint16_t GetSymbolID();
 
 		const char* GetRejectText() const
@@ -438,14 +471,19 @@ namespace DTC_VLS
 
 		s_MarketDepthReject()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_MarketDepthReject));
 			Size = sizeof(s_MarketDepthReject);
 			Type = DTC::MARKET_DEPTH_REJECT;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		uint16_t GetSymbolID();
 
 		const char* GetRejectText() const
@@ -496,14 +534,18 @@ namespace DTC_VLS
 
 		s_SubmitNewSingleOrder()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_SubmitNewSingleOrder));
 			Size = sizeof(s_SubmitNewSingleOrder);
 			Type = DTC::SUBMIT_NEW_SINGLE_ORDER;
 			BaseSize = Size;
 		}
-
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetSymbol() const
 		{
@@ -602,14 +644,18 @@ namespace DTC_VLS
 
 		s_SubmitNewSingleOrderInt()
 		{
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_SubmitNewSingleOrderInt));
 			Size = sizeof(s_SubmitNewSingleOrderInt);
 			Type = DTC::SUBMIT_NEW_SINGLE_ORDER_INT;
 			BaseSize = Size;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetSymbol() const
 		{
@@ -693,18 +739,27 @@ namespace DTC_VLS
 		int8_t Price1IsSet;
 		int8_t Price2IsSet;
 
+		DTC::OrderTypeEnum OrderType;
+		DTC::TimeInForceEnum TimeInForce;
+		DTC::t_DateTime GoodTillDateTime;
+
 		s_CancelReplaceOrder()
+		{
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
 		{
 			memset(this, 0, sizeof(s_CancelReplaceOrder));
 			Size = sizeof(s_CancelReplaceOrder);
 			Type = DTC::CANCEL_REPLACE_ORDER;
 			BaseSize = Size;
+
 			Price1IsSet = 1;
 			Price2IsSet = 1;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetServerOrderID() const
 		{
@@ -731,6 +786,9 @@ namespace DTC_VLS
 		double GetQuantity();
 		int8_t GetPrice1IsSet();
 		int8_t GetPrice2IsSet();
+		DTC::OrderTypeEnum GetOrderType();
+		DTC::TimeInForceEnum GetTimeInForce();
+		DTC::t_DateTime GetGoodTillDateTime();
 	};
 
 	/*==========================================================================*/
@@ -750,19 +808,28 @@ namespace DTC_VLS
 		int8_t Price1IsSet;
 		int8_t Price2IsSet;
 
+		DTC::OrderTypeEnum OrderType;
+		DTC::TimeInForceEnum TimeInForce;
+		DTC::t_DateTime GoodTillDateTime;
+
 		s_CancelReplaceOrderInt()
+		{
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
 		{
 			memset(this, 0, sizeof(s_CancelReplaceOrderInt));
 			Size = sizeof(s_CancelReplaceOrderInt);
 			Type = DTC::CANCEL_REPLACE_ORDER_INT;
 			BaseSize = Size;
+
 			Divisor = 1.0f;
 			Price1IsSet = 1;
 			Price2IsSet = 1;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetServerOrderID() const
 		{
@@ -790,6 +857,9 @@ namespace DTC_VLS
 		int64_t GetQuantity();
 		int8_t GetPrice1IsSet();
 		int8_t GetPrice2IsSet();
+		DTC::OrderTypeEnum GetOrderType();
+		DTC::TimeInForceEnum GetTimeInForce();
+		DTC::t_DateTime GetGoodTillDateTime();
 	};
 
 	/*==========================================================================*/
@@ -804,14 +874,18 @@ namespace DTC_VLS
 
 		s_CancelOrder()
 		{
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_CancelOrder));
 			Size = sizeof(s_CancelOrder);
 			Type = DTC::CANCEL_ORDER;
 			BaseSize = Size;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetServerOrderID() const
 		{
@@ -873,14 +947,18 @@ namespace DTC_VLS
 
 		s_SubmitNewOCOOrder()
 		{
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_SubmitNewOCOOrder));
 			Size = sizeof(s_SubmitNewOCOOrder);
 			Type = DTC::SUBMIT_NEW_OCO_ORDER;
 			BaseSize = Size;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetClientOrderID_1() const
 		{
@@ -1009,14 +1087,18 @@ namespace DTC_VLS
 
 		s_SubmitNewOCOOrderInt()
 		{
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_SubmitNewOCOOrderInt));
 			Size = sizeof(s_SubmitNewOCOOrderInt);
 			Type = DTC::SUBMIT_NEW_OCO_ORDER_INT;
 			BaseSize = Size;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		void AddClientOrderID_1(unsigned int StringLength)
 		{
@@ -1120,16 +1202,21 @@ namespace DTC_VLS
 
 		s_OpenOrdersRequest()
 		{
-
-			memset(this, 0,sizeof(s_OpenOrdersRequest));
-			Size = sizeof(s_OpenOrdersRequest);
-			Type = DTC::OPEN_ORDERS_REQUEST;
-			BaseSize = Size;
-			RequestAllOrders = 1;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_OpenOrdersRequest));
+			Size = sizeof(s_OpenOrdersRequest);
+			Type = DTC::OPEN_ORDERS_REQUEST;
+			BaseSize = Size;
+
+			RequestAllOrders = 1;
+		}
+
 		int32_t GetRequestID();
 		int32_t GetRequestAllOrders();
 
@@ -1161,14 +1248,19 @@ namespace DTC_VLS
 
 		s_HistoricalOrderFillsRequest()
 		{
-			memset(this, 0,sizeof(s_HistoricalOrderFillsRequest));
-			Size = sizeof(s_HistoricalOrderFillsRequest);
-			Type = DTC::HISTORICAL_ORDER_FILLS_REQUEST;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalOrderFillsRequest));
+			Size = sizeof(s_HistoricalOrderFillsRequest);
+			Type = DTC::HISTORICAL_ORDER_FILLS_REQUEST;
+			BaseSize = Size;
+		}
+
 		int32_t GetRequestID();
 		int32_t GetNumberOfDays();
 
@@ -1205,14 +1297,19 @@ namespace DTC_VLS
 
 		s_HistoricalOrderFillsReject()
 		{
-			memset(this, 0,sizeof(s_HistoricalOrderFillsReject));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalOrderFillsReject));
 			Size = sizeof(s_HistoricalOrderFillsReject);
 			Type = DTC::HISTORICAL_ORDER_FILLS_REJECT;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 
 		void AddRejectText(unsigned int StringLength)
@@ -1238,14 +1335,19 @@ namespace DTC_VLS
 
 		s_CurrentPositionsRequest()
 		{
-			memset(this, 0,sizeof(s_CurrentPositionsRequest));
-			Size = sizeof(s_CurrentPositionsRequest);
-			Type = DTC::CURRENT_POSITIONS_REQUEST;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_CurrentPositionsRequest));
+			Size = sizeof(s_CurrentPositionsRequest);
+			Type = DTC::CURRENT_POSITIONS_REQUEST;
+			BaseSize = Size;
+		}
+
 		int32_t GetRequestID();
 
 		void AddTradeAccount(unsigned int StringLength)
@@ -1271,14 +1373,19 @@ namespace DTC_VLS
 
 		s_CurrentPositionsReject()
 		{
-			memset(this, 0,sizeof(s_CurrentPositionsReject));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_CurrentPositionsReject));
 			Size = sizeof(s_CurrentPositionsReject);
 			Type = DTC::CURRENT_POSITIONS_REJECT;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 
 		void AddRejectText(unsigned int StringLength)
@@ -1352,7 +1459,14 @@ namespace DTC_VLS
 
 		s_OrderUpdate()
 		{
-			memset(this, 0,sizeof(s_OrderUpdate));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_OrderUpdate));
 			Size = sizeof(s_OrderUpdate);
 			Type = DTC::ORDER_UPDATE;
 			BaseSize = Size;
@@ -1369,9 +1483,6 @@ namespace DTC_VLS
 			LastFillPrice = DBL_MAX;
 			LastFillQuantity = DBL_MAX;
 		}
-
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		const char* GetSymbol() const
 		{
@@ -1527,14 +1638,19 @@ namespace DTC_VLS
 
 		s_OpenOrdersReject()
 		{
-			memset(this, 0,sizeof(s_OpenOrdersReject));
-			Size = sizeof(s_OpenOrdersReject);
-			Type = DTC::OPEN_ORDERS_REJECT;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_OpenOrdersReject));
+			Size = sizeof(s_OpenOrdersReject);
+			Type = DTC::OPEN_ORDERS_REJECT;
+			BaseSize = Size;
+		}
+
 		int32_t GetRequestID();
 
 		const char* GetRejectText() const
@@ -1577,14 +1693,18 @@ namespace DTC_VLS
 
 		s_HistoricalOrderFillResponse()
 		{
-			memset(this, 0,sizeof(s_HistoricalOrderFillResponse));
-			Size = sizeof(s_HistoricalOrderFillResponse);
-			Type = DTC::HISTORICAL_ORDER_FILL_RESPONSE;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalOrderFillResponse));
+			Size = sizeof(s_HistoricalOrderFillResponse);
+			Type = DTC::HISTORICAL_ORDER_FILL_RESPONSE;
+			BaseSize = Size;
+		}
 
 		const char* GetSymbol() const
 		{
@@ -1675,14 +1795,18 @@ namespace DTC_VLS
 
 		s_PositionUpdate()
 		{
-			memset(this, 0,sizeof(s_PositionUpdate));
-			Size = sizeof(s_PositionUpdate);
-			Type = DTC::POSITION_UPDATE;
-			BaseSize = Size;
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_PositionUpdate));
+			Size = sizeof(s_PositionUpdate);
+			Type = DTC::POSITION_UPDATE;
+			BaseSize = Size;
+		}
 
 		void AddSymbol(unsigned int StringLength)
 		{
@@ -1751,14 +1875,19 @@ namespace DTC_VLS
 
 		s_TradeAccountResponse()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_TradeAccountResponse));
 			Size = sizeof(s_TradeAccountResponse);
 			Type = DTC::TRADE_ACCOUNT_RESPONSE;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetTotalNumberMessages();
 		int32_t GetMessageNumber();
 
@@ -1789,14 +1918,19 @@ namespace DTC_VLS
 
 		s_ExchangeListResponse()
 		{
-			memset(this, 0,sizeof(s_ExchangeListResponse));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_ExchangeListResponse));
 			Size = sizeof(s_ExchangeListResponse);
 			Type = DTC::EXCHANGE_LIST_RESPONSE;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 		uint8_t GetIsFinalMessage();
 
@@ -1835,14 +1969,19 @@ namespace DTC_VLS
 
 		s_SymbolsForExchangeRequest()
 		{
-			memset(this, 0,sizeof(s_SymbolsForExchangeRequest));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SymbolsForExchangeRequest));
 			Size = sizeof(s_SymbolsForExchangeRequest);
 			Type = DTC::SYMBOLS_FOR_EXCHANGE_REQUEST;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 		DTC::SecurityTypeEnum GetSecurityType();
 
@@ -1872,14 +2011,19 @@ namespace DTC_VLS
 
 		s_UnderlyingSymbolsForExchangeRequest()
 		{
-			memset(this, 0,sizeof(s_UnderlyingSymbolsForExchangeRequest));
-			Size = sizeof(s_UnderlyingSymbolsForExchangeRequest);
-			Type = DTC::UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_UnderlyingSymbolsForExchangeRequest));
+			Size = sizeof(s_UnderlyingSymbolsForExchangeRequest);
+			Type = DTC::UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST;
+			BaseSize = Size;
+		}
+
 		int32_t GetRequestID();
 		DTC::SecurityTypeEnum GetSecurityType();
 
@@ -1910,14 +2054,19 @@ namespace DTC_VLS
 
 		s_SymbolsForUnderlyingRequest()
 		{
-			memset(this, 0,sizeof(s_SymbolsForUnderlyingRequest));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SymbolsForUnderlyingRequest));
 			Size = sizeof(s_SymbolsForUnderlyingRequest);
 			Type = DTC::SYMBOLS_FOR_UNDERLYING_REQUEST;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 		DTC::SecurityTypeEnum GetSecurityType();
 
@@ -1958,14 +2107,19 @@ namespace DTC_VLS
 
 		s_SymbolSearchRequest()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_SymbolSearchRequest));
 			Size = sizeof(s_SymbolSearchRequest);
 			Type = DTC::SYMBOL_SEARCH_REQUEST;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 		DTC::SecurityTypeEnum GetSecurityType();
 		DTC::SearchTypeEnum GetSearchType();
@@ -2006,14 +2160,19 @@ namespace DTC_VLS
 
 		s_SecurityDefinitionForSymbolRequest()
 		{
-			memset(this, 0,sizeof(s_SecurityDefinitionForSymbolRequest));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SecurityDefinitionForSymbolRequest));
 			Size = sizeof(s_SecurityDefinitionForSymbolRequest);
 			Type = DTC::SECURITY_DEFINITION_FOR_SYMBOL_REQUEST;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 
 		void AddSymbol(unsigned int StringLength)
@@ -2086,7 +2245,14 @@ namespace DTC_VLS
 
 		s_SecurityDefinitionResponse()
 		{
-			memset(this, 0,sizeof(s_SecurityDefinitionResponse));
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SecurityDefinitionResponse));
 			Size = sizeof(s_SecurityDefinitionResponse);
 			Type = DTC::SECURITY_DEFINITION_RESPONSE;
 			BaseSize = Size;
@@ -2096,9 +2262,6 @@ namespace DTC_VLS
 			HasMarketDepthData = 1;
 			DisplayPriceMultiplier = 1.0;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 
 		void AddSymbol(unsigned int StringLength)
 		{
@@ -2176,14 +2339,19 @@ namespace DTC_VLS
 
 		s_SecurityDefinitionReject()
 		{
-			memset(this, 0,sizeof(s_SecurityDefinitionReject));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SecurityDefinitionReject));
 			Size = sizeof(s_SecurityDefinitionReject);
 			Type = DTC::SECURITY_DEFINITION_REJECT;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 
 		const char* GetRejectText() const
@@ -2209,14 +2377,19 @@ namespace DTC_VLS
 
 		s_AccountBalanceRequest()
 		{
-			memset(this, 0,sizeof(s_AccountBalanceRequest));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_AccountBalanceRequest));
 			Size = sizeof(s_AccountBalanceRequest);
 			Type = DTC::ACCOUNT_BALANCE_REQUEST;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 
 		const char* GetTradeAccount() const
@@ -2242,14 +2415,19 @@ namespace DTC_VLS
 
 		s_AccountBalanceReject()
 		{
-			memset(this, 0,sizeof(s_AccountBalanceReject));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_AccountBalanceReject));
 			Size = sizeof(s_AccountBalanceReject);
 			Type = DTC::ACCOUNT_BALANCE_REJECT;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 
 		const char* GetRejectText() const
@@ -2289,14 +2467,19 @@ namespace DTC_VLS
 
 		s_AccountBalanceUpdate()
 		{
-			memset(this, 0,sizeof(s_AccountBalanceUpdate));
-			Size = sizeof(s_AccountBalanceUpdate);
-			Type = DTC::ACCOUNT_BALANCE_UPDATE;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_AccountBalanceUpdate));
+			Size = sizeof(s_AccountBalanceUpdate);
+			Type = DTC::ACCOUNT_BALANCE_UPDATE;
+			BaseSize = Size;
+		}
+
 		int32_t GetRequestID();
 
 		void AddAccountCurrency(unsigned int StringLength)
@@ -2343,15 +2526,21 @@ namespace DTC_VLS
 
 		s_UserMessage()
 		{
-			memset(this, 0,sizeof(s_UserMessage));
-			Size = sizeof(s_UserMessage);
-			Type = DTC::USER_MESSAGE;
-			BaseSize = Size;
-			IsPopupMessage = 1;
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_UserMessage));
+			Size = sizeof(s_UserMessage);
+			Type = DTC::USER_MESSAGE;
+			BaseSize = Size;
+
+			IsPopupMessage = 1;
+		}
+
 		uint8_t GetIsPopupMessage();
 
 		void AddUserMessage(unsigned int StringLength)
@@ -2376,14 +2565,18 @@ namespace DTC_VLS
 
 		s_GeneralLogMessage()
 		{
-			memset(this, 0,sizeof(s_GeneralLogMessage));
-			Size = sizeof(s_GeneralLogMessage);
-			Type = DTC::GENERAL_LOG_MESSAGE;
-			BaseSize = Size;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_GeneralLogMessage));
+			Size = sizeof(s_GeneralLogMessage);
+			Type = DTC::GENERAL_LOG_MESSAGE;
+			BaseSize = Size;
+		}
 
 		void AddMessageText(unsigned int StringLength)
 		{
@@ -2419,16 +2612,16 @@ namespace DTC_VLS
 			Clear();
 		}
 
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
 		void Clear()
 		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataRequest));
+			memset(this, 0, sizeof(s_HistoricalPriceDataRequest));
 			Size = sizeof(s_HistoricalPriceDataRequest);
 			Type = DTC::HISTORICAL_PRICE_DATA_REQUEST;
 			BaseSize = Size;
 		}
-		
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
+
 		int32_t GetRequestID();
 
 		void AddSymbol(unsigned int StringLength)
@@ -2476,14 +2669,19 @@ namespace DTC_VLS
 
 		s_HistoricalPriceDataReject()
 		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataReject));
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		uint16_t GetBaseSize();
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataReject));
 			Size = sizeof(s_HistoricalPriceDataReject);
 			Type = DTC::HISTORICAL_PRICE_DATA_REJECT;
 			BaseSize = Size;
 		}
 
-		uint16_t GetMessageSize();
-		uint16_t GetBaseSize();
 		int32_t GetRequestID();
 		DTC::HistoricalPriceDataRejectReasonCodeEnum GetRejectReasonCode();
 		uint16_t GetRetryTimeInSeconds();

@@ -61,9 +61,10 @@ enum DTCMessageType {
 	MARKET_DATA_UPDATE_SESSION_LOW_INT = 130;
 	MARKET_DATA_UPDATE_SESSION_VOLUME = 113;
 	MARKET_DATA_UPDATE_OPEN_INTEREST = 124;
-	MARKET_DATA_UPDATE_DAILY_SETTLEMENT = 119;
-	MARKET_DATA_UPDATE_DAILY_SETTLEMENT_INT = 131;
+	MARKET_DATA_UPDATE_SESSION_SETTLEMENT = 119;
+	MARKET_DATA_UPDATE_SESSION_SETTLEMENT_INT = 131;
 	MARKET_DATA_UPDATE_SESSION_NUM_TRADES = 135;
+	MARKET_DATA_UPDATE_TRADING_SESSION_DATE = 136;
 
 	MARKET_DEPTH_REQUEST = 102;
 	MARKET_DEPTH_REJECT = 121;
@@ -475,6 +476,7 @@ message MarketDataSnapshot
 	optional double LastTradeDateTime = 15;
 	optional double BidAskDateTime = 16;
 	optional uint32 SessionSettlementDateTime = 17;
+	optional uint32 TradingSessionDate = 18;
 }
 
 //============================================================================
@@ -498,6 +500,7 @@ message MarketDataSnapshot_Int
 	optional double LastTradeDateTime = 15;
 	optional double BidAskDateTime = 16;
 	optional uint32 SessionSettlementDateTime = 17;
+	optional uint32 TradingSessionDate = 18;
 }
 
 //============================================================================
@@ -603,6 +606,7 @@ message MarketDataUpdateSessionSettlement_Int
 {
 	optional uint32 SymbolID = 1;
 	optional int32 Price = 2;
+	optional int32 DateTime = 3;
 }
 
 //============================================================================
@@ -624,6 +628,13 @@ message MarketDataUpdateSessionNumTrades
 {
 	optional uint32 SymbolID = 1;
 	optional int32 NumTrades = 2;
+}
+
+//============================================================================
+message MarketDataUpdateTradingSessionDate
+{
+	optional uint32 SymbolID = 1;
+	optional uint32 Date = 2;
 }
 
 //============================================================================
@@ -825,6 +836,9 @@ message CancelReplaceOrder
 	optional double Quantity = 5;
 	optional uint32 Price1IsSet = 6;
 	optional uint32 Price2IsSet = 7;
+	optional OrderTypeEnum OrderType = 8;
+	optional TimeInForceEnum TimeInForce = 9;
+	optional uint32 GoodTillDateTime = 10;
 }
 
 //============================================================================
@@ -839,6 +853,9 @@ message CancelReplaceOrderInt
 	optional int64 Quantity = 6;
 	optional uint32 Price1IsSet = 7;
 	optional uint32 Price2IsSet = 8;
+	optional OrderTypeEnum OrderType = 9;
+	optional TimeInForceEnum TimeInForce = 10;
+	optional uint32 GoodTillDateTime = 11;
 }
 
 //============================================================================

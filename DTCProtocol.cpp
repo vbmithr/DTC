@@ -1066,24 +1066,12 @@ namespace DTC
 	}
 
 	/*==========================================================================*/
-	void s_MarketDataSnapshot::SetToUnsetValues()
+	t_DateTime4Byte s_MarketDataSnapshot::GetTradingSessionDate()
 	{
-		SessionSettlementPrice = DBL_MAX;
-		SessionOpenPrice = DBL_MAX;
-		SessionHighPrice = DBL_MAX;
-		SessionLowPrice = DBL_MAX;
-		SessionVolume = DBL_MAX;
-		SessionNumTrades = UINT_MAX;
+		if (Size < offsetof(s_MarketDataSnapshot, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
 
-		OpenInterest = UINT_MAX;
-
-		BidPrice = DBL_MAX;
-		AskPrice = DBL_MAX;
-		AskQuantity = DBL_MAX;
-		BidQuantity = DBL_MAX;
-
-		LastTradePrice = DBL_MAX;
-		LastTradeVolume = DBL_MAX;
+		return TradingSessionDate;
 	}
 
 
@@ -1258,26 +1246,13 @@ namespace DTC
 		return SessionSettlementDateTime;
 	}
 	/*==========================================================================*/
-	void s_MarketDataSnapshot_Int::SetToUnsetValues()
+	t_DateTime4Byte s_MarketDataSnapshot_Int::GetTradingSessionDate()
 	{
-		SessionSettlementPrice = INT_MAX;
-		SessionOpenPrice = INT_MAX;
-		SessionHighPrice = INT_MAX;
-		SessionLowPrice = INT_MAX;
-		SessionVolume = INT_MAX;
-		SessionNumTrades = UINT_MAX;
+		if (Size < offsetof(s_MarketDataSnapshot_Int, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
 
-		OpenInterest = UINT_MAX;
-
-		BidPrice = INT_MAX;
-		AskPrice = INT_MAX;
-		AskQuantity = INT_MAX;
-		BidQuantity = INT_MAX;
-
-		LastTradePrice = INT_MAX;
-		LastTradeVolume = INT_MAX;
+		return TradingSessionDate;
 	}
-
 
 
 	/****************************************************************************/
@@ -1769,6 +1744,14 @@ namespace DTC
 		return Price;
 	}
 
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionSettlement_Int::GetDateTime() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionSettlement_Int, DateTime) + sizeof(DateTime))
+			return 0;
+
+		return DateTime;
+	}
 
 	/****************************************************************************/
 	// s_MarketDataUpdateSessionOpen
@@ -1867,6 +1850,40 @@ namespace DTC
 			return 0;
 
 		return NumTrades;
+	}
+
+
+	/****************************************************************************/
+	// s_MarketDataUpdateTradingSessionDate
+
+	/*==========================================================================*/
+	uint16_t s_MarketDataUpdateTradingSessionDate::GetMessageSize()
+	{
+		return Size;
+	}
+
+	/*==========================================================================*/
+	void s_MarketDataUpdateTradingSessionDate::CopyFrom(void* p_SourceData)
+	{
+		memcpy(this, p_SourceData, min(sizeof(s_MarketDataUpdateTradingSessionDate), *static_cast<uint16_t*>( p_SourceData) ));
+	}
+
+	/*==========================================================================*/
+	uint16_t s_MarketDataUpdateTradingSessionDate::GetSymbolID() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateTradingSessionDate, SymbolID) + sizeof(SymbolID))
+			return 0;
+
+		return SymbolID;
+	}
+
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateTradingSessionDate::GetDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateTradingSessionDate, Date) + sizeof(Date))
+			return 0;
+
+		return Date;
 	}
 
 
@@ -2956,6 +2973,30 @@ namespace DTC
 
 		return Price2IsSet;
 	}
+	/*==========================================================================*/
+	OrderTypeEnum s_CancelReplaceOrder::GetOrderType()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, OrderType) + sizeof(OrderType))
+			return ORDER_TYPE_UNSET;
+
+		return OrderType;
+	}
+	/*==========================================================================*/
+	TimeInForceEnum s_CancelReplaceOrder::GetTimeInForce()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, TimeInForce) + sizeof(TimeInForce))
+			return TIF_UNSET;
+
+		return TimeInForce;
+	}
+	/*==========================================================================*/
+	t_DateTime s_CancelReplaceOrder::GetGoodTillDateTime()
+	{
+		if (Size < offsetof(s_CancelReplaceOrder, GoodTillDateTime) + sizeof(GoodTillDateTime))
+			return 0;
+
+		return GoodTillDateTime;
+	}
 
 	/****************************************************************************/
 	// s_CancelReplaceOrderInt
@@ -3049,7 +3090,30 @@ namespace DTC
 
 		return Price2IsSet;
 	}
+	/*==========================================================================*/
+	OrderTypeEnum s_CancelReplaceOrderInt::GetOrderType()
+	{
+		if (Size < offsetof(s_CancelReplaceOrderInt, OrderType) + sizeof(OrderType))
+			return ORDER_TYPE_UNSET;
 
+		return OrderType;
+	}
+	/*==========================================================================*/
+	TimeInForceEnum s_CancelReplaceOrderInt::GetTimeInForce()
+	{
+		if (Size < offsetof(s_CancelReplaceOrderInt, TimeInForce) + sizeof(TimeInForce))
+			return TIF_UNSET;
+
+		return TimeInForce;
+	}
+	/*==========================================================================*/
+	t_DateTime s_CancelReplaceOrderInt::GetGoodTillDateTime()
+	{
+		if (Size < offsetof(s_CancelReplaceOrderInt, GoodTillDateTime) + sizeof(GoodTillDateTime))
+			return 0;
+
+		return GoodTillDateTime;
+	}
 
 
 

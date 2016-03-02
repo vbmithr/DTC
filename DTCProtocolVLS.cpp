@@ -652,6 +652,7 @@ namespace DTC_VLS
 
 		return Quantity;
 	}
+
 	/*==========================================================================*/
 	int8_t s_CancelReplaceOrder::GetPrice1IsSet()
 	{
@@ -660,6 +661,7 @@ namespace DTC_VLS
 
 		return Price1IsSet;
 	}
+
 	/*==========================================================================*/
 	int8_t s_CancelReplaceOrder::GetPrice2IsSet()
 	{
@@ -669,6 +671,32 @@ namespace DTC_VLS
 		return Price2IsSet;
 	}
 
+	/*==========================================================================*/
+	DTC::OrderTypeEnum s_CancelReplaceOrder::GetOrderType()
+	{
+		if (BaseSize < offsetof(s_CancelReplaceOrder, OrderType) + sizeof(OrderType))
+			return DTC::ORDER_TYPE_UNSET;
+
+		return OrderType;
+	}
+
+	/*==========================================================================*/
+	DTC::TimeInForceEnum s_CancelReplaceOrder::GetTimeInForce()
+	{
+		if (BaseSize < offsetof(s_CancelReplaceOrder, TimeInForce) + sizeof(TimeInForce))
+			return DTC::TIF_UNSET;
+
+		return TimeInForce;
+	}
+
+	/*==========================================================================*/
+	DTC::t_DateTime s_CancelReplaceOrder::GetGoodTillDateTime()
+	{
+		if (BaseSize < offsetof(s_CancelReplaceOrder, GoodTillDateTime) + sizeof(GoodTillDateTime))
+			return 0;
+
+		return GoodTillDateTime;
+	}
 
 	/****************************************************************************/
 	// s_CancelReplaceOrderInt
@@ -739,6 +767,32 @@ namespace DTC_VLS
 		return Price2IsSet;
 	}
 
+	/*==========================================================================*/
+	DTC::OrderTypeEnum s_CancelReplaceOrderInt::GetOrderType()
+	{
+		if (BaseSize < offsetof(s_CancelReplaceOrderInt, OrderType) + sizeof(OrderType))
+			return DTC::ORDER_TYPE_UNSET;
+
+		return OrderType;
+	}
+
+	/*==========================================================================*/
+	DTC::TimeInForceEnum s_CancelReplaceOrderInt::GetTimeInForce()
+	{
+		if (BaseSize < offsetof(s_CancelReplaceOrderInt, TimeInForce) + sizeof(TimeInForce))
+			return DTC::TIF_UNSET;
+
+		return TimeInForce;
+	}
+
+	/*==========================================================================*/
+	DTC::t_DateTime s_CancelReplaceOrderInt::GetGoodTillDateTime()
+	{
+		if (BaseSize < offsetof(s_CancelReplaceOrderInt, GoodTillDateTime) + sizeof(GoodTillDateTime))
+			return 0;
+
+		return GoodTillDateTime;
+	}
 
 
 	/****************************************************************************/

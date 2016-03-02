@@ -80,6 +80,7 @@ namespace DTC
 	const uint16_t MARKET_DATA_UPDATE_SESSION_SETTLEMENT = 119;
 	const uint16_t MARKET_DATA_UPDATE_SESSION_SETTLEMENT_INT = 131;
 	const uint16_t MARKET_DATA_UPDATE_SESSION_NUM_TRADES = 135;
+	const uint16_t MARKET_DATA_UPDATE_TRADING_SESSION_DATE = 136;
 
 	const uint16_t MARKET_DEPTH_REQUEST = 102;
 	const uint16_t MARKET_DEPTH_REJECT = 121;
@@ -311,7 +312,8 @@ namespace DTC
 
 	/*==========================================================================*/
 	enum MarketDataFeedStatusEnum : int32_t
-	{ MARKET_DATA_FEED_UNAVAILABLE = 1
+	{ MARKET_DATA_FEED_STATUS_UNSET = 0
+	, MARKET_DATA_FEED_UNAVAILABLE = 1
 	, MARKET_DATA_FEED_AVAILABLE = 2
 	};
 
@@ -403,16 +405,22 @@ namespace DTC
 
 		s_EncodingRequest()
 		{
-			memset(this, 0,sizeof(s_EncodingRequest));
-			Type=ENCODING_REQUEST;
-			Size=sizeof(s_EncodingRequest);
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);		
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_EncodingRequest));
+			Type = ENCODING_REQUEST;
+			Size = sizeof(s_EncodingRequest);
+
 			ProtocolVersion = CURRENT_VERSION;
 			Encoding = BINARY_ENCODING;
 			SetProtocolType("DTC");
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);		
 		int32_t GetProtocolVersion();
 		EncodingEnum GetEncoding();
 		const char* GetProtocolType();
@@ -431,16 +439,22 @@ namespace DTC
 
 		s_EncodingResponse()
 		{
-			memset(this, 0,sizeof(s_EncodingResponse));
-			Type=ENCODING_RESPONSE;
-			Size=sizeof(s_EncodingResponse);
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_EncodingResponse));
+			Type = ENCODING_RESPONSE;
+			Size = sizeof(s_EncodingResponse);
+
 			ProtocolVersion = CURRENT_VERSION;
 			Encoding = BINARY_ENCODING;
 			SetProtocolType("DTC");
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
 		int32_t GetProtocolVersion();
 		EncodingEnum GetEncoding();
 		const char* GetProtocolType();
@@ -466,14 +480,20 @@ namespace DTC
 
 		s_LogonRequest()
 		{
-			memset(this, 0,sizeof(s_LogonRequest));
-			Type=LOGON_REQUEST;
-			Size=sizeof(s_LogonRequest);
-			ProtocolVersion = CURRENT_VERSION;
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);		
+		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_LogonRequest));
+			Type = LOGON_REQUEST;
+			Size = sizeof(s_LogonRequest);
+
+			ProtocolVersion = CURRENT_VERSION;
+		}
+
 		int32_t GetProtocolVersion();
 		const char* GetUsername();
 		void SetUsername(const char* NewValue);
@@ -521,17 +541,23 @@ namespace DTC
 
 		s_LogonResponse()
 		{
-			memset(this, 0,sizeof(s_LogonResponse));
-			Type=LOGON_RESPONSE;
-			Size=sizeof(s_LogonResponse);
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_LogonResponse));
+			Type = LOGON_RESPONSE;
+			Size = sizeof(s_LogonResponse);
+
 			ProtocolVersion = CURRENT_VERSION;
 			OrderCancelReplaceSupported = 1;
 			MarketDepthIsSupported = 1;
 			MarketDataSupported = 1;
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
 		int32_t GetProtocolVersion() const;
 		LogonStatusEnum GetResult() const;
 		const char* GetResultText();
@@ -568,13 +594,18 @@ namespace DTC
 
 		s_Logoff()
 		{
-			memset(this, 0, sizeof(s_Logoff));
-			Type = LOGOFF;
-			Size=sizeof(s_Logoff);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_Logoff));
+			Type = LOGOFF;
+			Size = sizeof(s_Logoff);
+		}
+
 		const char* GetReason();
 		void SetReason(const char* NewValue);
 		uint8_t GetDoNotReconnect();
@@ -591,13 +622,18 @@ namespace DTC
 
 		s_Heartbeat()
 		{
-			memset(this, 0,sizeof(s_Heartbeat));
-			Type=HEARTBEAT;
-			Size=sizeof(s_Heartbeat);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_Heartbeat));
+			Type = HEARTBEAT;
+			Size = sizeof(s_Heartbeat);
+		}
+
 		uint32_t GetNumDroppedMessages();
 		t_DateTime GetCurrentDateTime();
 	};
@@ -611,13 +647,18 @@ namespace DTC
 
 		s_MarketDataFeedStatus()
 		{
-			memset(this, 0,sizeof(s_MarketDataFeedStatus));
-			Type=MARKET_DATA_FEED_STATUS;
-			Size=sizeof(s_MarketDataFeedStatus);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataFeedStatus));
+			Type = MARKET_DATA_FEED_STATUS;
+			Size = sizeof(s_MarketDataFeedStatus);
+		}
+
 		MarketDataFeedStatusEnum GetStatus();
 	};
 
@@ -631,13 +672,18 @@ namespace DTC
 
 		s_MarketDataFeedSymbolStatus()
 		{
-			memset(this, 0,sizeof(s_MarketDataFeedSymbolStatus));
-			Type=MARKET_DATA_FEED_SYMBOL_STATUS;
-			Size=sizeof(s_MarketDataFeedSymbolStatus);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataFeedSymbolStatus));
+			Type = MARKET_DATA_FEED_SYMBOL_STATUS;
+			Size = sizeof(s_MarketDataFeedSymbolStatus);
+		}
+
 		uint16_t GetSymbolID();
 		MarketDataFeedStatusEnum GetStatus();
 	};
@@ -654,14 +700,20 @@ namespace DTC
 
 		s_MarketDataRequest()
 		{
-			memset(this, 0,sizeof(s_MarketDataRequest));
-			Type=MARKET_DATA_REQUEST;
-			Size=sizeof(s_MarketDataRequest);
-			RequestAction=SUBSCRIBE;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataRequest));
+			Type = MARKET_DATA_REQUEST;
+			Size = sizeof(s_MarketDataRequest);
+
+			RequestAction = SUBSCRIBE;
+		}
+
 		RequestActionEnum GetRequestAction();
 		uint16_t GetSymbolID();
 		const char* GetSymbol();
@@ -683,16 +735,21 @@ namespace DTC
 
 		s_MarketDepthRequest()
 		{
-			memset(this, 0,sizeof(s_MarketDepthRequest));
-			Type=MARKET_DEPTH_REQUEST;
-			Size=sizeof(s_MarketDepthRequest);
-
-			RequestAction=SUBSCRIBE;
-			NumLevels= 10;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthRequest));
+			Type = MARKET_DEPTH_REQUEST;
+			Size = sizeof(s_MarketDepthRequest);
+
+			RequestAction = SUBSCRIBE;
+			NumLevels = 10;
+		}
+
 		RequestActionEnum GetRequestAction();
 		uint16_t GetSymbolID();
 		const char* GetSymbol();
@@ -712,13 +769,18 @@ namespace DTC
 
 		s_MarketDataReject()
 		{
-			memset(this, 0,sizeof(s_MarketDataReject));
-			Type=MARKET_DATA_REJECT;
-			Size=sizeof(s_MarketDataReject);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataReject));
+			Type = MARKET_DATA_REJECT;
+			Size = sizeof(s_MarketDataReject);
+		}
+
 		uint16_t GetSymbolID();
 		const char* GetRejectText();
 		void SetRejectText(const char* NewValue);
@@ -747,16 +809,39 @@ namespace DTC
 		t_DateTimeWithMilliseconds LastTradeDateTime;
 		t_DateTimeWithMilliseconds BidAskDateTime;
 		t_DateTime4Byte SessionSettlementDateTime;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataSnapshot()
 		{
-			memset(this, 0,sizeof(s_MarketDataSnapshot));
-			Type=MARKET_DATA_SNAPSHOT;
-			Size=sizeof(s_MarketDataSnapshot);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataSnapshot));
+			Type = MARKET_DATA_SNAPSHOT;
+			Size = sizeof(s_MarketDataSnapshot);
+
+			SessionSettlementPrice = DBL_MAX;
+			SessionOpenPrice = DBL_MAX;
+			SessionHighPrice = DBL_MAX;
+			SessionLowPrice = DBL_MAX;
+			SessionVolume = DBL_MAX;
+			SessionNumTrades = UINT_MAX;
+
+			OpenInterest = UINT_MAX;
+
+			BidPrice = DBL_MAX;
+			AskPrice = DBL_MAX;
+			AskQuantity = DBL_MAX;
+			BidQuantity = DBL_MAX;
+
+			LastTradePrice = DBL_MAX;
+			LastTradeVolume = DBL_MAX;
+		}
+
 		uint16_t GetSymbolID();
 		double GetSessionSettlementPrice();
 		double GetSessionOpenPrice();
@@ -774,7 +859,7 @@ namespace DTC
 		t_DateTimeWithMilliseconds GetLastTradeDateTime();
 		t_DateTimeWithMilliseconds GetBidAskDateTime();
 		t_DateTime4Byte GetSessionSettlementDateTime();
-		void SetToUnsetValues();
+		t_DateTime4Byte GetTradingSessionDate();
 	};
 
 	/*==========================================================================*/
@@ -800,17 +885,39 @@ namespace DTC
 		t_DateTimeWithMilliseconds LastTradeDateTime;
 		t_DateTimeWithMilliseconds BidAskDateTime;
 		t_DateTime4Byte SessionSettlementDateTime;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataSnapshot_Int()
 		{
-			memset(this, 0,sizeof(s_MarketDataSnapshot_Int));
-			Type=MARKET_DATA_SNAPSHOT_INT;
-			Size=sizeof(s_MarketDataSnapshot_Int);
-			SetToUnsetValues();
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataSnapshot_Int));
+			Type = MARKET_DATA_SNAPSHOT_INT;
+			Size = sizeof(s_MarketDataSnapshot_Int);
+
+			SessionSettlementPrice = INT_MAX;
+			SessionOpenPrice = INT_MAX;
+			SessionHighPrice = INT_MAX;
+			SessionLowPrice = INT_MAX;
+			SessionVolume = INT_MAX;
+			SessionNumTrades = UINT_MAX;
+
+			OpenInterest = UINT_MAX;
+
+			BidPrice = INT_MAX;
+			AskPrice = INT_MAX;
+			AskQuantity = INT_MAX;
+			BidQuantity = INT_MAX;
+
+			LastTradePrice = INT_MAX;
+			LastTradeVolume = INT_MAX;
+		}
+
 		uint16_t GetSymbolID();
 		int32_t GetSessionSettlementPrice();
 		int32_t GetSessionOpenPrice();
@@ -828,7 +935,7 @@ namespace DTC
 		t_DateTimeWithMilliseconds GetLastTradeDateTime();
 		t_DateTimeWithMilliseconds GetBidAskDateTime();
 		t_DateTime4Byte GetSessionSettlementDateTime();
-		void SetToUnsetValues();
+		t_DateTime4Byte GetTradingSessionDate();
 	};
 
 
@@ -854,13 +961,17 @@ namespace DTC
 
 		s_MarketDepthFullUpdate20()
 		{
-			memset(this, 0,sizeof(s_MarketDepthFullUpdate20));
-			Type=MARKET_DEPTH_FULL_UPDATE_20;
-			Size=sizeof(s_MarketDepthFullUpdate20);
+			Clear();
 		}
 	
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthFullUpdate20));
+			Type = MARKET_DEPTH_FULL_UPDATE_20;
+			Size = sizeof(s_MarketDepthFullUpdate20);
+		}
 
 		uint16_t GetSymbolID();	
 	};
@@ -881,13 +992,17 @@ namespace DTC
 
 		s_MarketDepthFullUpdate10()
 		{
-			memset(this, 0,sizeof(s_MarketDepthFullUpdate10));
-			Type=MARKET_DEPTH_FULL_UPDATE_10;
-			Size=sizeof(s_MarketDepthFullUpdate10);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthFullUpdate10));
+			Type = MARKET_DEPTH_FULL_UPDATE_10;
+			Size = sizeof(s_MarketDepthFullUpdate10);
+		}
 
 		uint16_t GetSymbolID();
 	};
@@ -906,17 +1021,19 @@ namespace DTC
 		uint8_t IsFirstMessageInBatch;
 		uint8_t IsLastMessageInBatch;
 
-
 		s_MarketDepthSnapshotLevel()
 		{
-			memset(this, 0,sizeof(s_MarketDepthSnapshotLevel));
-			Type=MARKET_DEPTH_SNAPSHOT_LEVEL;
-			Size=sizeof(s_MarketDepthSnapshotLevel);
-
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthSnapshotLevel));
+			Type = MARKET_DEPTH_SNAPSHOT_LEVEL;
+			Size = sizeof(s_MarketDepthSnapshotLevel);
+		}
 
 		uint16_t GetSymbolID();
 		AtBidOrAskEnum GetSide();
@@ -944,13 +1061,17 @@ namespace DTC
 
 		s_MarketDepthSnapshotLevel_Int()
 		{
-			memset(this, 0,sizeof(s_MarketDepthSnapshotLevel_Int));
-			Type=MARKET_DEPTH_SNAPSHOT_LEVEL_INT;
-			Size=sizeof(s_MarketDepthSnapshotLevel_Int);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthSnapshotLevel_Int));
+			Type = MARKET_DEPTH_SNAPSHOT_LEVEL_INT;
+			Size = sizeof(s_MarketDepthSnapshotLevel_Int);
+		}
 
 		uint16_t GetSymbolID();
 		AtBidOrAskEnum GetSide();
@@ -976,13 +1097,18 @@ namespace DTC
 
 		s_MarketDepthUpdateLevel()
 		{
-			memset(this, 0, sizeof(s_MarketDepthUpdateLevel));
-			Type = MARKET_DEPTH_UPDATE_LEVEL;
-			Size = sizeof(s_MarketDepthUpdateLevel);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthUpdateLevel));
+			Type = MARKET_DEPTH_UPDATE_LEVEL;
+			Size = sizeof(s_MarketDepthUpdateLevel);
+		}
+
 		uint16_t GetSymbolID();
 		AtBidOrAskEnum GetSide();
 		double GetPrice();
@@ -1006,13 +1132,18 @@ namespace DTC
 
 		s_MarketDepthUpdateLevel_Int()
 		{
-			memset(this, 0, sizeof(s_MarketDepthUpdateLevel_Int));
-			Type = MARKET_DEPTH_UPDATE_LEVEL_INT;
-			Size = sizeof(s_MarketDepthUpdateLevel_Int);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthUpdateLevel_Int));
+			Type = MARKET_DEPTH_UPDATE_LEVEL_INT;
+			Size = sizeof(s_MarketDepthUpdateLevel_Int);
+		}
+
 		uint16_t GetSymbolID();
 		AtBidOrAskEnum GetSide();
 		int32_t GetPrice();
@@ -1036,13 +1167,17 @@ namespace DTC
 
 		s_MarketDepthUpdateLevelCompact()
 		{
-			memset(this, 0, sizeof(s_MarketDepthUpdateLevelCompact));
-			Type = MARKET_DEPTH_UPDATE_LEVEL_COMPACT;
-			Size = sizeof(s_MarketDepthUpdateLevelCompact);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void* p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDepthUpdateLevelCompact));
+			Type = MARKET_DEPTH_UPDATE_LEVEL_COMPACT;
+			Size = sizeof(s_MarketDepthUpdateLevelCompact);
+		}
 
 		uint16_t GetSymbolID() const;
 		AtBidOrAskEnum GetSide() const;
@@ -1064,13 +1199,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionSettlement()
 		{
-			memset(this, 0, sizeof(s_MarketDataUpdateSessionSettlement));
-			Type = MARKET_DATA_UPDATE_SESSION_SETTLEMENT;
-			Size = sizeof(s_MarketDataUpdateSessionSettlement);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionSettlement));
+			Type = MARKET_DATA_UPDATE_SESSION_SETTLEMENT;
+			Size = sizeof(s_MarketDataUpdateSessionSettlement);
+		}
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
@@ -1085,19 +1224,25 @@ namespace DTC
 
 		uint16_t SymbolID;
 		int32_t Price;
+		t_DateTime4Byte DateTime;
 
 		s_MarketDataUpdateSessionSettlement_Int()
+		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		void Clear()
 		{
 			memset(this, 0, sizeof(s_MarketDataUpdateSessionSettlement_Int));
 			Type = MARKET_DATA_UPDATE_SESSION_SETTLEMENT_INT;
 			Size = sizeof(s_MarketDataUpdateSessionSettlement_Int);
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
-
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
+		t_DateTime4Byte GetDateTime() const;
 	};
 
 	/*==========================================================================*/
@@ -1111,13 +1256,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionOpen()
 		{
-			memset(this, 0, sizeof(s_MarketDataUpdateSessionOpen));
-			Type = MARKET_DATA_UPDATE_SESSION_OPEN;
-			Size = sizeof(s_MarketDataUpdateSessionOpen);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionOpen));
+			Type = MARKET_DATA_UPDATE_SESSION_OPEN;
+			Size = sizeof(s_MarketDataUpdateSessionOpen);
+		}
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
@@ -1134,13 +1283,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionOpen_Int()
 		{
-			memset(this, 0, sizeof(s_MarketDataUpdateSessionOpen_Int));
-			Type = MARKET_DATA_UPDATE_SESSION_OPEN_INT;
-			Size = sizeof(s_MarketDataUpdateSessionOpen_Int);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionOpen_Int));
+			Type = MARKET_DATA_UPDATE_SESSION_OPEN_INT;
+			Size = sizeof(s_MarketDataUpdateSessionOpen_Int);
+		}
 
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
@@ -1157,16 +1310,47 @@ namespace DTC
 
 		s_MarketDataUpdateSessionNumTrades()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void* p_SourceData);
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_MarketDataUpdateSessionNumTrades));
 			Type = MARKET_DATA_UPDATE_SESSION_NUM_TRADES;
 			Size = sizeof(s_MarketDataUpdateSessionNumTrades);
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void* p_SourceData);
-
 		uint16_t GetSymbolID() const;
 		int32_t GetNumTrades() const;
+	};
+
+	/*==========================================================================*/
+	struct s_MarketDataUpdateTradingSessionDate
+	{
+		uint16_t Size;
+		uint16_t Type;
+
+		uint16_t SymbolID;
+		t_DateTime4Byte Date;
+
+		s_MarketDataUpdateTradingSessionDate()
+		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void* p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateTradingSessionDate));
+			Type = MARKET_DATA_UPDATE_TRADING_SESSION_DATE;
+			Size = sizeof(s_MarketDataUpdateTradingSessionDate);
+		}
+
+		uint16_t GetSymbolID() const;
+		t_DateTime4Byte GetDate() const;
 	};
 
 	/*==========================================================================*/
@@ -1179,13 +1363,18 @@ namespace DTC
 
 		s_MarketDepthReject()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_MarketDepthReject));
 			Type = MARKET_DEPTH_REJECT;
 			Size = sizeof(s_MarketDepthReject);
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
 		uint16_t GetSymbolID();
 		const char* GetRejectText();
 		void SetRejectText(const char* NewValue);
@@ -1208,14 +1397,18 @@ namespace DTC
 
 		s_MarketDataUpdateTrade()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateTrade));
-			Type=MARKET_DATA_UPDATE_TRADE;
-			Size=sizeof(s_MarketDataUpdateTrade);
-
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateTrade));
+			Type = MARKET_DATA_UPDATE_TRADE;
+			Size = sizeof(s_MarketDataUpdateTrade);
+		}
+
 		uint16_t GetSymbolID() ;
 		AtBidOrAskEnum GetAtBidOrAsk();
 		double GetPrice();
@@ -1241,13 +1434,18 @@ namespace DTC
 
 		s_MarketDataUpdateTrade_Int()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateTrade_Int));
-			Type=MARKET_DATA_UPDATE_TRADE_INT;
-			Size=sizeof(s_MarketDataUpdateTrade_Int);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateTrade_Int));
+			Type = MARKET_DATA_UPDATE_TRADE_INT;
+			Size = sizeof(s_MarketDataUpdateTrade_Int);
+		}
+
 		uint16_t GetSymbolID() ;
 		AtBidOrAskEnum GetAtBidOrAsk() ;
 		int32_t GetPrice();
@@ -1272,15 +1470,20 @@ namespace DTC
 
 		s_MarketDataUpdateBidAsk()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateBidAsk));
-			Type=MARKET_DATA_UPDATE_BID_ASK;
-			Size=sizeof(s_MarketDataUpdateBidAsk);
-			BidPrice=DBL_MAX;
-			AskPrice=DBL_MAX;
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateBidAsk));
+			Type = MARKET_DATA_UPDATE_BID_ASK;
+			Size = sizeof(s_MarketDataUpdateBidAsk);
+
+			BidPrice = DBL_MAX;
+			AskPrice = DBL_MAX;
+		}
 
 		uint16_t GetSymbolID() const;
 		double GetBidPrice() const;
@@ -1306,15 +1509,20 @@ namespace DTC
 
 		s_MarketDataUpdateBidAsk_Int()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateBidAsk_Int));
-			Type=MARKET_DATA_UPDATE_BID_ASK_INT;
-			Size=sizeof(s_MarketDataUpdateBidAsk_Int);
-			BidPrice=INT_MAX;
-			AskPrice=INT_MAX;
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateBidAsk_Int));
+			Type = MARKET_DATA_UPDATE_BID_ASK_INT;
+			Size = sizeof(s_MarketDataUpdateBidAsk_Int);
+
+			BidPrice = INT_MAX;
+			AskPrice = INT_MAX;
+		}
 
 		uint16_t GetSymbolID() const;
 		int32_t GetBidPrice() const;
@@ -1341,15 +1549,20 @@ namespace DTC
 
 		s_MarketDataUpdateBidAskCompact()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateBidAskCompact));
-			Type=MARKET_DATA_UPDATE_BID_ASK_COMPACT;
-			Size=sizeof(s_MarketDataUpdateBidAskCompact);
-			BidPrice=FLT_MAX;
-			AskPrice=FLT_MAX;
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateBidAskCompact));
+			Type = MARKET_DATA_UPDATE_BID_ASK_COMPACT;
+			Size = sizeof(s_MarketDataUpdateBidAskCompact);
+
+			BidPrice = FLT_MAX;
+			AskPrice = FLT_MAX;
+		}
 
 		float GetBidPrice() const;
 		float GetBidQuantity() const;
@@ -1373,14 +1586,17 @@ namespace DTC
 
 		s_MarketDataUpdateTradeCompact()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateTradeCompact));
-			Type=MARKET_DATA_UPDATE_TRADE_COMPACT;
-			Size=sizeof(s_MarketDataUpdateTradeCompact);
-
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateTradeCompact));
+			Type = MARKET_DATA_UPDATE_TRADE_COMPACT;
+			Size = sizeof(s_MarketDataUpdateTradeCompact);
+		}
 
 		float GetPrice() const;
 		float GetVolume() const;
@@ -1400,13 +1616,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionVolume()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateSessionVolume));
-			Type=MARKET_DATA_UPDATE_SESSION_VOLUME;
-			Size=sizeof(s_MarketDataUpdateSessionVolume);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionVolume));
+			Type = MARKET_DATA_UPDATE_SESSION_VOLUME;
+			Size = sizeof(s_MarketDataUpdateSessionVolume);
+		}
 
 		uint16_t GetSymbolID() const;
 		double GetVolume() const;
@@ -1422,13 +1642,17 @@ namespace DTC
 
 		s_MarketDataUpdateOpenInterest()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateOpenInterest));
-			Type=MARKET_DATA_UPDATE_OPEN_INTEREST;
-			Size=sizeof(s_MarketDataUpdateOpenInterest);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateOpenInterest));
+			Type = MARKET_DATA_UPDATE_OPEN_INTEREST;
+			Size = sizeof(s_MarketDataUpdateOpenInterest);
+		}
 
 		uint16_t GetSymbolID() const;
 		uint32_t GetOpenInterest() const;
@@ -1444,13 +1668,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionHigh()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateSessionHigh));
-			Type=MARKET_DATA_UPDATE_SESSION_HIGH;
-			Size=sizeof(s_MarketDataUpdateSessionHigh);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionHigh));
+			Type = MARKET_DATA_UPDATE_SESSION_HIGH;
+			Size = sizeof(s_MarketDataUpdateSessionHigh);
+		}
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
@@ -1467,13 +1695,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionHigh_Int()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateSessionHigh_Int));
-			Type=MARKET_DATA_UPDATE_SESSION_HIGH_INT;
-			Size=sizeof(s_MarketDataUpdateSessionHigh_Int);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionHigh_Int));
+			Type = MARKET_DATA_UPDATE_SESSION_HIGH_INT;
+			Size = sizeof(s_MarketDataUpdateSessionHigh_Int);
+		}
 
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
@@ -1490,13 +1722,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionLow()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateSessionLow));
-			Type=MARKET_DATA_UPDATE_SESSION_LOW;
-			Size=sizeof(s_MarketDataUpdateSessionLow);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionLow));
+			Type = MARKET_DATA_UPDATE_SESSION_LOW;
+			Size = sizeof(s_MarketDataUpdateSessionLow);
+		}
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
@@ -1513,13 +1749,17 @@ namespace DTC
 
 		s_MarketDataUpdateSessionLow_Int()
 		{
-			memset(this, 0,sizeof(s_MarketDataUpdateSessionLow_Int));
-			Type=MARKET_DATA_UPDATE_SESSION_LOW_INT;
-			Size=sizeof(s_MarketDataUpdateSessionLow_Int);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateSessionLow_Int));
+			Type = MARKET_DATA_UPDATE_SESSION_LOW_INT;
+			Size = sizeof(s_MarketDataUpdateSessionLow_Int);
+		}
 
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
@@ -1538,13 +1778,17 @@ namespace DTC
 
 		s_MarketDataUpdateLastTradeSnapshot()
 		{
-			memset(this, 0, sizeof(s_MarketDataUpdateLastTradeSnapshot));
-			Type = MARKET_DATA_UPDATE_LAST_TRADE_SNAPSHOT;
-			Size = sizeof(s_MarketDataUpdateLastTradeSnapshot);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void* p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_MarketDataUpdateLastTradeSnapshot));
+			Type = MARKET_DATA_UPDATE_LAST_TRADE_SNAPSHOT;
+			Size = sizeof(s_MarketDataUpdateLastTradeSnapshot);
+		}
 
 		uint16_t GetSymbolID() const;
 		double GetLastTradePrice() const;
@@ -1587,13 +1831,17 @@ namespace DTC
 
 		s_SubmitNewSingleOrder()
 		{
-			memset(this, 0, sizeof(s_SubmitNewSingleOrder));
-			Type = SUBMIT_NEW_SINGLE_ORDER;
-			Size = sizeof(s_SubmitNewSingleOrder);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SubmitNewSingleOrder));
+			Type = SUBMIT_NEW_SINGLE_ORDER;
+			Size = sizeof(s_SubmitNewSingleOrder);
+		}
 
 		const char* GetSymbol();
 		void SetSymbol(const char* NewValue);
@@ -1650,13 +1898,18 @@ namespace DTC
 
 		s_SubmitNewSingleOrderInt()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_SubmitNewSingleOrderInt));
 			Type = SUBMIT_NEW_SINGLE_ORDER_INT;
 			Size = sizeof(s_SubmitNewSingleOrderInt);
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
 		const char* GetSymbol();
 		void SetSymbol(const char* NewValue);
 		const char* GetExchange();
@@ -1698,17 +1951,27 @@ namespace DTC
 		uint8_t Price1IsSet;
 		uint8_t Price2IsSet;
 
+		OrderTypeEnum OrderType;
+		TimeInForceEnum TimeInForce;
+		t_DateTime GoodTillDateTime;
+
 		s_CancelReplaceOrder()
 		{
-			memset(this, 0, sizeof(s_CancelReplaceOrder));
-			Type = CANCEL_REPLACE_ORDER;
-			Size = sizeof(s_CancelReplaceOrder);
-			Price1IsSet = 1;
-			Price2IsSet = 1;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_CancelReplaceOrder));
+			Type = CANCEL_REPLACE_ORDER;
+			Size = sizeof(s_CancelReplaceOrder);
+
+			Price1IsSet = 1;
+			Price2IsSet = 1;
+		}
+
 		const char* GetServerOrderID();
 		void SetServerOrderID(const char* NewValue);
 		const char* GetClientOrderID();
@@ -1718,6 +1981,9 @@ namespace DTC
 		double GetQuantity();
 		uint8_t GetPrice1IsSet();
 		uint8_t GetPrice2IsSet();
+		OrderTypeEnum GetOrderType();
+		TimeInForceEnum GetTimeInForce();
+		t_DateTime GetGoodTillDateTime();
 
 	};
 
@@ -1737,18 +2003,28 @@ namespace DTC
 		uint8_t Price1IsSet;
 		uint8_t Price2IsSet;
 
+		OrderTypeEnum OrderType;
+		TimeInForceEnum TimeInForce;
+		t_DateTime GoodTillDateTime;
+
 		s_CancelReplaceOrderInt()
+		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void* p_SourceData);
+		void Clear()
 		{
 			memset(this, 0, sizeof(s_CancelReplaceOrderInt));
 			Type = CANCEL_REPLACE_ORDER_INT;
 			Size = sizeof(s_CancelReplaceOrderInt);
+
 			Divisor = 1.0f;
 			Price1IsSet = 1;
 			Price2IsSet = 1;
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void* p_SourceData);
 		const char* GetServerOrderID();
 		void SetServerOrderID(const char* NewValue);
 		const char* GetClientOrderID();
@@ -1759,6 +2035,9 @@ namespace DTC
 		int64_t GetQuantity();
 		uint8_t GetPrice1IsSet();
 		uint8_t GetPrice2IsSet();
+		OrderTypeEnum GetOrderType();
+		TimeInForceEnum GetTimeInForce();
+		t_DateTime GetGoodTillDateTime();
 	};
 
 	/*==========================================================================*/
@@ -1772,13 +2051,18 @@ namespace DTC
 
 		s_CancelOrder()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void* p_SourceData);
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_CancelOrder));
 			Type = CANCEL_ORDER;
 			Size = sizeof(s_CancelOrder);
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void* p_SourceData);
 		const char* GetServerOrderID();
 		void SetServerOrderID(const char* NewValue);
 		const char* GetClientOrderID();
@@ -1824,13 +2108,18 @@ namespace DTC
 
 		s_SubmitNewOCOOrder()
 		{
-			memset(this, 0, sizeof(s_SubmitNewOCOOrder));
-			Type = SUBMIT_NEW_OCO_ORDER;
-			Size = sizeof(s_SubmitNewOCOOrder);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void* p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SubmitNewOCOOrder));
+			Type = SUBMIT_NEW_OCO_ORDER;
+			Size = sizeof(s_SubmitNewOCOOrder);
+		}
+
 		void SetClientOrderID_1(const char* NewValue);
 		void SetClientOrderID_2(const char* NewValue);
 		const char* GetFreeFormText();
@@ -1902,13 +2191,18 @@ namespace DTC
 
 		s_SubmitNewOCOOrderInt()
 		{
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void* p_SourceData);
+		void Clear()
+		{
 			memset(this, 0, sizeof(s_SubmitNewOCOOrderInt));
 			Type = SUBMIT_NEW_OCO_ORDER_INT;
 			Size = sizeof(s_SubmitNewOCOOrderInt);
 		}
 
-		uint16_t GetMessageSize();
-		void CopyFrom(void* p_SourceData);
 		void SetClientOrderID_1(const char* NewValue);
 		void SetClientOrderID_2(const char* NewValue);
 		const char* GetFreeFormText();
@@ -1954,14 +2248,20 @@ namespace DTC
 
 		s_OpenOrdersRequest()
 		{
-			memset(this, 0,sizeof(s_OpenOrdersRequest));
-			Type=OPEN_ORDERS_REQUEST;
-			Size=sizeof(s_OpenOrdersRequest);
-			RequestAllOrders = 1;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_OpenOrdersRequest));
+			Type = OPEN_ORDERS_REQUEST;
+			Size = sizeof(s_OpenOrdersRequest);
+
+			RequestAllOrders = 1;
+		}
+
 		int32_t GetRequestID();
 		int32_t GetRequestAllOrders();
 		void SetServerOrderID(const char* NewValue);
@@ -1984,13 +2284,18 @@ namespace DTC
 
 		s_HistoricalOrderFillsRequest()
 		{
-			memset(this, 0,sizeof(s_HistoricalOrderFillsRequest));
-			Type=HISTORICAL_ORDER_FILLS_REQUEST;
-			Size=sizeof(s_HistoricalOrderFillsRequest);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalOrderFillsRequest));
+			Type = HISTORICAL_ORDER_FILLS_REQUEST;
+			Size = sizeof(s_HistoricalOrderFillsRequest);
+		}
+
 		int32_t GetRequestID();
 		int32_t GetNumberOfDays();
 		void SetServerOrderID(const char* NewValue);
@@ -2010,13 +2315,18 @@ namespace DTC
 
 		s_HistoricalOrderFillsReject()
 		{
-			memset(this, 0,sizeof(s_HistoricalOrderFillsReject));
-			Type = HISTORICAL_ORDER_FILLS_REJECT;
-			Size = sizeof(s_HistoricalOrderFillsReject);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalOrderFillsReject));
+			Type = HISTORICAL_ORDER_FILLS_REJECT;
+			Size = sizeof(s_HistoricalOrderFillsReject);
+		}
+
 		int32_t GetRequestID();
 		void SetRejectText(const char* NewValue);
 		const char* GetRejectText();
@@ -2034,13 +2344,18 @@ namespace DTC
 
 		s_CurrentPositionsRequest()
 		{
-			memset(this, 0,sizeof(s_CurrentPositionsRequest));
-			Type=CURRENT_POSITIONS_REQUEST;
-			Size=sizeof(s_CurrentPositionsRequest);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_CurrentPositionsRequest));
+			Type = CURRENT_POSITIONS_REQUEST;
+			Size = sizeof(s_CurrentPositionsRequest);
+		}
+
 		int32_t GetRequestID();
 		void SetTradeAccount(const char* NewValue);
 		const char* GetTradeAccount();
@@ -2057,13 +2372,18 @@ namespace DTC
 
 		s_CurrentPositionsReject()
 		{
-			memset(this, 0,sizeof(s_CurrentPositionsReject));
-			Type=CURRENT_POSITIONS_REJECT;
-			Size=sizeof(s_CurrentPositionsReject);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_CurrentPositionsReject));
+			Type = CURRENT_POSITIONS_REJECT;
+			Size = sizeof(s_CurrentPositionsReject);
+		}
+
 		int32_t GetRequestID();
 		void SetRejectText(const char* NewValue);
 		const char* GetRejectText();
@@ -2128,9 +2448,16 @@ namespace DTC
 
 		s_OrderUpdate()
 		{
-			memset(this, 0,sizeof(s_OrderUpdate));
-			Type=ORDER_UPDATE;
-			Size=sizeof(s_OrderUpdate);
+			Clear();
+		}
+
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_OrderUpdate));
+			Type = ORDER_UPDATE;
+			Size = sizeof(s_OrderUpdate);
 
 			//The following initializations indicate to the Client that these variables are in an unset state and their values should not be used
 			Price1 = DBL_MAX;
@@ -2144,9 +2471,6 @@ namespace DTC
 			LastFillPrice = DBL_MAX;
 			LastFillQuantity = DBL_MAX;
 		}
-
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
 
 		const char* GetSymbol();
 		void SetSymbol(const char* NewValue);
@@ -2209,13 +2533,18 @@ namespace DTC
 
 		s_OpenOrdersReject()
 		{
-			memset(this, 0,sizeof(s_OpenOrdersReject));
-			Type = OPEN_ORDERS_REJECT;
-			Size=sizeof(s_OpenOrdersReject);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_OpenOrdersReject));
+			Type = OPEN_ORDERS_REJECT;
+			Size = sizeof(s_OpenOrdersReject);
+		}
+
 		int32_t GetRequestID();
 		const char* GetRejectText();
 		void SetRejectText(const char* NewValue);
@@ -2248,13 +2577,18 @@ namespace DTC
 
 		s_HistoricalOrderFillResponse()
 		{
-			memset(this, 0,sizeof(s_HistoricalOrderFillResponse));
-			Type=HISTORICAL_ORDER_FILL_RESPONSE;
-			Size=sizeof(s_HistoricalOrderFillResponse);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalOrderFillResponse));
+			Type = HISTORICAL_ORDER_FILL_RESPONSE;
+			Size = sizeof(s_HistoricalOrderFillResponse);
+		}
+
 		int32_t GetRequestID();
 		int32_t GetMessageNumber();
 		int32_t GetTotalNumberMessages();		
@@ -2303,13 +2637,17 @@ namespace DTC
 
 		s_PositionUpdate()
 		{
-			memset(this, 0,sizeof(s_PositionUpdate));
-			Type=POSITION_UPDATE;
-			Size=sizeof(s_PositionUpdate);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_PositionUpdate));
+			Type = POSITION_UPDATE;
+			Size = sizeof(s_PositionUpdate);
+		}
 
 		int32_t GetRequestID();
 		int32_t GetTotalNumberMessages();
@@ -2337,13 +2675,18 @@ namespace DTC
 
 		s_TradeAccountsRequest()
 		{
-			memset(this, 0,sizeof(s_TradeAccountsRequest));
-			Type=TRADE_ACCOUNTS_REQUEST;
-			Size=sizeof(s_TradeAccountsRequest);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_TradeAccountsRequest));
+			Type = TRADE_ACCOUNTS_REQUEST;
+			Size = sizeof(s_TradeAccountsRequest);
+		}
+
 		int32_t GetRequestID();
 	};
 
@@ -2363,13 +2706,17 @@ namespace DTC
 
 		s_TradeAccountResponse()
 		{
-			memset(this, 0,sizeof(s_TradeAccountResponse));
-			Type=TRADE_ACCOUNT_RESPONSE;
-			Size=sizeof(s_TradeAccountResponse);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_TradeAccountResponse));
+			Type = TRADE_ACCOUNT_RESPONSE;
+			Size = sizeof(s_TradeAccountResponse);
+		}
 
 		int32_t GetTotalNumberMessages();
 		int32_t GetMessageNumber();
@@ -2388,13 +2735,17 @@ namespace DTC
 
 		s_ExchangeListRequest()
 		{
-			memset(this, 0,sizeof(s_ExchangeListRequest));
-			Type=EXCHANGE_LIST_REQUEST;
-			Size=sizeof(s_ExchangeListRequest);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_ExchangeListRequest));
+			Type = EXCHANGE_LIST_REQUEST;
+			Size = sizeof(s_ExchangeListRequest);
+		}
 
 		int32_t GetRequestID();
 	};
@@ -2412,13 +2763,18 @@ namespace DTC
 
 		s_ExchangeListResponse()
 		{
-			memset(this, 0,sizeof(s_ExchangeListResponse));
-			Type=EXCHANGE_LIST_RESPONSE;
-			Size=sizeof(s_ExchangeListResponse);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_ExchangeListResponse));
+			Type = EXCHANGE_LIST_RESPONSE;
+			Size = sizeof(s_ExchangeListResponse);
+		}
+
 		int32_t GetRequestID();
 		const char* GetExchange();
 		void SetExchange(const char* NewValue);
@@ -2440,13 +2796,17 @@ namespace DTC
 
 		s_SymbolsForExchangeRequest()
 		{
-			memset(this, 0,sizeof(s_SymbolsForExchangeRequest));
-			Type=SYMBOLS_FOR_EXCHANGE_REQUEST;
-			Size=sizeof(s_SymbolsForExchangeRequest);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SymbolsForExchangeRequest));
+			Type = SYMBOLS_FOR_EXCHANGE_REQUEST;
+			Size = sizeof(s_SymbolsForExchangeRequest);
+		}
 
 		int32_t GetRequestID();
 		const char* GetExchange();
@@ -2468,13 +2828,17 @@ namespace DTC
 
 		s_UnderlyingSymbolsForExchangeRequest()
 		{
-			memset(this, 0,sizeof(s_UnderlyingSymbolsForExchangeRequest));
-			Type=UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST;
-			Size=sizeof(s_UnderlyingSymbolsForExchangeRequest);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_UnderlyingSymbolsForExchangeRequest));
+			Type = UNDERLYING_SYMBOLS_FOR_EXCHANGE_REQUEST;
+			Size = sizeof(s_UnderlyingSymbolsForExchangeRequest);
+		}
 
 		int32_t GetRequestID();
 		const char* GetExchange();
@@ -2497,13 +2861,17 @@ namespace DTC
 
 		s_SymbolsForUnderlyingRequest()
 		{
-			memset(this, 0,sizeof(s_SymbolsForUnderlyingRequest));
-			Type=SYMBOLS_FOR_UNDERLYING_REQUEST;
-			Size=sizeof(s_SymbolsForUnderlyingRequest);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SymbolsForUnderlyingRequest));
+			Type = SYMBOLS_FOR_UNDERLYING_REQUEST;
+			Size = sizeof(s_SymbolsForUnderlyingRequest);
+		}
 
 		int32_t GetRequestID();
 		const char* GetUnderlyingSymbol();
@@ -2529,13 +2897,17 @@ namespace DTC
 
 		s_SymbolSearchRequest()
 		{
-			memset(this, 0, sizeof(s_SymbolSearchRequest));
-			Type = SYMBOL_SEARCH_REQUEST;
-			Size=sizeof(s_SymbolSearchRequest);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SymbolSearchRequest));
+			Type = SYMBOL_SEARCH_REQUEST;
+			Size = sizeof(s_SymbolSearchRequest);
+		}
 
 		int32_t GetRequestID();
 		const char* GetExchange();
@@ -2559,13 +2931,18 @@ namespace DTC
 
 		s_SecurityDefinitionForSymbolRequest()
 		{
-			memset(this, 0,sizeof(s_SecurityDefinitionForSymbolRequest));
-			Type=SECURITY_DEFINITION_FOR_SYMBOL_REQUEST;
-			Size=sizeof(s_SecurityDefinitionForSymbolRequest);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SecurityDefinitionForSymbolRequest));
+			Type = SECURITY_DEFINITION_FOR_SYMBOL_REQUEST;
+			Size = sizeof(s_SecurityDefinitionForSymbolRequest);
+		}
+
 		int32_t GetRequestID();
 		void SetSymbol(const char* NewValue);
 		const char* GetSymbol();
@@ -2622,9 +2999,17 @@ namespace DTC
 
 		s_SecurityDefinitionResponse()
 		{
-			memset(this, 0,sizeof(s_SecurityDefinitionResponse));
+			Clear();
+		}
+		
+		uint16_t GetMessageSize();
+		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SecurityDefinitionResponse));
 			Type = SECURITY_DEFINITION_RESPONSE;
 			Size = sizeof(s_SecurityDefinitionResponse);
+
 			PriceDisplayFormat = PRICE_DISPLAY_FORMAT_UNSET;
 			PutOrCall = PC_UNSET;
 
@@ -2633,9 +3018,6 @@ namespace DTC
 			HasMarketDepthData = 1;
 			DisplayPriceMultiplier = 1.0;
 		}
-		
-		uint16_t GetMessageSize();
-		void CopyFrom(void * p_SourceData);
 
 		int32_t GetRequestID() const;
 		void SetSymbol(const char* NewValue);
@@ -2680,13 +3062,17 @@ namespace DTC
 
 		s_SecurityDefinitionReject()
 		{
-			memset(this, 0,sizeof(s_SecurityDefinitionReject));
-			Type = SECURITY_DEFINITION_REJECT;
-			Size = sizeof(s_SecurityDefinitionReject);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_SecurityDefinitionReject));
+			Type = SECURITY_DEFINITION_REJECT;
+			Size = sizeof(s_SecurityDefinitionReject);
+		}
 
 		uint32_t GetRequestID();
 
@@ -2705,13 +3091,17 @@ namespace DTC
 
 		s_AccountBalanceRequest()
 		{
-			memset(this, 0,sizeof(s_AccountBalanceRequest));
-			Type=ACCOUNT_BALANCE_REQUEST;
-			Size=sizeof(s_AccountBalanceRequest);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_AccountBalanceRequest));
+			Type = ACCOUNT_BALANCE_REQUEST;
+			Size = sizeof(s_AccountBalanceRequest);
+		}
 
 		int32_t GetRequestID();
 
@@ -2730,13 +3120,17 @@ namespace DTC
 
 		s_AccountBalanceReject()
 		{
-			memset(this, 0,sizeof(s_AccountBalanceReject));
-			Type=ACCOUNT_BALANCE_REJECT;
-			Size=sizeof(s_AccountBalanceReject);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_AccountBalanceReject));
+			Type = ACCOUNT_BALANCE_REJECT;
+			Size = sizeof(s_AccountBalanceReject);
+		}
 
 		uint32_t GetRequestID();
 
@@ -2769,13 +3163,17 @@ namespace DTC
 
 		s_AccountBalanceUpdate()
 		{
-			memset(this, 0,sizeof(s_AccountBalanceUpdate));
-			Type=ACCOUNT_BALANCE_UPDATE;
-			Size=sizeof(s_AccountBalanceUpdate);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_AccountBalanceUpdate));
+			Type = ACCOUNT_BALANCE_UPDATE;
+			Size = sizeof(s_AccountBalanceUpdate);
+		}
 
 		int32_t GetRequestID();
 		double GetCashBalance() const;
@@ -2805,14 +3203,19 @@ namespace DTC
 
 		s_UserMessage()
 		{
-			memset(this, 0,sizeof(s_UserMessage));
-			Type=USER_MESSAGE;
-			Size=sizeof(s_UserMessage);
-			IsPopupMessage = 1;
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_UserMessage));
+			Type = USER_MESSAGE;
+			Size = sizeof(s_UserMessage);
+
+			IsPopupMessage = 1;
+		}
 
 		void SetUserMessage(const char* NewValue);
 		const char* GetUserMessage();
@@ -2829,13 +3232,18 @@ namespace DTC
 
 		s_GeneralLogMessage()
 		{
-			memset(this, 0,sizeof(s_GeneralLogMessage));
-			Type=GENERAL_LOG_MESSAGE;
-			Size=sizeof(s_GeneralLogMessage);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_GeneralLogMessage));
+			Type = GENERAL_LOG_MESSAGE;
+			Size = sizeof(s_GeneralLogMessage);
+		}
+
 		void SetMessageText(const char* NewValue);
 		const char* GetMessageText();
 	};
@@ -2862,15 +3270,14 @@ namespace DTC
 			Clear();
 		}
 
-		void Clear()
-		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataRequest));
-			Type=HISTORICAL_PRICE_DATA_REQUEST;
-			Size=sizeof(s_HistoricalPriceDataRequest);
-		}
-		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataRequest));
+			Type = HISTORICAL_PRICE_DATA_REQUEST;
+			Size = sizeof(s_HistoricalPriceDataRequest);
+		}
 
 		int32_t GetRequestID();
 		void SetSymbol(const char* NewValue);
@@ -2903,13 +3310,17 @@ namespace DTC
 
 		s_HistoricalPriceDataResponseHeader()
 		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataResponseHeader));
-			Type=HISTORICAL_PRICE_DATA_RESPONSE_HEADER;
-			Size=sizeof(s_HistoricalPriceDataResponseHeader);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataResponseHeader));
+			Type = HISTORICAL_PRICE_DATA_RESPONSE_HEADER;
+			Size = sizeof(s_HistoricalPriceDataResponseHeader);
+		}
 
 		int32_t GetRequestID();
 		HistoricalDataIntervalEnum GetRecordInterval();
@@ -2933,13 +3344,17 @@ namespace DTC
 
 		s_HistoricalPriceDataReject()
 		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataReject));
-			Type=HISTORICAL_PRICE_DATA_REJECT;
-			Size=sizeof(s_HistoricalPriceDataReject);
+			Clear();
 		}
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataReject));
+			Type = HISTORICAL_PRICE_DATA_REJECT;
+			Size = sizeof(s_HistoricalPriceDataReject);
+		}
 
 		int32_t GetRequestID();
 		void SetRejectText(const char* NewValue);
@@ -2976,15 +3391,14 @@ namespace DTC
 			Clear(); 
 		}
 
-		void Clear()
-		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataRecordResponse));
-			Type=HISTORICAL_PRICE_DATA_RECORD_RESPONSE;
-			Size=sizeof(s_HistoricalPriceDataRecordResponse);
-		}
-		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataRecordResponse));
+			Type = HISTORICAL_PRICE_DATA_RECORD_RESPONSE;
+			Size = sizeof(s_HistoricalPriceDataRecordResponse);
+		}
 
 		int32_t GetRequestID();
 		t_DateTime GetStartDateTime();
@@ -3022,12 +3436,11 @@ namespace DTC
 		
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
-
 		void Clear()
 		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataTickRecordResponse));
-			Type=HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE;
-			Size=sizeof(s_HistoricalPriceDataTickRecordResponse);
+			memset(this, 0, sizeof(s_HistoricalPriceDataTickRecordResponse));
+			Type = HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE;
+			Size = sizeof(s_HistoricalPriceDataTickRecordResponse);
 		}
 
 		int32_t GetRequestID();
@@ -3066,15 +3479,14 @@ namespace DTC
 			Clear();
 		}
 
-		void Clear()
-		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataRecordResponse_Int));
-			Type=HISTORICAL_PRICE_DATA_RECORD_RESPONSE_INT;
-			Size=sizeof(s_HistoricalPriceDataRecordResponse_Int);
-		}
-
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataRecordResponse_Int));
+			Type = HISTORICAL_PRICE_DATA_RECORD_RESPONSE_INT;
+			Size = sizeof(s_HistoricalPriceDataRecordResponse_Int);
+		}
 
 		int32_t GetRequestID();
 		t_DateTime GetStartDateTime();
@@ -3114,9 +3526,9 @@ namespace DTC
 		void CopyFrom(void * p_SourceData);
 		void Clear()
 		{
-			memset(this, 0,sizeof(s_HistoricalPriceDataTickRecordResponse_Int));
-			Type=HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE_INT;
-			Size=sizeof(s_HistoricalPriceDataTickRecordResponse_Int);
+			memset(this, 0, sizeof(s_HistoricalPriceDataTickRecordResponse_Int));
+			Type = HISTORICAL_PRICE_DATA_TICK_RECORD_RESPONSE_INT;
+			Size = sizeof(s_HistoricalPriceDataTickRecordResponse_Int);
 		}
 
 		int32_t GetRequestID();
@@ -3138,13 +3550,17 @@ namespace DTC
 
 		s_HistoricalPriceDataResponseTrailer()
 		{
-			memset(this, 0, sizeof(s_HistoricalPriceDataResponseTrailer));
-			Type = HISTORICAL_PRICE_DATA_RESPONSE_TRAILER;
-			Size = sizeof(s_HistoricalPriceDataResponseTrailer);
+			Clear();
 		}
 
 		uint16_t GetMessageSize();
 		void CopyFrom(void * p_SourceData);
+		void Clear()
+		{
+			memset(this, 0, sizeof(s_HistoricalPriceDataResponseTrailer));
+			Type = HISTORICAL_PRICE_DATA_RESPONSE_TRAILER;
+			Size = sizeof(s_HistoricalPriceDataResponseTrailer);
+		}
 
 		int32_t GetRequestID();
 		t_DateTimeWithMilliseconds GetFinalRecordLastDateTime();
