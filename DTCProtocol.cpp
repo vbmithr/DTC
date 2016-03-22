@@ -1786,6 +1786,15 @@ namespace DTC
 		return Price;
 	}
 
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionOpen::GetTradingSessionDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionOpen, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
+
+		return TradingSessionDate;
+	}
+
 	/****************************************************************************/
 	// s_MarketDataUpdateSessionOpen_Int
 
@@ -1817,6 +1826,15 @@ namespace DTC
 			return 0;
 
 		return Price;
+	}
+
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionOpen_Int::GetTradingSessionDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionOpen_Int, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
+
+		return TradingSessionDate;
 	}
 
 	/****************************************************************************/
@@ -2303,6 +2321,15 @@ namespace DTC
 		return Volume;
 	}
 
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionVolume::GetTradingSessionDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionVolume, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
+
+		return TradingSessionDate;
+	}
+
 
 	/****************************************************************************/
 	// s_OpenInterestIncrementalUpdate
@@ -2370,7 +2397,16 @@ namespace DTC
 		return Price;
 	}
 
-		/****************************************************************************/
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionHigh::GetTradingSessionDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionHigh, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
+
+		return TradingSessionDate;
+	}
+
+	/****************************************************************************/
 	// s_MarketDataUpdateSessionHigh_Int
 
 	/*==========================================================================*/
@@ -2403,6 +2439,14 @@ namespace DTC
 		return Price;
 	}
 
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionHigh_Int::GetTradingSessionDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionHigh_Int, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
+
+		return TradingSessionDate;
+	}
 
 	/****************************************************************************/
 	// s_MarketDataUpdateSessionLow
@@ -2437,6 +2481,15 @@ namespace DTC
 		return Price;
 	}
 
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionLow::GetTradingSessionDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionLow, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
+
+		return TradingSessionDate;
+	}
+
 	/****************************************************************************/
 	// s_MarketDataUpdateSessionLow_Int
 
@@ -2468,6 +2521,15 @@ namespace DTC
 			return 0;
 
 		return Price;
+	}
+
+	/*==========================================================================*/
+	t_DateTime4Byte s_MarketDataUpdateSessionLow_Int::GetTradingSessionDate() const
+	{
+		if (Size < offsetof(s_MarketDataUpdateSessionLow_Int, TradingSessionDate) + sizeof(TradingSessionDate))
+			return 0;
+
+		return TradingSessionDate;
 	}
 
 	/****************************************************************************/
@@ -3397,7 +3459,14 @@ namespace DTC
 
 		return OpenOrClose;
 	}
+	/*==========================================================================*/
+	PartialFillHandlingEnum s_SubmitNewOCOOrder::GetPartialFillHandling()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrder, PartialFillHandling) + sizeof(PartialFillHandling))
+			return PARTIAL_FILL_UNSET;
 
+		return PartialFillHandling;
+	}
 
 	/****************************************************************************/
 	// s_SubmitNewOCOOrderInt
@@ -3644,7 +3713,14 @@ namespace DTC
 
 		return OpenOrClose;
 	}
+	/*==========================================================================*/
+	PartialFillHandlingEnum s_SubmitNewOCOOrderInt::GetPartialFillHandling()
+	{
+		if (Size < offsetof(s_SubmitNewOCOOrderInt, PartialFillHandling) + sizeof(PartialFillHandling))
+			return PARTIAL_FILL_UNSET;
 
+		return PartialFillHandling;
+	}
 
 
 	/****************************************************************************/

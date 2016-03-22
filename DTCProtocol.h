@@ -311,6 +311,13 @@ namespace DTC
 	};
 
 	/*==========================================================================*/
+	enum PartialFillHandlingEnum : int8_t
+	{ PARTIAL_FILL_UNSET = 0
+	, PARTIAL_FILL_HANDLING_REDUCE_QUANTITY = 1
+	, PARTIAL_FILL_HANDLING_IMMEDIATE_CANCEL = 2
+	};
+
+	/*==========================================================================*/
 	enum MarketDataFeedStatusEnum : int32_t
 	{ MARKET_DATA_FEED_STATUS_UNSET = 0
 	, MARKET_DATA_FEED_UNAVAILABLE = 1
@@ -1253,6 +1260,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		double Price;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataUpdateSessionOpen()
 		{
@@ -1270,6 +1278,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
+		t_DateTime4Byte GetTradingSessionDate() const;
 	};
 
 	/*==========================================================================*/
@@ -1280,6 +1289,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		int32_t Price;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataUpdateSessionOpen_Int()
 		{
@@ -1297,6 +1307,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
+		t_DateTime4Byte GetTradingSessionDate() const;
 	};
 
 	/*==========================================================================*/
@@ -1613,6 +1624,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		double Volume;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataUpdateSessionVolume()
 		{
@@ -1630,6 +1642,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		double GetVolume() const;
+		t_DateTime4Byte GetTradingSessionDate() const;
 	};
 	/*==========================================================================*/
 	struct s_MarketDataUpdateOpenInterest
@@ -1665,6 +1678,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		double Price;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataUpdateSessionHigh()
 		{
@@ -1682,6 +1696,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
+		t_DateTime4Byte GetTradingSessionDate() const;
 	};
 
 	/*==========================================================================*/
@@ -1692,6 +1707,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		int32_t Price;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataUpdateSessionHigh_Int()
 		{
@@ -1709,6 +1725,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
+		t_DateTime4Byte GetTradingSessionDate() const;
 	};
 
 	/*==========================================================================*/
@@ -1719,6 +1736,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		double Price;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataUpdateSessionLow()
 		{
@@ -1736,6 +1754,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		double GetPrice() const;
+		t_DateTime4Byte GetTradingSessionDate() const;
 	};
 
 	/*==========================================================================*/
@@ -1746,6 +1765,7 @@ namespace DTC
 
 		uint16_t SymbolID;
 		int32_t Price;
+		t_DateTime4Byte TradingSessionDate;
 
 		s_MarketDataUpdateSessionLow_Int()
 		{
@@ -1763,6 +1783,7 @@ namespace DTC
 
 		uint16_t GetSymbolID() const;
 		int32_t GetPrice() const;
+		t_DateTime4Byte GetTradingSessionDate() const;
 	};
 
 	/*==========================================================================*/
@@ -2105,6 +2126,7 @@ namespace DTC
 
 		OpenCloseTradeEnum OpenOrClose;
 
+		PartialFillHandlingEnum PartialFillHandling;
 
 		s_SubmitNewOCOOrder()
 		{
@@ -2148,6 +2170,7 @@ namespace DTC
 		const char* GetTradeAccount();
 		void SetTradeAccount(const char* NewValue);
 		OpenCloseTradeEnum GetOpenOrClose();
+		PartialFillHandlingEnum GetPartialFillHandling();
 	};
 
 	/*==========================================================================*/
@@ -2188,6 +2211,7 @@ namespace DTC
 
 		OpenCloseTradeEnum OpenOrClose;
 
+		PartialFillHandlingEnum PartialFillHandling;
 
 		s_SubmitNewOCOOrderInt()
 		{
@@ -2232,6 +2256,7 @@ namespace DTC
 		void SetTradeAccount(const char* NewValue);
 		float GetDivisor();
 		OpenCloseTradeEnum GetOpenOrClose();
+		PartialFillHandlingEnum GetPartialFillHandling();
 	};
 
 	/*==========================================================================*/

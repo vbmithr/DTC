@@ -259,6 +259,13 @@ enum OpenCloseTradeEnum {
 }
 
 //============================================================================
+enum PartialFillHandlingEnum {
+  PARTIAL_FILL_UNSET = 0;
+  PARTIAL_FILL_HANDLING_REDUCE_QUANTITY = 1;
+  PARTIAL_FILL_HANDLING_IMMEDIATE_CANCEL = 2;
+}
+
+//============================================================================
 enum MarketDataFeedStatusEnum {
   MARKET_DATA_FEED_UNAVAILABLE = 1;
   MARKET_DATA_FEED_AVAILABLE = 2;
@@ -614,6 +621,7 @@ message MarketDataUpdateSessionOpen
 {
 	optional uint32 SymbolID = 1;
 	optional double Price = 2;
+	optional uint32 TradingSessionDate = 3;
 }
 
 //============================================================================
@@ -621,6 +629,7 @@ message MarketDataUpdateSessionOpen_Int
 {
 	optional uint32 SymbolID = 1;
 	optional int32 Price = 2;
+	optional uint32 TradingSessionDate = 3;
 }
 
 //============================================================================
@@ -720,6 +729,7 @@ message MarketDataUpdateSessionVolume
 {
 	optional uint32 SymbolID = 1;
 	optional double Volume = 2;
+	optional uint32 TradingSessionDate = 3;
 }
 
 //============================================================================
@@ -734,6 +744,7 @@ message MarketDataUpdateSessionHigh
 {
 	optional uint32 SymbolID = 1;
 	optional double Price = 2;
+	optional uint32 TradingSessionDate = 3;
 }
 
 //============================================================================
@@ -741,6 +752,7 @@ message MarketDataUpdateSessionHigh_Int
 {
 	optional uint32 SymbolID = 1;
 	optional int32 Price = 2;
+	optional uint32 TradingSessionDate = 3;
 }
 
 //============================================================================
@@ -748,6 +760,7 @@ message MarketDataUpdateSessionLow
 {
 	optional uint32 SymbolID = 1;
 	optional double Price = 2;
+	optional uint32 TradingSessionDate = 3;
 }
 
 //============================================================================
@@ -755,6 +768,7 @@ message MarketDataUpdateSessionLow_Int
 {
 	optional uint32 SymbolID = 1;
 	optional int32 Price = 2;
+	optional uint32 TradingSessionDate = 3;
 }
 
 //============================================================================
@@ -897,6 +911,8 @@ message SubmitNewOCOOrder
 	optional string FreeFormText = 20;
 
 	optional OpenCloseTradeEnum OpenOrClose = 21;
+
+	optional PartialFillHandlingEnum PartialFillHandling = 22;
 }
 
 //============================================================================
@@ -933,6 +949,8 @@ message SubmitNewOCOOrderInt
 	optional float Divisor = 21;
 
 	optional OpenCloseTradeEnum OpenOrClose = 22;
+
+	optional PartialFillHandlingEnum PartialFillHandling = 23;
 }
 
 //============================================================================

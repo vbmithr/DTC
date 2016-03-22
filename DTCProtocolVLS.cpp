@@ -951,6 +951,15 @@ namespace DTC_VLS
 		return OpenOrClose;
 	}
 
+	/*==========================================================================*/
+	DTC::PartialFillHandlingEnum s_SubmitNewOCOOrder::GetPartialFillHandling()
+	{
+		if (BaseSize < offsetof(s_SubmitNewOCOOrder, PartialFillHandling) + sizeof(PartialFillHandling))
+			return DTC::PARTIAL_FILL_UNSET;
+
+		return PartialFillHandling;
+	}
+
 	/****************************************************************************/
 	// s_SubmitNewOCOOrderInt
 
@@ -1099,6 +1108,15 @@ namespace DTC_VLS
 			return DTC::TRADE_UNSET;
 
 		return OpenOrClose;
+	}
+
+	/*==========================================================================*/
+	DTC::PartialFillHandlingEnum s_SubmitNewOCOOrderInt::GetPartialFillHandling()
+	{
+		if (BaseSize < offsetof(s_SubmitNewOCOOrderInt, PartialFillHandling) + sizeof(PartialFillHandling))
+			return DTC::PARTIAL_FILL_UNSET;
+
+		return PartialFillHandling;
 	}
 
 	/****************************************************************************/

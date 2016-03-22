@@ -945,6 +945,8 @@ namespace DTC_VLS
 
 		DTC::OpenCloseTradeEnum OpenOrClose;
 
+		DTC::PartialFillHandlingEnum PartialFillHandling;
+
 		s_SubmitNewOCOOrder()
 		{
 			Clear();
@@ -1044,6 +1046,7 @@ namespace DTC_VLS
 		double GetQuantity_1();
 		double GetQuantity_2();
 		DTC::OpenCloseTradeEnum GetOpenOrClose();
+		DTC::PartialFillHandlingEnum GetPartialFillHandling();
 	};
 
 	/*==========================================================================*/
@@ -1084,6 +1087,8 @@ namespace DTC_VLS
 		float Divisor;
 
 		DTC::OpenCloseTradeEnum OpenOrClose;
+
+		DTC::PartialFillHandlingEnum PartialFillHandling;
 
 		s_SubmitNewOCOOrderInt()
 		{
@@ -1185,6 +1190,7 @@ namespace DTC_VLS
 		int64_t GetQuantity_2();
 		float GetDivisor();
 		DTC::OpenCloseTradeEnum GetOpenOrClose();
+		DTC::PartialFillHandlingEnum GetPartialFillHandling();
 	};
 
 	/*==========================================================================*/
