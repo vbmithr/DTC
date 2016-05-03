@@ -1,3 +1,7 @@
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define  _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <float.h>
 #include <limits.h>
 #include <string.h>
@@ -70,7 +74,8 @@ namespace DTC
 	/*==========================================================================*/
 	void s_EncodingRequest::SetProtocolType(const char* NewValue)
 	{
-		strncpy_s(ProtocolType, NewValue, sizeof(ProtocolType) - 1);
+		//Do not use the secure version of this function. This version of the function will set the remaining bytes in the destination after the null terminator to nulls. The secure version does not do this.
+		strncpy(ProtocolType, NewValue, sizeof(ProtocolType) - 1);
 	}
 
 	/****************************************************************************/
@@ -125,7 +130,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_EncodingResponse::SetProtocolType(const char* NewValue)
 	{
-		strncpy_s(ProtocolType, NewValue, sizeof(ProtocolType) - 1);
+		strncpy(ProtocolType, NewValue, sizeof(ProtocolType) - 1);
 	}
 
 	/****************************************************************************/
@@ -171,7 +176,8 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonRequest::SetUsername(const char* NewValue)
 	{
-		strncpy_s(Username, NewValue, sizeof(Username) - 1);
+
+		strncpy(Username, NewValue, sizeof(Username) - 1);
 	}
 
 	/*==========================================================================*/
@@ -188,7 +194,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonRequest::SetPassword(const char* NewValue)
 	{
-		strncpy_s(Password, NewValue, sizeof(Password) - 1);
+		strncpy(Password, NewValue, sizeof(Password) - 1);
 	}
 
 	/*==========================================================================*/
@@ -205,7 +211,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonRequest::SetGeneralTextData(const char* NewValue)
 	{
-		strncpy_s(GeneralTextData, NewValue, sizeof(GeneralTextData) - 1);
+		strncpy(GeneralTextData, NewValue, sizeof(GeneralTextData) - 1);
 	}
 
 	/*==========================================================================*/
@@ -258,7 +264,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonRequest::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 
 	/*==========================================================================*/
@@ -275,7 +281,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonRequest::SetHardwareIdentifier(const char* NewValue)
 	{
-		strncpy_s(HardwareIdentifier, NewValue, sizeof(HardwareIdentifier) - 1);
+		strncpy(HardwareIdentifier, NewValue, sizeof(HardwareIdentifier) - 1);
 	}
 
 	/*==========================================================================*/
@@ -292,7 +298,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonRequest::SetClientName(const char* NewValue)
 	{
-		strncpy_s(ClientName, NewValue, sizeof(ClientName) - 1);
+		strncpy(ClientName, NewValue, sizeof(ClientName) - 1);
 	}
 
 	/****************************************************************************/
@@ -342,7 +348,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonResponse::SetResultText(const char* NewValue)
 	{
-		strncpy_s(ResultText, NewValue, sizeof(ResultText) - 1);
+		strncpy(ResultText, NewValue, sizeof(ResultText) - 1);
 	}
 
 	/*==========================================================================*/
@@ -359,7 +365,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonResponse::SetReconnectAddress(const char* NewValue)
 	{
-		strncpy_s(ReconnectAddress, NewValue, sizeof(ReconnectAddress) - 1);
+		strncpy(ReconnectAddress, NewValue, sizeof(ReconnectAddress) - 1);
 	}
 
 	/*==========================================================================*/
@@ -386,7 +392,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonResponse::SetServerName(const char* NewValue)
 	{
-		strncpy_s(ServerName, NewValue, sizeof(ServerName) - 1);
+		strncpy(ServerName, NewValue, sizeof(ServerName) - 1);
 	}
 
 
@@ -442,7 +448,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_LogonResponse::SetSymbolExchangeDelimiter(const char* NewValue)
 	{
-		strncpy_s(SymbolExchangeDelimiter, NewValue, sizeof(SymbolExchangeDelimiter) - 1);
+		strncpy(SymbolExchangeDelimiter, NewValue, sizeof(SymbolExchangeDelimiter) - 1);
 	}
 
 	/*==========================================================================*/
@@ -553,7 +559,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_Logoff::SetReason(const char* NewValue)
 	{
-		strncpy_s(Reason, NewValue, sizeof(Reason) - 1);
+		strncpy(Reason, NewValue, sizeof(Reason) - 1);
 	}
 	/*==========================================================================*/
 	uint8_t s_Logoff::GetDoNotReconnect()
@@ -709,7 +715,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataRequest::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -726,7 +732,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/****************************************************************************/
@@ -778,7 +784,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDepthRequest::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -795,7 +801,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDepthRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/*==========================================================================*/
@@ -846,7 +852,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDataReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 
 	/****************************************************************************/
@@ -887,7 +893,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_MarketDepthReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 
 	/****************************************************************************/
@@ -2611,7 +2617,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_SubmitNewSingleOrder::GetExchange()
@@ -2626,7 +2632,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}	
 	/*==========================================================================*/
 	const char* s_SubmitNewSingleOrder::GetTradeAccount()
@@ -2641,7 +2647,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}	
 
 	/*==========================================================================*/
@@ -2657,7 +2663,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::SetClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 	}
 	/*==========================================================================*/
 	OrderTypeEnum s_SubmitNewSingleOrder::GetOrderType()
@@ -2750,7 +2756,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrder::SetFreeFormText(const char* NewValue)
 	{
-		strncpy_s(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
+		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
 
 	/*==========================================================================*/
@@ -2791,7 +2797,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrderInt::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_SubmitNewSingleOrderInt::GetExchange()
@@ -2806,7 +2812,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrderInt::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}	
 	/*==========================================================================*/
 	const char* s_SubmitNewSingleOrderInt::GetTradeAccount()
@@ -2821,7 +2827,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrderInt::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}	
 
 	/*==========================================================================*/
@@ -2837,7 +2843,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrderInt::SetClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 	}
 	/*==========================================================================*/
 	OrderTypeEnum s_SubmitNewSingleOrderInt::GetOrderType()
@@ -2939,7 +2945,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewSingleOrderInt::SetFreeFormText(const char* NewValue)
 	{
-		strncpy_s(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
+		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
 
 	/*==========================================================================*/
@@ -2978,7 +2984,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelReplaceOrder::SetServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_CancelReplaceOrder::GetClientOrderID()
@@ -2993,7 +2999,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelReplaceOrder::SetClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 	}
 	/*==========================================================================*/
 	double s_CancelReplaceOrder::GetPrice1()
@@ -3087,7 +3093,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelReplaceOrderInt::SetServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_CancelReplaceOrderInt::GetClientOrderID()
@@ -3102,7 +3108,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelReplaceOrderInt::SetClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 	}
 	/*==========================================================================*/
 	int64_t s_CancelReplaceOrderInt::GetPrice1()
@@ -3206,7 +3212,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelOrder::SetServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_CancelOrder::GetClientOrderID()
@@ -3221,7 +3227,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CancelOrder::SetClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 	}
 
 	/****************************************************************************/
@@ -3241,12 +3247,12 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::SetClientOrderID_1(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID_1, NewValue, sizeof(ClientOrderID_1) - 1);
+		strncpy(ClientOrderID_1, NewValue, sizeof(ClientOrderID_1) - 1);
 	}
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::SetClientOrderID_2(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID_2, NewValue, sizeof(ClientOrderID_2) - 1);
+		strncpy(ClientOrderID_2, NewValue, sizeof(ClientOrderID_2) - 1);
 	}
 
 	/*==========================================================================*/
@@ -3262,7 +3268,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::SetFreeFormText(const char* NewValue)
 	{
-		strncpy_s(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
+		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_SubmitNewOCOOrder::GetClientOrderID_1()
@@ -3298,7 +3304,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -3314,7 +3320,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	OrderTypeEnum s_SubmitNewOCOOrder::GetOrderType_1()
@@ -3377,7 +3383,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::SetParentTriggerClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ParentTriggerClientOrderID, NewValue, sizeof(ParentTriggerClientOrderID) - 1);
+		strncpy(ParentTriggerClientOrderID, NewValue, sizeof(ParentTriggerClientOrderID) - 1);
 	}
 	/*==========================================================================*/
 	uint8_t s_SubmitNewOCOOrder::GetIsAutomatedOrder()
@@ -3449,7 +3455,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrder::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 	/*==========================================================================*/
 	OpenCloseTradeEnum s_SubmitNewOCOOrder::GetOpenOrClose()
@@ -3485,12 +3491,12 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrderInt::SetClientOrderID_1(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID_1, NewValue, sizeof(ClientOrderID_1) - 1);
+		strncpy(ClientOrderID_1, NewValue, sizeof(ClientOrderID_1) - 1);
 	}
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrderInt::SetClientOrderID_2(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID_2, NewValue, sizeof(ClientOrderID_2) - 1);
+		strncpy(ClientOrderID_2, NewValue, sizeof(ClientOrderID_2) - 1);
 	}
 
 	/*==========================================================================*/
@@ -3506,7 +3512,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrderInt::SetFreeFormText(const char* NewValue)
 	{
-		strncpy_s(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
+		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_SubmitNewOCOOrderInt::GetClientOrderID_1()
@@ -3542,7 +3548,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrderInt::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -3558,7 +3564,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrderInt::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	OrderTypeEnum s_SubmitNewOCOOrderInt::GetOrderType_1()
@@ -3621,7 +3627,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrderInt::SetParentTriggerClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ParentTriggerClientOrderID, NewValue, sizeof(ParentTriggerClientOrderID) - 1);
+		strncpy(ParentTriggerClientOrderID, NewValue, sizeof(ParentTriggerClientOrderID) - 1);
 	}
 	/*==========================================================================*/
 	uint8_t s_SubmitNewOCOOrderInt::GetIsAutomatedOrder()
@@ -3695,7 +3701,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SubmitNewOCOOrderInt::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 	/*==========================================================================*/
 	float s_SubmitNewOCOOrderInt::GetDivisor()
@@ -3767,7 +3773,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OpenOrdersRequest::SetServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 
 	/****************************************************************************/
@@ -3814,7 +3820,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillsRequest::SetServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_HistoricalOrderFillsRequest::GetTradeAccount()
@@ -3829,7 +3835,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillsRequest::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 
 	/****************************************************************************/
@@ -3856,7 +3862,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillsReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_HistoricalOrderFillsReject::GetRejectText()
@@ -3905,7 +3911,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CurrentPositionsRequest::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 
 	/****************************************************************************/
@@ -3944,7 +3950,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_CurrentPositionsReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 
 
@@ -3977,7 +3983,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -3994,7 +4000,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_OrderUpdate::GetPreviousServerOrderID()
@@ -4010,7 +4016,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetPreviousServerOrderID(const char* NewValue)
 	{
-		strncpy_s(PreviousServerOrderID, NewValue, sizeof(PreviousServerOrderID) - 1);
+		strncpy(PreviousServerOrderID, NewValue, sizeof(PreviousServerOrderID) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4027,7 +4033,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4044,7 +4050,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetClientOrderID(const char* NewValue)
 	{
-		strncpy_s(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
+		strncpy(ClientOrderID, NewValue, sizeof(ClientOrderID) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4061,25 +4067,25 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetExchangeOrderID(const char* NewValue)
 	{
-		strncpy_s(ExchangeOrderID, NewValue, sizeof(ExchangeOrderID) - 1);
+		strncpy(ExchangeOrderID, NewValue, sizeof(ExchangeOrderID) - 1);
 	}
 
 	/*==========================================================================*/
 	void s_OrderUpdate::SetLastFillExecutionID(const char* NewValue)
 	{
-		strncpy_s(LastFillExecutionID, NewValue, sizeof(LastFillExecutionID) - 1);
+		strncpy(LastFillExecutionID, NewValue, sizeof(LastFillExecutionID) - 1);
 	}
 
 	/*==========================================================================*/
 	void s_OrderUpdate::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 
 	/*==========================================================================*/
 	void s_OrderUpdate::SetInfoText(const char* NewValue)
 	{
-		strncpy_s(InfoText, NewValue, sizeof(InfoText) - 1);
+		strncpy(InfoText, NewValue, sizeof(InfoText) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4283,7 +4289,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetParentServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ParentServerOrderID, NewValue, sizeof(ParentServerOrderID) - 1);
+		strncpy(ParentServerOrderID, NewValue, sizeof(ParentServerOrderID) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_OrderUpdate::GetOCOLinkedOrderServerOrderID()
@@ -4298,7 +4304,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetOCOLinkedOrderServerOrderID(const char* NewValue)
 	{
-		strncpy_s(OCOLinkedOrderServerOrderID, NewValue, sizeof(OCOLinkedOrderServerOrderID) - 1);
+		strncpy(OCOLinkedOrderServerOrderID, NewValue, sizeof(OCOLinkedOrderServerOrderID) - 1);
 	}
 	/*==========================================================================*/
 	OpenCloseTradeEnum s_OrderUpdate::GetOpenOrClose()
@@ -4323,7 +4329,24 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OrderUpdate::SetPreviousClientOrderID(const char* NewValue)
 	{
-		strncpy_s(PreviousClientOrderID, NewValue, sizeof(PreviousClientOrderID) - 1);
+		strncpy(PreviousClientOrderID, NewValue, sizeof(PreviousClientOrderID) - 1);
+	}
+
+	/*==========================================================================*/
+	const char* s_OrderUpdate::GetFreeFormText()
+	{
+		if (Size < offsetof(s_OrderUpdate, FreeFormText) + sizeof(FreeFormText))
+			return "";
+
+		FreeFormText[sizeof(FreeFormText) - 1] = '\0';
+
+		return FreeFormText;
+	}
+
+	/*==========================================================================*/
+	void s_OrderUpdate::SetFreeFormText(const char* NewValue)
+	{
+		strncpy(FreeFormText, NewValue, sizeof(FreeFormText) - 1);
 	}
 
 	/****************************************************************************/
@@ -4351,7 +4374,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_OpenOrdersReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_OpenOrdersReject::GetRejectText()
@@ -4401,7 +4424,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillResponse::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4418,7 +4441,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillResponse::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	int32_t s_HistoricalOrderFillResponse::GetMessageNumber()
@@ -4450,7 +4473,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillResponse::SetServerOrderID(const char* NewValue)
 	{
-		strncpy_s(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
+		strncpy(ServerOrderID, NewValue, sizeof(ServerOrderID) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4466,7 +4489,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillResponse::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_HistoricalOrderFillResponse::GetUniqueExecutionID()
@@ -4481,7 +4504,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalOrderFillResponse::SetUniqueExecutionID(const char* NewValue)
 	{
-		strncpy_s(UniqueExecutionID, NewValue, sizeof(UniqueExecutionID) - 1);
+		strncpy(UniqueExecutionID, NewValue, sizeof(UniqueExecutionID) - 1);
 	}
 	/*==========================================================================*/
 	double s_HistoricalOrderFillResponse::GetPrice()
@@ -4554,13 +4577,13 @@ namespace DTC
 	/*==========================================================================*/
 	void s_PositionUpdate::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
 	void s_PositionUpdate::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 	/*==========================================================================*/
 	int32_t s_PositionUpdate::GetRequestID()
@@ -4594,7 +4617,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_PositionUpdate::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	int32_t s_PositionUpdate::GetMessageNumber()
@@ -4625,7 +4648,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_PositionUpdate::SetPositionIdentifier(const char* NewValue)
 	{
-		strncpy_s(PositionIdentifier, NewValue, sizeof(PositionIdentifier) - 1);
+		strncpy(PositionIdentifier, NewValue, sizeof(PositionIdentifier) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_PositionUpdate::GetPositionIdentifier()
@@ -4728,7 +4751,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_TradeAccountResponse::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_TradeAccountResponse::GetTradeAccount()
@@ -4802,7 +4825,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_ExchangeListResponse::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4819,7 +4842,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_ExchangeListResponse::SetDescription(const char* NewValue)
 	{
-		strncpy_s(Description, NewValue, sizeof(Description) - 1);
+		strncpy(Description, NewValue, sizeof(Description) - 1);
 	}
 	/*==========================================================================*/
 	int32_t s_ExchangeListResponse::GetRequestID()
@@ -4876,7 +4899,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SymbolsForExchangeRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/*==========================================================================*/
@@ -4926,7 +4949,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_UnderlyingSymbolsForExchangeRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	SecurityTypeEnum s_UnderlyingSymbolsForExchangeRequest::GetSecurityType()
@@ -4972,12 +4995,12 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SymbolsForUnderlyingRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	void s_SymbolsForUnderlyingRequest::SetUnderlyingSymbol(const char* NewValue)
 	{
-		strncpy_s(UnderlyingSymbol, NewValue, sizeof(UnderlyingSymbol) - 1);
+		strncpy(UnderlyingSymbol, NewValue, sizeof(UnderlyingSymbol) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_SymbolsForUnderlyingRequest::GetUnderlyingSymbol()
@@ -5030,7 +5053,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SymbolSearchRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5047,7 +5070,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SymbolSearchRequest::SetSearchText(const char* NewValue)
 	{
-		strncpy_s(SearchText, NewValue, sizeof(SearchText) - 1);
+		strncpy(SearchText, NewValue, sizeof(SearchText) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5106,7 +5129,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionForSymbolRequest::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5123,7 +5146,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionForSymbolRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	int32_t s_SecurityDefinitionForSymbolRequest::GetRequestID()
@@ -5173,7 +5196,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionResponse::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5190,7 +5213,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionResponse::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5216,7 +5239,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionResponse::SetDescription(const char* NewValue)
 	{
-		strncpy_s(Description, NewValue, sizeof(Description) - 1);
+		strncpy(Description, NewValue, sizeof(Description) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5286,7 +5309,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionResponse::SetUnderlyingSymbol(const char* NewValue)
 	{
-		strncpy_s(UnderlyingSymbol, NewValue, sizeof(UnderlyingSymbol) - 1);
+		strncpy(UnderlyingSymbol, NewValue, sizeof(UnderlyingSymbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5426,7 +5449,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_SecurityDefinitionReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5464,7 +5487,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_AccountBalanceRequest::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5502,7 +5525,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_AccountBalanceReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5535,13 +5558,13 @@ namespace DTC
 	/*==========================================================================*/
 	void s_AccountBalanceUpdate::SetAccountCurrency(const char* NewValue)
 	{
-		strncpy_s(AccountCurrency, NewValue, sizeof(AccountCurrency) - 1);
+		strncpy(AccountCurrency, NewValue, sizeof(AccountCurrency) - 1);
 	}
 
 	/*==========================================================================*/
 	void s_AccountBalanceUpdate::SetTradeAccount(const char* NewValue)
 	{
-		strncpy_s(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
+		strncpy(TradeAccount, NewValue, sizeof(TradeAccount) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_AccountBalanceUpdate::GetAccountCurrency()
@@ -5657,7 +5680,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_UserMessage::SetUserMessage(const char* NewValue)
 	{
-		strncpy_s(UserMessage, NewValue, sizeof(UserMessage) - 1);
+		strncpy(UserMessage, NewValue, sizeof(UserMessage) - 1);
 	}
 	/*==========================================================================*/
 	const char* s_UserMessage::GetUserMessage()
@@ -5710,7 +5733,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_GeneralLogMessage::SetMessageText(const char* NewValue)
 	{
-		strncpy_s(MessageText, NewValue, sizeof(MessageText) - 1);
+		strncpy(MessageText, NewValue, sizeof(MessageText) - 1);
 	}
 
 	/****************************************************************************/
@@ -5742,7 +5765,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataRequest::SetSymbol(const char* NewValue)
 	{
-		strncpy_s(Symbol, NewValue, sizeof(Symbol) - 1);
+		strncpy(Symbol, NewValue, sizeof(Symbol) - 1);
 	}
 
 	/*==========================================================================*/
@@ -5759,7 +5782,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataRequest::SetExchange(const char* NewValue)
 	{
-		strncpy_s(Exchange, NewValue, sizeof(Exchange) - 1);
+		strncpy(Exchange, NewValue, sizeof(Exchange) - 1);
 	}
 	/*==========================================================================*/
 	int32_t s_HistoricalPriceDataRequest::GetRequestID()
@@ -5929,7 +5952,7 @@ namespace DTC
 	/*==========================================================================*/
 	void s_HistoricalPriceDataReject::SetRejectText(const char* NewValue)
 	{
-		strncpy_s(RejectText, NewValue, sizeof(RejectText) - 1);
+		strncpy(RejectText, NewValue, sizeof(RejectText) - 1);
 	}
 	/*==========================================================================*/
 	int32_t s_HistoricalPriceDataReject::GetRequestID()

@@ -1462,6 +1462,7 @@ namespace DTC_VLS
 		DTC::OpenCloseTradeEnum OpenOrClose;
 
 		vls_t PreviousClientOrderID;
+		vls_t FreeFormText;
 
 		s_OrderUpdate()
 		{
@@ -1608,6 +1609,16 @@ namespace DTC_VLS
 		void AddPreviousClientOrderID(unsigned int StringLength)
 		{
 			AddVariableLengthStringField(Size, PreviousClientOrderID, StringLength);
+		}
+
+		const char* GetFreeFormText() const
+		{
+			return GetVariableLengthStringField(Size, BaseSize, FreeFormText, offsetof(s_OrderUpdate, FreeFormText));
+		}
+
+		void AddFreeFormText(unsigned int StringLength)
+		{
+			AddVariableLengthStringField(Size, FreeFormText, StringLength);
 		}
 
 		double GetOrderQuantity();

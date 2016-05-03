@@ -852,7 +852,7 @@ message CancelReplaceOrder
 	optional uint32 Price2IsSet = 7;
 	optional OrderTypeEnum OrderType = 8;
 	optional TimeInForceEnum TimeInForce = 9;
-	optional uint32 GoodTillDateTime = 10;
+	optional uint64 GoodTillDateTime = 10;
 }
 
 //============================================================================
@@ -1049,6 +1049,8 @@ message OrderUpdate
 	optional OpenCloseTradeEnum OpenOrClose = 31;
 
 	optional string PreviousClientOrderID = 32;
+
+	optional string FreeFormText = 33;
 }
 
 //============================================================================

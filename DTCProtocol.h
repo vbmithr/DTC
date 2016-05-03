@@ -1492,8 +1492,8 @@ namespace DTC
 			Type = MARKET_DATA_UPDATE_BID_ASK;
 			Size = sizeof(s_MarketDataUpdateBidAsk);
 
-			BidPrice = DBL_MAX;
-			AskPrice = DBL_MAX;
+			BidPrice = DBL_MAX; //This also signifies the BidQuantity is unset
+			AskPrice = DBL_MAX; //This also signifies the AskQuantity is unset
 		}
 
 		uint16_t GetSymbolID() const;
@@ -2470,6 +2470,7 @@ namespace DTC
 		OpenCloseTradeEnum OpenOrClose;
 
 		char PreviousClientOrderID[ORDER_ID_LENGTH];
+		char FreeFormText[ORDER_FREE_FORM_TEXT_LENGTH];
 
 		s_OrderUpdate()
 		{
@@ -2545,6 +2546,9 @@ namespace DTC
 
 		const char* GetPreviousClientOrderID();
 		void SetPreviousClientOrderID(const char* NewValue);
+
+		const char* GetFreeFormText();
+		void SetFreeFormText(const char* NewValue);
 	};
 	
 	/*==========================================================================*/
