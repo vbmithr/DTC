@@ -1456,6 +1456,15 @@ namespace DTC_VLS
 		return OpenOrClose;
 	}
 
+	/*==========================================================================*/
+	DTC::t_DateTime s_OrderUpdate::GetOrderReceivedDateTime()
+	{
+		if (BaseSize < offsetof(s_OrderUpdate, OrderReceivedDateTime) + sizeof(OrderReceivedDateTime))
+			return 0;
+
+		return OrderReceivedDateTime;
+	}
+
 	/****************************************************************************/
 	// s_OpenOrdersRequestReject
 

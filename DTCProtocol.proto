@@ -29,7 +29,8 @@ enum DTCVersion {
 
 //============================================================================
 //----Message types----
-enum DTCMessageType {
+enum DTCMessageType 
+{
 	// Authentication and connection monitoring
 	LOGON_REQUEST = 1;
 	LOGON_RESPONSE = 2;
@@ -1051,6 +1052,8 @@ message OrderUpdate
 	optional string PreviousClientOrderID = 32;
 
 	optional string FreeFormText = 33;
+
+	optional sfixed64 OrderReceivedDateTime = 34;
 }
 
 //============================================================================

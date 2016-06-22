@@ -2471,6 +2471,7 @@ namespace DTC
 
 		char PreviousClientOrderID[ORDER_ID_LENGTH];
 		char FreeFormText[ORDER_FREE_FORM_TEXT_LENGTH];
+		t_DateTime OrderReceivedDateTime;
 
 		s_OrderUpdate()
 		{
@@ -2543,6 +2544,8 @@ namespace DTC
 		void SetOCOLinkedOrderServerOrderID(const char* NewValue);
 
 		OpenCloseTradeEnum GetOpenOrClose();
+
+		t_DateTime GetOrderReceivedDateTime();
 
 		const char* GetPreviousClientOrderID();
 		void SetPreviousClientOrderID(const char* NewValue);

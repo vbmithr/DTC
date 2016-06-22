@@ -1464,6 +1464,8 @@ namespace DTC_VLS
 		vls_t PreviousClientOrderID;
 		vls_t FreeFormText;
 
+		DTC::t_DateTime OrderReceivedDateTime;
+
 		s_OrderUpdate()
 		{
 			Clear();
@@ -1641,6 +1643,7 @@ namespace DTC_VLS
 		DTC::t_DateTime GetLastFillDateTime();	
 		uint8_t GetNoOrders();
 		DTC::OpenCloseTradeEnum GetOpenOrClose();
+		DTC::t_DateTime GetOrderReceivedDateTime();
 	};
 	
 	/*==========================================================================*/

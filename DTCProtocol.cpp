@@ -4314,7 +4314,14 @@ namespace DTC
 
 		return OpenOrClose;
 	}
+	/*==========================================================================*/
+	t_DateTime s_OrderUpdate::GetOrderReceivedDateTime()
+	{
+		if (Size < offsetof(s_OrderUpdate, OrderReceivedDateTime) + sizeof(OrderReceivedDateTime))
+			return 0;
 
+		return OrderReceivedDateTime;
+	}
 	/*==========================================================================*/
 	const char* s_OrderUpdate::GetPreviousClientOrderID()
 	{
