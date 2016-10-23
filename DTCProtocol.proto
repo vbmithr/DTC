@@ -962,6 +962,8 @@ message OpenOrdersRequest
 	optional int32 RequestAllOrders = 2;
 
 	optional string ServerOrderID = 3;
+
+	optional string TradeAccount = 4;
 }
 
 //============================================================================
@@ -1236,6 +1238,8 @@ message SecurityDefinitionResponse
 	optional uint32 HasMarketDepthData = 23;
 
 	optional float DisplayPriceMultiplier = 24;
+
+	optional string ExchangeSymbol = 25;
 }
 
 

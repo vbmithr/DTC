@@ -160,13 +160,13 @@ namespace DTC
 	const uint16_t HISTORICAL_PRICE_DATA_RESPONSE_TRAILER = 807;
 
 	/*==========================================================================*/
-	//Standard UNIX Date-Time value
+	//Standard UNIX date-time value
 	typedef int64_t t_DateTime;
 
-	// This is a 4 uint8_t UNIX Date-Time value used in messages where compactness is an important consideration. Or, where only the Date is needed.
+	// This is a 4 uint8_t UNIX date-time value used in messages where compactness is an important consideration. Or, where only the Date is needed.
 	typedef uint32_t t_DateTime4Byte;
 
-	//UNIX Date-Time value with fractional portion for milliseconds.
+	//UNIX date-time value with fractional portion for milliseconds.
 	typedef double t_DateTimeWithMilliseconds;
 
 	/*==========================================================================*/
@@ -2270,6 +2270,7 @@ namespace DTC
 		int32_t RequestAllOrders;
 
 		char ServerOrderID[ORDER_ID_LENGTH];
+		char TradeAccount[TRADE_ACCOUNT_LENGTH];
 
 		s_OpenOrdersRequest()
 		{
@@ -2291,6 +2292,8 @@ namespace DTC
 		int32_t GetRequestAllOrders();
 		void SetServerOrderID(const char* NewValue);
 		const char* GetServerOrderID();
+		void SetTradeAccount(const char* NewValue);
+		const char* GetTradeAccount();
 	};
 
 	/*==========================================================================*/
@@ -3029,6 +3032,8 @@ namespace DTC
 
 		float DisplayPriceMultiplier;
 
+		char ExchangeSymbol[SYMBOL_LENGTH];
+
 		s_SecurityDefinitionResponse()
 		{
 			Clear();
@@ -3080,6 +3085,8 @@ namespace DTC
 		float GetIntToFloatQuantityDivisor() const;
 		uint8_t GetHasMarketDepthData() const;
 		float GetDisplayPriceMultiplier() const;
+		const char* GetExchangeSymbol();
+		void SetExchangeSymbol(const char* NewValue);
 	};
 
 	

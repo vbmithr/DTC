@@ -1205,6 +1205,7 @@ namespace DTC_VLS
 		int32_t RequestAllOrders;
 
 		vls_t ServerOrderID;
+		vls_t TradeAccount;
 
 		s_OpenOrdersRequest()
 		{
@@ -1234,6 +1235,16 @@ namespace DTC_VLS
 		const char* GetServerOrderID() const
 		{
 			return GetVariableLengthStringField(Size, BaseSize, ServerOrderID, offsetof(s_OpenOrdersRequest, ServerOrderID));
+		}
+
+		void AddTradeAccount(unsigned int StringLength)
+		{
+			AddVariableLengthStringField(Size, TradeAccount, StringLength);
+		}
+
+		const char* GetTradeAccount() const
+		{
+			return GetVariableLengthStringField(Size, BaseSize, TradeAccount, offsetof(s_OpenOrdersRequest, TradeAccount));
 		}
 	};
 
@@ -2263,6 +2274,8 @@ namespace DTC_VLS
 
 		float DisplayPriceMultiplier;
 
+		vls_t ExchangeSymbol;
+
 		s_SecurityDefinitionResponse()
 		{
 			Clear();
@@ -2344,6 +2357,16 @@ namespace DTC_VLS
 		float GetIntToFloatQuantityDivisor() const;
 		uint8_t GetHasMarketDepthData() const;
 		float GetDisplayPriceMultiplier() const;
+
+		void AddExchangeSymbol(unsigned int StringLength)
+		{
+			AddVariableLengthStringField(Size, ExchangeSymbol, StringLength);
+		}
+
+		const char* GetExchangeSymbol() const
+		{
+			return GetVariableLengthStringField(Size, BaseSize, ExchangeSymbol, offsetof(s_SecurityDefinitionResponse, ExchangeSymbol));
+		}
 	};
 
 
